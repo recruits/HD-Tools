@@ -1,0 +1,63 @@
+server:
+  port: 8111
+  context-path: /hd-tools
+
+spring:
+  #profiles:
+  #  active: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/hdtool?characterEncoding=UTF-8&requireSSL=false
+    username: hdtool
+    password: 12345678
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  freemarker:
+    allowRequestOverride: false
+    allowSessionOverride: false
+    cache: true
+    checkTemplateLocation: true
+    contentType: text/html
+    exposeRequestAttributes: false
+    exposeSessionAttributes: false
+    exposeSpringMacroHelpers: false
+    requestContextAttribute: request
+    suffix: .ftl
+    templateEncoding: UTF-8
+    templateLoaderPath: classpath:/templates/
+    spring.freemarker.settings:
+      locale: zh_CN
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+
+mybatis:
+  type-aliases-package: com.chilicool.hdtools.dao
+  mapperLocations: classpath:mapper/*.xml
+
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    schema: classpath:db/schema.sql
+    data: classpath:db/data.sql
+    sql-script-encoding: utf-8

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- !!!! Driver Class Path !!!! -->
+    <classPathEntry location="D:\DevSoftware\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- !!!! Database Configurations !!!! -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/hdtool?characterEncoding=UTF-8" userId="hdtool" password="12345678" />
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- !!!! Model Configurations !!!! -->
+        <javaModelGenerator targetPackage="com.chilicool.hdtools.domain" targetProject="HD-Tools" />
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="HD-Tools/src/main/resources" />
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <javaClientGenerator targetPackage="com.chilicool.hdtools.dao" targetProject="HD-Tools" type="XMLMAPPER" />
+
+        <!-- !!!! Table Configurations !!!! -->
+        <!--
+        <table schema="" tableName="DATA_MODULE_ENUM"  domainObjectName="DataModuleEnum"></table>
+        <table schema="" tableName="DATA_MODULE_ENUM_PARAM"  domainObjectName="DataModuleEnumParam"></table>
+        <table schema="" tableName="ROOM_DATA_MODULE"  domainObjectName="RoomDataModule"></table>
+        <table schema="" tableName="PROJ_VERSION"  domainObjectName="ProjVersion"></table>
+
+        <table schema="" tableName="AREA_INFO" domainObjectName="AreaInfo"></table>
+        <table schema="" tableName="AREA_SUMMARY" domainObjectName="AreaSummary"></table>
+        <table schema="" tableName="DEPARTMENT" domainObjectName="Department"></table>
+        <table schema="" tableName="DEPT_SUMMARY" domainObjectName="DeptSummary"></table>
+        <table schema="" tableName="DEPT_TYPE" domainObjectName="DeptType"></table>
+        <table schema="" tableName="PROJ_BASE_INFO" domainObjectName="ProjBaseInfo"></table>
+        <table schema="" tableName="PROJ_VERSION" domainObjectName="ProjVersion"></table>
+        <table schema="" tableName="ROOM_ENUM_PARAM" domainObjectName="RoomEnumParam"></table>
+        <table schema="" tableName="ROOM_INFO" domainObjectName="RoomInfo"></table>
+        <table schema="" tableName="ROOM_MODULE" domainObjectName="RoomModule"></table>
+        <table schema="" tableName="ROOM_MODULE_ENUM" domainObjectName="RoomModuleEnum"></table>
+        <table schema="" tableName="VERSION_INFO" domainObjectName="VersionInfo"></table>
+        <table schema="" tableName="PROJ_GROUP" domainObjectName="ProjGroup"></table>
+        -->
+
+        <table schema="" tableName="PROJ_BASE_INFO" domainObjectName="ProjBaseInfo"></table>
+
+    </context>
+</generatorConfiguration>
