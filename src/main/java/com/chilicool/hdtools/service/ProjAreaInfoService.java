@@ -37,10 +37,42 @@ public interface ProjAreaInfoService {
     public void saveOrUpdateAreaInfo(AreaWithAction areaWithAction);
 
     /**
+     * 删除区域信息
+     *
+     * @param areaId
+     * @return
+     */
+    public void delAreaInfoByAreaId(Long areaId);
+
+    /**
      * 编辑房间信息
      *
      * @param roomWithAction
      * @return
      */
     public void saveOrUpdateRoomInfo(RoomWithAction roomWithAction);
+
+    /**
+     * 删除房间信息
+     *
+     * @param roomId
+     * @return
+     */
+    public void delRoomInfoByRoomId(Long roomId);
+
+    /**
+     * 实时更新房间个数信息
+     *
+     * @param roomId
+     * @param roomCnt
+     */
+    public void editRoomCntValOnTime(Long roomId, Integer roomCnt);
+
+    /**
+     * 实时更新房间个数信息
+     *
+     * @param roomId
+     * @param roomArea
+     */
+    public void editRoomAreaValOnTime(Long roomId, Double roomArea);
 }

@@ -133,6 +133,7 @@ function buildOperInfoForTopLevel(deptTypeId) {
 function resetDeptTypeId(deptTypeId) {
     currDeptTypeId = deptTypeId;
     deptAction = CONST_ACTION_ADD;
+    clearDeptModalData();
 }
 // 清空部门信息数据[模态对话框]
 function clearDeptModalData() {
@@ -160,13 +161,13 @@ function buildOperInfoForSubLevel(deptId, deptCode, deptName, planArea) {
 function modDeptInfo(deptId, deptCode, deptName, planArea) {
     currDeptId = deptId;
     // 初始化信息
-    $('input[name="deptName"]').val(deptName);
-    $('input[name="deptCode"]').val(deptCode);
-    $('input[name="planArea"]').val(planArea);
+    $('#addSubSumyInfoModal input[name="deptName"]').val(deptName);
+    $('#addSubSumyInfoModal input[name="deptCode"]').val(deptCode);
+    $('#addSubSumyInfoModal input[name="planArea"]').val(planArea);
     // 保存操作动作
     deptAction = CONST_ACTION_MOD;
 }
-// 缓存当前正在操作的部门信息编号
+// 删除部门信息
 function delDeptInfo(deptId, deptName) {
     var options = {
         title: "删除部门信息",
@@ -179,6 +180,8 @@ function delDeptInfo(deptId, deptName) {
                 if (outData.retCode == RET_CODE_SUCC) {
                     reloadSumyInfo();
                     currDeptId = '';
+                    currAreaId = '';
+                    currRoomId = '';
                 }
             }, "json");
         }
@@ -205,6 +208,8 @@ function addDepartment() {
 function goToDeptDetailPane(deptTypeId, deptId) {
     currDeptTypeId = deptTypeId;
     currDeptId = deptId;
+    currAreaId = 0;
+    currRoomId = 0;
 
     $('.nav-tabs li:eq(2) a').tab('show');
 }

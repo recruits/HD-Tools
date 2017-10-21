@@ -14,6 +14,7 @@ import com.chilicool.hdtools.model.PlanAreaHolder;
 import com.chilicool.hdtools.model.PlanAreaModel;
 import com.chilicool.hdtools.model.SumyInfoModel;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
+import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
 import org.apache.commons.collections.CollectionUtils;
@@ -39,6 +40,8 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
     private DeptTypeService deptTypeService;
     @Autowired
     private DeptSumyService deptSumyService;
+    @Autowired
+    private DeptDelService deptDelService;
 
     @Override
     public void initProjDeptType(Long projId) {
@@ -211,7 +214,9 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
 
     @Override
     public void delDeptInfoByDeptId(Long deptId) {
-        departmentMapper.deleteByPrimaryKey(deptId);
+        // 删除部门信息
+        // departmentMapper.deleteByPrimaryKey(deptId);
+        deptDelService.delDeptByDeptId(deptId);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.ProjAreaInfoService;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
 import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
+import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
 import org.apache.commons.collections.CollectionUtils;
@@ -34,6 +35,8 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     private DepartmentService departmentService;
     @Autowired
     private ProjDeptInfoService projDeptInfoService;
+    @Autowired
+    private DeptDelService deptDelService;
 
     @Override
     public List<AreaInfoModel> loadAllAreaInfo(Long deptId) {
@@ -100,6 +103,16 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
     }
 
+    @Override
+    public void delAreaInfoByAreaId(Long areaId) {
+        // 缓存区域信息
+        AreaInfo areaInfo = areaInfoMapper.selectByPrimaryKey(areaId);
+        // 删除区域信息
+        deptDelService.delAreaByAreaId(areaId);
+        // 更新区域所属部门规划值信息
+        projDeptInfoService.updateDesignAreaValForDeptOnTime(areaInfo.getDeptId(), areaInfo.getDeptTypeId(), BusiConst.DobuleVal.zeroVal);
+    }
+
     private void saveOrUpdateAreaInfo(AreaInfo areaInfo, boolean saveFlag) {
         if (saveFlag) {
             appendAreaInfoForInsert(areaInfo);
@@ -133,12 +146,42 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
     }
 
+    @Override
+    public void delRoomInfoByRoomId(Long roomId) {
+        // 先缓存当前房间数据
+        RoomInfo roomInfo = roomInfoMapper.selectByPrimaryKey(roomId);
+
+        // 删除房间数据
+        deptDelService.delRoomByRoomId(roomId);
+
+        // 更新所属区域面积合计值
+        updateAreaSummaryVal(roomInfo.getAreaId(), roomInfo.getDeptId(), roomInfo.getDeptTypeId());
+    }
+
+    @Override
+    public void editRoomCntValOnTime(Long roomId, Integer roomCnt) {
+        RoomInfo roomInfo = roomInfoMapper.selectByPrimaryKey(roomId);
+        roomInfo.setCnt(roomCnt);
+        autoCaculateAreaSummary(roomInfo);
+        saveOrUpdateRoomInfo(roomInfo, false);
+    }
+
+    @Override
+    public void editRoomAreaValOnTime(Long roomId, Double roomArea) {
+        RoomInfo roomInfo = roomInfoMapper.selectByPrimaryKey(roomId);
+        roomInfo.setAreaTotal(roomArea);
+        autoCaculateAreaSummary(roomInfo);
+        saveOrUpdateRoomInfo(roomInfo, false);
+    }
+
     private void saveOrUpdateRoomInfo(RoomInfo roomInfo, boolean saveFlag) {
         if (saveFlag) {
             appendRoomInfoForInsert(roomInfo);
 
             roomInfoMapper.insert(roomInfo);
         } else {
+            autoCaculateAreaSummary(roomInfo);
+
             roomInfoMapper.updateByPrimaryKeySelective(roomInfo);
         }
 
@@ -150,11 +193,17 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     private void appendRoomInfoForInsert(RoomInfo roomInfo) {
         // 追加创建时间
         roomInfo.setCreateTime(new Date());
-        // 设置面积小计
+        autoCaculateAreaSummary(roomInfo);
+    }
+
+    // 设置面积小计
+    private void autoCaculateAreaSummary(RoomInfo roomInfo) {
         Integer cnt = roomInfo.getCnt();
         Double areaTotal = roomInfo.getAreaTotal();
         if (null != areaTotal) {
             roomInfo.setAreaSummary(cnt * areaTotal);
+        } else {
+            roomInfo.setAreaSummary(new Double(BusiConst.DobuleVal.zeroVal));
         }
     }
 

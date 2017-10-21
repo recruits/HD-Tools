@@ -496,4 +496,10 @@
       </if>
      order by ID
   </select>
+
+  <select id="loadAllAreaIdByDeptId" resultType="Long" parameterType="Long">
+    select ID
+    from area_info
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </select>
 </mapper>

@@ -11,7 +11,6 @@ import com.chilicool.hdtools.model.RoomDataSimp;
 import com.chilicool.hdtools.service.RoomDataService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.chilicool.hdtools.common.ErrorMsg.ERROR_ENUM_PARAM_HAS_EXIST;
-import static com.chilicool.hdtools.common.ErrorMsg.ERROR_MODEL_ENUM_HAS_EXIST;
-import static com.chilicool.hdtools.common.ErrorMsg.ERROR_MODEL_HAS_EXIST;
+import static com.chilicool.hdtools.common.ErrorMsg.*;
 
 /**
  * Created by chilicool on 2017/9/10.

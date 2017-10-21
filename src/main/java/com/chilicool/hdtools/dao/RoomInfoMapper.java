@@ -3,7 +3,9 @@ package com.chilicool.hdtools.dao;
 import com.chilicool.hdtools.domain.RoomInfo;
 import com.chilicool.hdtools.domain.RoomInfoExample;
 import java.util.List;
+import java.util.Map;
 
+import com.chilicool.hdtools.model.RoomSumyModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -95,4 +97,20 @@ public interface RoomInfoMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(RoomInfo record);
+
+    /**
+     * 查看某个区域下的所有房间
+     *
+     * @param areaId
+     * @return
+     */
+    List<Long> loadAllRoomIdByAreaId(Long areaId);
+
+    /**
+     * 查询房间汇总信息
+     *
+     * @param inParams
+     * @return
+     */
+    RoomSumyModel loadCurrRoomTitle(Map<String, Long> inParams);
 }

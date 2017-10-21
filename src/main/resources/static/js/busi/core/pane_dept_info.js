@@ -10,6 +10,7 @@ function initAreaInfo() {
 
     // 绑定区域新增事件
     $('#addNewAreaInfo').click(function () {
+        areaAction = CONST_ACTION_ADD;
         $('#addAreaInfoModal').modal();
     });
     // 区域信息操作按钮事件绑定
@@ -82,38 +83,35 @@ function renderAreaInfoPage(data) {
             expanderCollapsedClass: 'fa fa-plus'
         });
 
-        // // 设置部门分类规划面积可编辑
-        // $('a[name^="planAreaForEdit-"]').editable({
-        //     success: function (outData, newVal) {
-        //         if (outData.retCode == RET_CODE_SUCC) {
-        //             reloadSumyInfo();
-        //         }
-        //     }
-        // });
-        //
-        // // 设置部门信息规划面积可编辑
-        // $('a[name^="planAreaForDeptEdit-"]').editable({
-        //     success: function (outData, newVal) {
-        //         if (outData.retCode == RET_CODE_SUCC) {
-        //             // 部门信息规划面积变更，导致部门分类规划面积变更，才进行页面刷新
-        //             if (outData.retExtInfo == 'fresh') {
-        //                 reloadSumyInfo();
-        //             }
-        //         }
-        //     }
-        // });
+        // 设置房间个数可编辑
+        $('a[name^="roomCntForEdit-"]').editable({
+            success: function (outData, newVal) {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    reloadAreaInfo();
+                }
+            }
+        });
+
+        // 设置房间面积可编辑
+        $('a[name^="roomAreaForEdit-"]').editable({
+            success: function (outData, newVal) {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    reloadAreaInfo();
+                }
+            }
+        });
     }
 }
 // 更新部门分类汇总数据
 function freshAreaTitle(data) {
     if (data) {
-        $('input[name="deptTypeCode"]').val(data.deptTypeCode);
-        $('input[name="deptTypeName"]').val(data.deptTypeName);
-        $('input[name="deptCode"]').val(data.deptCode);
-        $('input[name="deptName"]').val(data.deptName);
-        $('input[name="planArea"]').val(data.planArea);
-        $('input[name="designArea"]').val(data.designArea);
-        $('input[name="areaRatio"]').val(data.areaRatio || "");
+        $('#deptDetailInfo input[name="deptTypeCode"]').val(data.deptTypeCode);
+        $('#deptDetailInfo input[name="deptTypeName"]').val(data.deptTypeName);
+        $('#deptDetailInfo input[name="deptCode"]').val(data.deptCode);
+        $('#deptDetailInfo input[name="deptName"]').val(data.deptName);
+        $('#deptDetailInfo input[name="planArea"]').val(data.planArea);
+        $('#deptDetailInfo input[name="designArea"]').val(data.designArea);
+        $('#deptDetailInfo input[name="areaRatio"]').val(data.areaRatio || "");
     }
 }
 
@@ -122,8 +120,9 @@ function buildAreaInfoTopLeveHtml(item) {
     return "<tr class='treegrid-" + item.id + "-area'><td>"
         + item.areaCode + "</td><td>" + item.areaName + "</td><td>"
         + (item.cnt || "") + "</td><td>" + (item.areaTotal || "") + "</td><td>"
-        + (item.areaSummary || "") + "</td><td>" + (item.node || "") + "</td><td>"
-        + buildOperInfoForAreaLevel(item.id) + "</td></tr>";
+        + (item.areaSummary || "") + "</td><td>" + (item.note || "") + "</td><td>"
+        + buildOperInfoForAreaTopLevel(item.id, item.areaName, item.areaCode, item.note)
+        + "</td></tr>";
 }
 // 创建表格二级列表数据
 function buildAreaInfoSubLeveHtml(item) {
@@ -132,7 +131,9 @@ function buildAreaInfoSubLeveHtml(item) {
         + item.areaCode + "</td><td>" + item.areaName + "</td><td>"
         + buildEditInfoForRoomCnt(item.cnt, item.id) + "</td><td>"
         + buildEditInfoForRoomArea(item.areaTotal, item.id) + "</td><td>"
-        + (item.areaSummary || "") + (item.node || "") + "</td><td></td><td></td></tr>";
+        + (item.areaSummary || "") + (item.node || "") + "</td><td></td><td>"
+        + buildOperInfoForAreaSubLevel(item.id, item.areaCode, item.areaName, item.cnt, item.areaTotal)
+        + "</td></tr>";
 }
 // 增加房间个数可编辑操作
 function buildEditInfoForRoomCnt(currVal, roomId) {
@@ -154,10 +155,83 @@ function buildEditInfoForPlanArea(currVal, deptTypeId) {
         + deptTypeId + '" data-url="' + postEditValUrl + '" data-title="输入规划面积:">' + currVal + '</a>';
 }
 // 增加区域操作信息
-function buildOperInfoForAreaLevel(areaId) {
-    return '<a onclick="resetAreaId(' + areaId
+function buildOperInfoForAreaTopLevel(areaId, areaName, areaCode, note) {
+    return '<a onclick="modAreaInfo(' + areaId + ',\'' + areaName + '\',\'' + areaCode + '\',\'' + note
+        + '\')" class="fa fa-edit addAreaInfoModal" data-toggle="modal" data-target="#addAreaInfoModal"'
+        + ' style="margin-right: 10px; font-size: 20px" title="编辑区域"></a>'
+        + '<a onclick="delAreaInfo(' + areaId + ',\'' + areaName + '\''
+        + ')" class="fa fa-minus addAreaInfoModal" '
+        + ' style="margin-right: 10px; font-size: 20px" title="删除区域"></a>' + ' | '
+        + '<a onclick="resetAreaId(' + areaId
         + ')" class="fa fa-plus addRoomInfoModal" data-toggle="modal" data-target="#addRoomInfoModal"'
         + ' style="margin-right: 10px; font-size: 20px" title="新增房间"></a>';
+}
+// 增加房间操作信息
+function buildOperInfoForAreaSubLevel(roomId, roomCode, roomName, roomCnt, roomArea) {
+    return '<a onclick="modRoomInfo(' + roomId + ',\'' + roomCode  + '\',\'' + roomName + '\',\'' + roomCnt + '\',' + roomArea
+        + ')" class="fa fa-edit addRoomInfoModal" data-toggle="modal" data-target="#addRoomInfoModal"'
+        + ' style="margin-right: 10px; font-size: 20px" title="编辑房间"></a>'
+        + '<a onclick="delRoomInfo(' + roomId + ',\'' + roomName + '\''
+        + ')" class="fa fa-minus addRoomInfoModal" '
+        + ' style="margin-right: 10px; font-size: 20px" title="删除房间"></a>';
+}
+// 编辑区域信息
+function modAreaInfo(areaId, areaName, areaCode, note) {
+    currAreaId = areaId;
+    // 初始化信息
+    $('#addAreaInfoForm input[name="officeCode"]').val(areaName);
+    $('#addAreaInfoForm input[name="officeName"]').val(areaCode);
+    $('#addAreaInfoForm input[name="note"]').val(note);
+    // 保存操作动作
+    areaAction = CONST_ACTION_MOD;
+}
+// 删除区域信息
+function delAreaInfo(areaId, areaName) {
+    var options = {
+        title: "删除区域信息",
+        message: "是否确定删除区域 [ "+areaName+" ]?",
+    };
+    Ewin.confirm(options).on(function (delFlag) {
+        if(delFlag){
+            var postDelAreaInfoUrl = basePath + "/core/delAreaInfoByAreaId.json?areaId=" + areaId;
+            $.post(postDelAreaInfoUrl, function (outData) {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    reloadAreaInfo();
+                    currAreaId = '';
+                    currRoomId = '';
+                }
+            }, "json");
+        }
+    });
+}
+// 编辑房间信息
+function modRoomInfo(roomId, roomCode, roomName, roomCnt, roomArea) {
+    currRoomId = roomId;
+    // 初始化信息
+    $('#addRoomInfoForm input[name="roomCode"]').val(roomCode);
+    $('#addRoomInfoForm input[name="roomName"]').val(roomName);
+    $('#addRoomInfoForm input[name="cnt"]').val(roomCnt);
+    $('#addRoomInfoForm input[name="areaTotal"]').val(roomArea);
+    // 保存操作动作
+    roomAction = CONST_ACTION_MOD;
+}
+// 删除房间信息
+function delRoomInfo(roomId, roomName) {
+    var options = {
+        title: "删除房间信息",
+        message: "是否确定删除房间 [ "+roomName+" ]?",
+    };
+    Ewin.confirm(options).on(function (delFlag) {
+        if(delFlag){
+            var postDelRoomInfoUrl = basePath + "/core/delRoomInfoByRoomId.json?roomId=" + roomId;
+            $.post(postDelRoomInfoUrl, function (outData) {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    reloadAreaInfo();
+                    currRoomId = '';
+                }
+            }, "json");
+        }
+    });
 }
 // 缓存当前正在操作的区域编号
 function resetAreaId(areaId) {
@@ -177,49 +251,6 @@ function clearRoomModalData() {
     $('#addRoomInfoForm input[name="cnt"]').val('');
     $('#addRoomInfoForm input[name="areaTotal"]').val('');
 }
-// 增加部门分类规划面积可编辑操作
-// function buildEditInfoForDeptPlanArea(currVal, deptId) {
-//     var postEditValForDeptUrl = basePath + "/core/editPlanAreaValForDeptOnTime.json";
-//     return '<a href="#" name="planAreaForDeptEdit-' + deptId + '" data-type="text" data-pk="'
-//         + deptId + '" data-url="' + postEditValForDeptUrl + '" data-title="输入规划面积:">' + currVal + '</a>';
-// }
-// 增加部门信息操作信息
-// function buildOperInfoForSubLevel(deptId, deptCode, deptName, planArea) {
-//     return '<a onclick="modDeptInfo(' + deptId + ',\'' + deptCode + '\',\'' + deptName + '\',' + planArea
-//         + ')" class="fa fa-edit addDeptInfoModal" data-toggle="modal" data-target="#addSubSumyInfoModal"'
-//         + ' style="margin-right: 10px; font-size: 20px" title="修改部门信息"></a>'
-//         + '<a onclick="delDeptInfo(' + deptId + ',\'' + deptName + '\''
-//         + ')" href="#" class="fa fa-minus"'
-//         + ' style="margin-right: 10px; font-size: 20px" title="删除部门信息"></a>';
-// }
-// 修改部门信息
-// function modDeptInfo(deptId, deptCode, deptName, planArea) {
-//     currDeptId = deptId;
-//     // 初始化信息
-//     $('input[name="deptName"]').val(deptName);
-//     $('input[name="deptCode"]').val(deptCode);
-//     $('input[name="planArea"]').val(planArea);
-//     // 保存操作动作
-//     deptAction = CONST_ACTION_MOD;
-// }
-// 缓存当前正在操作的部门信息编号
-// function delDeptInfo(deptId, deptName) {
-//     var options = {
-//         title: "删除部门信息",
-//         message: "是否确定删除部门 [ "+deptName+" ]?",
-//     };
-//     Ewin.confirm(options).on(function (delFlag) {
-//         if(delFlag){
-//             var postDelDeptInfoUrl = basePath + "/core/delDeptInfoByDeptId.json?deptId=" + deptId;
-//             $.post(postDelDeptInfoUrl, function (outData) {
-//                 if (outData.retCode == RET_CODE_SUCC) {
-//                     reloadSumyInfo();
-//                     currDeptId = '';
-//                 }
-//             }, "json");
-//         }
-//     });
-// }
 // 新增区域信息
 function addAreaInfo() {
     var areaInfoForm = $('#addAreaInfoForm');
@@ -257,13 +288,13 @@ function addRoomInfo() {
         }
     }, "json");
 }
-// 跳转部门详情标签
-// function goToRoomPane(areaId, roomId) {
-//     currAreaId = areaId;
-//     currRoomId = roomId;
-//
-//     //$('.nav-tabs li:eq(3) a').tab('show');
-// }
+// 跳转房间详情标签
+function goToRoomPane(areaId, roomId) {
+    currAreaId = areaId;
+    currRoomId = roomId;
+
+    $('.nav-tabs li:eq(3) a').tab('show');
+}
 /**********************************************************************************************
  * 页面字段编辑逻辑
  * - 规划面积变更

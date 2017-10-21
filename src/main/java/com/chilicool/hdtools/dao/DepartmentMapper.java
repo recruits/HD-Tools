@@ -110,4 +110,5 @@ public interface DepartmentMapper {
      * @return
      */
     List<PlanAreaModel> loadAllDeptDesignAreaInfoModel(Long deptTypeId);
+
 }

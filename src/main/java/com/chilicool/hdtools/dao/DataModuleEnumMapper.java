@@ -5,6 +5,7 @@ import com.chilicool.hdtools.domain.DataModuleEnumExample;
 import java.util.List;
 
 import com.chilicool.hdtools.model.ModuleEnumSimp;
+import com.chilicool.hdtools.model.RoomParamJson;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -98,4 +99,6 @@ public interface DataModuleEnumMapper {
     int updateByPrimaryKey(DataModuleEnum record);
 
     List<ModuleEnumSimp> getModuleEnumWithModuleId(Long moduleId);
+
+    List<RoomParamJson> getAllModuleEnumInfo(Long moduleId);
 }

@@ -74,6 +74,10 @@
     <script src="${basePath}/plugin/bootstrapvalidator/js/bootstrapvalidator.js"></script>
     <script src="${basePath}/plugin/bootstrapvalidator/js/language/zh_CN.js"></script>
 
+    <!-- plugin ickeck -->
+    <link href="${basePath}/plugin/icheck-1.x/skins/flat/blue.css" rel="stylesheet">
+    <script src="${basePath}/plugin/icheck-1.x/icheck.js"></script>
+
     <script src="${basePath}/js/busi/common/common.js"></script>
 
     <script type="text/javascript">

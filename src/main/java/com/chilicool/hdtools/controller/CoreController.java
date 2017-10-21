@@ -3,10 +3,7 @@ package com.chilicool.hdtools.controller;
 import com.chilicool.hdtools.common.BusiConst;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
-import com.chilicool.hdtools.service.ProjAreaInfoService;
-import com.chilicool.hdtools.service.ProjBaseInfoService;
-import com.chilicool.hdtools.service.ProjDeptInfoService;
-import com.chilicool.hdtools.service.ProjectService;
+import com.chilicool.hdtools.service.*;
 import com.chilicool.hdtools.service.core.version.VersionService;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -35,6 +32,8 @@ public class CoreController {
     private ProjDeptInfoService projDeptInfoService;
     @Autowired
     private ProjAreaInfoService projAreaInfoService;
+    @Autowired
+    private ProjRoomInfoService projRoomInfoService;
     @Autowired
     private ProjectService projectService;
 
@@ -165,11 +164,70 @@ public class CoreController {
         return resultBase;
     }
 
+    @RequestMapping(value = "/delAreaInfoByAreaId.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase delAreaInfoByAreaId(Long areaId) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.delAreaInfoByAreaId(areaId);
+        return resultBase;
+    }
+
     @RequestMapping(value = "/addRoomInfo.json", method = RequestMethod.POST)
     @ResponseBody
     public ResultBase addRoomInfo(RoomWithAction roomWithAction) {
         ResultBase resultBase = new ResultBase();
         projAreaInfoService.saveOrUpdateRoomInfo(roomWithAction);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/delRoomInfoByRoomId.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase delRoomInfoByRoomId(Long roomId) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.delRoomInfoByRoomId(roomId);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/editRoomCntOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editRoomCntOnTime(Long pk, Integer value) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.editRoomCntValOnTime(pk, value);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/editRoomAreaOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editRoomAreaOnTime(Long pk, Double value) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.editRoomAreaValOnTime(pk, value);
+        return resultBase;
+    }
+
+    /******************************* 开始房间数据页面服务 ************************************/
+    @RequestMapping(value = "/loadAllRoomSpecs.json", method = RequestMethod.GET)
+    @ResponseBody
+    public List<RoomParamJson> loadAllRoomSpecs() {
+        return projRoomInfoService.loadAllRoomSpecs();
+    }
+
+    @RequestMapping(value = "/loadCurrRoomDeail.json", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> loadCurrRoomDeail(Long roomId){
+        return projRoomInfoService.loadCurrRoomDeail(roomId);
+    }
+
+    @RequestMapping(value = "/loadCurrRoomTitle.json", method = RequestMethod.GET)
+    @ResponseBody
+    public RoomSumyModel loadCurrRoomTitle(Long areaId, Long roomId){
+        return projRoomInfoService.loadCurrRoomTitle(areaId, roomId);
+    }
+
+    @RequestMapping(value = "/submitRoomDataOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase submitRoomDataOnTime(Long roomId, String value){
+        ResultBase resultBase = new ResultBase();
+        projRoomInfoService.submitRoomDataOnTime(roomId, value);
         return resultBase;
     }
 }

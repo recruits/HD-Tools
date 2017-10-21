@@ -37,7 +37,7 @@
             </div>
             <label class="col-xs-1 col-xs-offset-2 control-label">项目阶段<span class="asterisk">*</span></label>
             <div class="col-xs-3">
-                <select class="selectpicker form-control" name="projPhase" value="${projPhase}" data-style="btn-default" readonly>
+                <select class="selectpicker form-control" name="projPhase" value="${projPhase}" data-style="btn-default" onchange="this.disabled=true">
                     <option value="0" >概念阶段</option>
                     <option value="1" >方案阶段</option>
                     <option value="2" >设计阶段</option>

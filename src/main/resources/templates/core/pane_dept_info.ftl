@@ -1,27 +1,4 @@
 <div class="tab-pane" id="deptDetailInfo">
-    <!--
-    <div class="row m-5">
-        <div class="col-xs-4">
-            <div class="form-group">
-                <select class="selectpicker form-control" data-style="btn-primary btn-xs">
-                    <option>公共空间</option>
-                    <option>急诊部</option>
-                    <option>门诊部</option>
-                    <option>住院部</option>
-                    <option>医技部</option>
-                    <option>行政部</option>
-                    <option>后勤支持</option>
-                    <option>机房</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-xs-8">
-            <div class="input-group-xs">
-                <button class="btn btn-primary btn-xs" onclick="addPart()">增加科室</button>&nbsp;
-            </div>
-        </div>
-    </div>
-    -->
     <div class="m-5">
         <div class="row m-b-5">
             <div class="col-xs-2 col-xs-offset-7">

@@ -16,6 +16,7 @@
     <script src="${basePath}/js/busi/core/pane_base_info.js" type="text/javascript"></script>
     <script src="${basePath}/js/busi/core/pane_sumy_info.js" type="text/javascript"></script>
     <script src="${basePath}/js/busi/core/pane_dept_info.js" type="text/javascript"></script>
+    <script src="${basePath}/js/busi/core/pane_room_info.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         // 项目编号
@@ -69,7 +70,7 @@
     </div>
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#baseInfo" data-toggle="tab"><strong>基本信息</strong></a></li>
+        <li class="active"><a href="#baseInfo" data-toggle="tab" id="baseDataInfo"><strong>基本信息</strong></a></li>
         <li><a href="#summaryInfo" data-toggle="tab" id="summaryInfoTab"><strong>汇总信息</strong></a></li>
         <li><a href="#deptDetailInfo" data-toggle="tab" id="deptDetailInfoTab"><strong>部门信息</strong></a></li>
         <li><a href="#roomDataInfo" data-toggle="tab" id="roomDataInfoTab"><strong>房间信息</strong></a></li>

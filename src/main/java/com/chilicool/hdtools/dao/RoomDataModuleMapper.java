@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.chilicool.hdtools.model.DataModuleSimp;
 import com.chilicool.hdtools.model.RoomDataSimp;
+import com.chilicool.hdtools.model.RoomParamJson;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -111,4 +112,11 @@ public interface RoomDataModuleMapper {
      * @return
      */
     List<RoomDataSimp> getAllRoomDataSimp();
+
+    /**
+     * 获取所有模块信息
+     *
+     * @return
+     */
+    List<RoomParamJson> getAllRoomModuleInfo();
 }

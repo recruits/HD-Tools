@@ -113,4 +113,12 @@ public interface AreaInfoMapper {
      * @return
      */
     List<PlanAreaModel> loadAllAreaSummaryModel(Map<String, Object> inParams);
+
+    /**
+     * 查询部门下的所有区域信息
+     *
+     * @param deptId
+     * @return
+     */
+    List<Long> loadAllAreaIdByDeptId(Long deptId);
 }

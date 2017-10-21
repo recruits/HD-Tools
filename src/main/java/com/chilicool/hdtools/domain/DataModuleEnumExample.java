@@ -655,6 +655,76 @@ public class DataModuleEnumExample {
             return (Criteria) this;
         }
 
+        public Criteria andSelectTypeIsNull() {
+            addCriterion("SELECT_TYPE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeIsNotNull() {
+            addCriterion("SELECT_TYPE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeEqualTo(String value) {
+            addCriterion("SELECT_TYPE =", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeNotEqualTo(String value) {
+            addCriterion("SELECT_TYPE <>", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeGreaterThan(String value) {
+            addCriterion("SELECT_TYPE >", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("SELECT_TYPE >=", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeLessThan(String value) {
+            addCriterion("SELECT_TYPE <", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeLessThanOrEqualTo(String value) {
+            addCriterion("SELECT_TYPE <=", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeLike(String value) {
+            addCriterion("SELECT_TYPE like", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeNotLike(String value) {
+            addCriterion("SELECT_TYPE not like", value, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeIn(List<String> values) {
+            addCriterion("SELECT_TYPE in", values, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeNotIn(List<String> values) {
+            addCriterion("SELECT_TYPE not in", values, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeBetween(String value1, String value2) {
+            addCriterion("SELECT_TYPE between", value1, value2, "selectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectTypeNotBetween(String value1, String value2) {
+            addCriterion("SELECT_TYPE not between", value1, value2, "selectType");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("CREATE_TIME is null");
             return (Criteria) this;

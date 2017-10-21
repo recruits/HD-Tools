@@ -50,9 +50,11 @@
         <table schema="" tableName="ROOM_MODULE_ENUM" domainObjectName="RoomModuleEnum"></table>
         <table schema="" tableName="VERSION_INFO" domainObjectName="VersionInfo"></table>
         <table schema="" tableName="PROJ_GROUP" domainObjectName="ProjGroup"></table>
+        <table schema="" tableName="MODULE_ENUM_PARAM" domainObjectName="ModuleEnumParam"></table>
+        <table schema="" tableName="ROOM_DATA_DETAIL" domainObjectName="RoomDataDetail"></table>
         -->
 
-        <table schema="" tableName="PROJ_BASE_INFO" domainObjectName="ProjBaseInfo"></table>
+        <table schema="" tableName="DATA_MODULE_ENUM"  domainObjectName="DataModuleEnum"></table>
 
     </context>
 </generatorConfiguration>

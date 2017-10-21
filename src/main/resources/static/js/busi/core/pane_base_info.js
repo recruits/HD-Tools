@@ -3,7 +3,7 @@ $(function () {
         saveBaseInfo();
     });
 
-    if(action === CONST_ACTION_ADD){
+    if (action === CONST_ACTION_ADD) {
         initCreateTime();
     }
 });
