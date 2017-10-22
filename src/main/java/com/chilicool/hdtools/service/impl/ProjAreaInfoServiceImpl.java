@@ -2,11 +2,13 @@ package com.chilicool.hdtools.service.impl;
 
 import com.chilicool.hdtools.common.BusiConst;
 import com.chilicool.hdtools.dao.AreaInfoMapper;
+import com.chilicool.hdtools.dao.AreaSummaryMapper;
 import com.chilicool.hdtools.dao.RoomInfoMapper;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.ProjAreaInfoService;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
+import com.chilicool.hdtools.service.busi.AreaSummaryService;
 import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
@@ -23,6 +25,10 @@ import java.util.*;
  */
 @Service
 public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
+    @Autowired
+    private AreaSummaryMapper areaSummaryMapper;
+    @Autowired
+    private AreaSummaryService areaSummaryService;
     @Autowired
     private AreaInfoMapper areaInfoMapper;
     @Autowired
@@ -74,6 +80,21 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     }
 
     @Override
+    public AreaSumyModel loadAreaSummary(Long deptId, Long deptTypeId) {
+        AreaSumyModel areaSumyModel = new AreaSumyModel();
+
+        // 加载部门分类信息
+        loadDeptTypeInfo(areaSumyModel, deptTypeId);
+        // 加载部门相关信息
+        loadDepartmentInfo(areaSumyModel, deptId);
+        // 加载区域汇总信息
+        loadAreaSummary(areaSumyModel, deptId);
+
+        return areaSumyModel;
+    }
+
+    @Override
+    @Deprecated
     public AreaSumyModel loadAreaTitle(Long deptId, Long deptTypeId) {
         AreaSumyModel areaSumyModel = new AreaSumyModel();
         // 加载部门分类信息
@@ -96,9 +117,9 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         String action = areaWithAction.getAction();
         AreaInfo areaInfo = new AreaInfo();
         BeanUtils.copyProperties(areaWithAction, areaInfo);
-        if(action.equals(BusiConst.Action.ADD)){
+        if (action.equals(BusiConst.Action.ADD)) {
             saveOrUpdateAreaInfo(areaInfo, true);
-        } else if(action.equals(BusiConst.Action.EDIT)){
+        } else if (action.equals(BusiConst.Action.EDIT)) {
             saveOrUpdateAreaInfo(areaInfo, false);
         }
     }
@@ -123,10 +144,85 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
 
         // 取出区域所属部门设计值内容
-        Double areaSummary = getAllAreaSummaryByDeptId(areaInfo.getDeptId());
+        Double areaSummaryVal = getAllAreaSummaryByDeptId(areaInfo.getDeptId());
+
+        // 更新区域汇总信息
+        AreaSummary areaSummary = initOrUpdateAreaSumaryInfo(areaInfo, areaSummaryVal);
 
         // 更新区域所属部门设计值信息
-        projDeptInfoService.updateDesignAreaValForDeptOnTime(areaInfo.getDeptId(), areaInfo.getDeptTypeId(), areaSummary);
+        Double areaTotalVal = areaSummary.getDesignAreaTotal();
+        projDeptInfoService.updateDesignAreaValForDeptOnTime(areaInfo.getDeptId(), areaInfo.getDeptTypeId(), areaTotalVal);
+    }
+
+    private AreaSummary initOrUpdateAreaSumaryInfo(AreaInfo areaInfo, Double areaSummaryVal) {
+        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(areaInfo.getDeptId());
+
+        boolean areaSummaryExist = (null != areaSummary && null != areaSummary.getDeptId() && 0 != areaSummary.getDeptId());
+        if (!areaSummaryExist) {
+            areaSummary = genearteAreaSummaryInfo(areaInfo, areaSummaryVal);
+
+            areaSummaryMapper.insert(areaSummary);
+        } else {
+            Double designAreaRatio = areaSummary.getDesignAreaRatio();
+            if (null == designAreaRatio) {
+                designAreaRatio = BusiConst.DobuleVal.oneVal;
+                areaSummary.setDesignAreaRatio(designAreaRatio);
+            }
+            // 更新设计面积小计、总计
+            areaSummary.setDesignAreaSummary(areaSummaryVal);
+            areaSummary.setDesignAreaTotal(areaSummaryVal * designAreaRatio);
+
+            // 更新规划面积小计、总计
+            autoCaculateAreaSummaryPlanAreaInfo(areaSummary);
+
+            areaSummaryMapper.updateByPrimaryKeySelective(areaSummary);
+        }
+
+        return areaSummary;
+    }
+
+    // 初始化区域汇总信息
+    private AreaSummary genearteAreaSummaryInfo(AreaInfo areaInfo, Double areaSummaryVal) {
+        AreaSummary areaSummary = new AreaSummary();
+        BeanUtils.copyProperties(areaInfo, areaSummary);
+        // 重置编号
+        areaSummary.setId(null);
+        // 设置创建时间
+        Date currTime = new Date();
+        areaSummary.setCreateTime(currTime);
+        areaSummary.setUpdateTime(currTime);
+        // 设置面积系数
+        areaSummary.setPlanAreaRatio(BusiConst.DobuleVal.oneVal);
+        areaSummary.setDesignAreaRatio(BusiConst.DobuleVal.oneVal);
+        // 设置设计面积小计、总计
+        areaSummary.setDesignAreaSummary(areaSummaryVal);
+        areaSummary.setDesignAreaTotal(areaSummaryVal);
+        // 设置规划面积小计、总计
+        autoCaculateAreaSummaryPlanAreaInfo(areaSummary);
+        return areaSummary;
+    }
+
+    // 自动计算并且更新规则面积值
+    private void autoCaculateAreaSummaryPlanAreaInfo(AreaSummary areaSummary) {
+        Department department = departmentService.loadDepartmentByPK(areaSummary.getDeptId());
+        Double planAreaTotal = department.getPlanArea();
+        areaSummary.setPlanAreaTotal(planAreaTotal);
+
+        Double planAreaRatio = areaSummary.getPlanAreaRatio();
+        if (null == planAreaRatio) {
+            planAreaRatio = BusiConst.DobuleVal.oneVal;
+            areaSummary.setPlanAreaRatio(planAreaRatio);
+        }
+
+        if (!BusiConst.DobuleVal.zeroVal.equals(planAreaRatio)) {
+            areaSummary.setPlanAreaSummary(planAreaTotal / planAreaRatio);
+        }
+    }
+
+    // 使用部门编号判断区域汇总信息是否存在
+    private boolean checkAreaSummaryExistByDeptId(Long deptId) {
+        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(deptId);
+        return null != areaSummary && null != areaSummary.getDeptId() && 0 != areaSummary.getDeptId();
     }
 
     // 追加区域信息
@@ -139,9 +235,9 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         String action = roomWithAction.getAction();
         RoomInfo roomInfo = new RoomInfo();
         BeanUtils.copyProperties(roomWithAction, roomInfo);
-        if(action.equals(BusiConst.Action.ADD)){
+        if (action.equals(BusiConst.Action.ADD)) {
             saveOrUpdateRoomInfo(roomInfo, true);
-        } else if(action.equals(BusiConst.Action.EDIT)){
+        } else if (action.equals(BusiConst.Action.EDIT)) {
             saveOrUpdateRoomInfo(roomInfo, false);
         }
     }
@@ -172,6 +268,57 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         roomInfo.setAreaTotal(roomArea);
         autoCaculateAreaSummary(roomInfo);
         saveOrUpdateRoomInfo(roomInfo, false);
+    }
+
+    @Override
+    public void editDeptPlanAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
+        if (null != areaRatio) {
+            AreaSummary areaSummary = areaSummaryMapper.selectByPrimaryKey(areaSumyId);
+            if (null != areaSummary) {
+                areaSummary.setPlanAreaRatio(areaRatio);
+
+                Double areaTotalVal = areaSummary.getPlanAreaTotal();
+                if (null == areaTotalVal) {
+                    Department department = departmentService.loadDepartmentByPK(areaSummary.getDeptId());
+                    areaTotalVal = department.getPlanArea();
+                    areaSummary.setPlanAreaTotal(areaTotalVal);
+                }
+
+                if (!BusiConst.DobuleVal.zeroVal.equals(areaRatio)) {
+                    areaSummary.setPlanAreaSummary(areaTotalVal / areaRatio);
+                }
+                // 自上而下更新，到此即止
+                updateAreaSummaryByPk(areaSummary);
+            }
+        }
+    }
+
+    @Override
+    public void editDeptDesignAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
+        if (null != areaRatio) {
+            AreaSummary areaSummary = areaSummaryMapper.selectByPrimaryKey(areaSumyId);
+            if (null != areaSummary) {
+                areaSummary.setDesignAreaRatio(areaRatio);
+
+                Double areaSummaryVal = areaSummary.getDesignAreaSummary();
+                if (null == areaSummaryVal) {
+                    areaSummaryVal = BusiConst.DobuleVal.zeroVal;
+                    areaSummary.setDesignAreaSummary(areaSummaryVal);
+                }
+                areaSummary.setDesignAreaTotal(areaSummaryVal * areaRatio);
+
+                // 更新区域汇总设计值信息
+                updateAreaSummaryByPk(areaSummary);
+                // 更新区域所属部门设计值信息
+                Double areaTotalVal = areaSummary.getDesignAreaTotal();
+                projDeptInfoService.updateDesignAreaValForDeptOnTime(areaSummary.getDeptId(),
+                        areaSummary.getDeptTypeId(), areaTotalVal);
+            }
+        }
+    }
+
+    private void updateAreaSummaryByPk(AreaSummary areaSummary) {
+        areaSummaryMapper.updateByPrimaryKeySelective(areaSummary);
     }
 
     private void saveOrUpdateRoomInfo(RoomInfo roomInfo, boolean saveFlag) {
@@ -207,7 +354,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
     }
 
-    private void updateAreaSummaryVal(Long areaId, Long deptId, Long deptTypeId){
+    private void updateAreaSummaryVal(Long areaId, Long deptId, Long deptTypeId) {
         Double areaSummary = getAllAreaSummaryByAreaId(areaId);
 
         AreaInfo areaInfo = new AreaInfo();
@@ -219,6 +366,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         saveOrUpdateAreaInfo(areaInfo, false);
     }
 
+    // 加载部门分类信息
     private void loadDeptTypeInfo(AreaSumyModel areaSumyModel, Long deptTypeId) {
         DeptType deptType = deptTypeService.loadDeptTypeByPK(deptTypeId);
         areaSumyModel.setDeptTypeCode(deptType.getDeptCode());
@@ -226,24 +374,30 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         areaSumyModel.setProjId(deptType.getProjId());
     }
 
+    // 加载部门信息
     private void loadDepartmentInfo(AreaSumyModel areaSumyModel, Long deptId) {
         Department department = departmentService.loadDepartmentByPK(deptId);
         areaSumyModel.setDeptCode(department.getDeptCode());
         areaSumyModel.setDeptName(department.getDeptName());
-        areaSumyModel.setPlanArea(department.getPlanArea());
+        // areaSumyModel.setPlanArea(department.getPlanArea());
     }
 
+    // 加载部门汇总信息【为了查面积系数】
+    @Deprecated
     private void loadDeptSumyInfo(AreaSumyModel areaSumyModel) {
         DeptSummary deptSummary = deptSumyService.loadDeptSummaryByPK(areaSumyModel.getProjId());
-        areaSumyModel.setAreaRatio(deptSummary.getPlanAreaRatio());
+        // areaSumyModel.setAreaRatio(deptSummary.getPlanAreaRatio());
     }
 
+    // 加载区域汇总信息
     private void loadAreaSummary(AreaSumyModel areaSumyModel, Long deptId) {
-        Double areaSummary = getAllAreaSummaryByDeptId(deptId);
-        areaSumyModel.setDesignArea(areaSummary);
+        // Double areaSummary = getAllAreaSummaryByDeptId(deptId);
+        // areaSumyModel.setDesignArea(areaSummary);
+        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(deptId);
+        BeanUtils.copyProperties(areaSummary, areaSumyModel);
     }
 
-    private Double getAllAreaSummaryByDeptId(Long deptId){
+    private Double getAllAreaSummaryByDeptId(Long deptId) {
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("deptId", deptId);
         inParams.put("level", 1);
@@ -251,7 +405,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         return planAreaHolder.getPlanAreaTotal();
     }
 
-    private Double getAllAreaSummaryByAreaId(Long areaId){
+    private Double getAllAreaSummaryByAreaId(Long areaId) {
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("areaId", areaId);
         inParams.put("level", 2);
@@ -259,7 +413,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         return planAreaHolder.getPlanAreaTotal();
     }
 
-    private PlanAreaHolder buildPlanAreaHolder(Map<String, Object> inParams){
+    private PlanAreaHolder buildPlanAreaHolder(Map<String, Object> inParams) {
         List<PlanAreaModel> planAreaModels = areaInfoMapper.loadAllAreaSummaryModel(inParams);
         return new PlanAreaHolder(planAreaModels);
     }

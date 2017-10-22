@@ -27,6 +27,8 @@
         var currDeptSumyId = 0;
         // 部门信息编号
         var currDeptId = 0;
+        // 部门汇总编号
+        var currAreaSumyId = 0;
         // 区域信息编号
         var currAreaId = 0;
         // 房间信息编号

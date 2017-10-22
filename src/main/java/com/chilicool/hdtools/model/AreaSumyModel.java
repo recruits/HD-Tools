@@ -1,17 +1,16 @@
 package com.chilicool.hdtools.model;
 
+import com.chilicool.hdtools.domain.AreaSummary;
+
 /**
  * Created by chilicool on 2017/10/15.
  */
-public class AreaSumyModel {
+public class AreaSumyModel extends AreaSummary{
     private Long projId;
     private String deptTypeCode;
     private String deptTypeName;
     private String deptCode;
     private String deptName;
-    private Double planArea;
-    private Double designArea;
-    private Double areaRatio;
 
     public Long getProjId() {
         return projId;
@@ -51,29 +50,5 @@ public class AreaSumyModel {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
-    }
-
-    public Double getPlanArea() {
-        return planArea;
-    }
-
-    public void setPlanArea(Double planArea) {
-        this.planArea = planArea;
-    }
-
-    public Double getDesignArea() {
-        return designArea;
-    }
-
-    public void setDesignArea(Double designArea) {
-        this.designArea = designArea;
-    }
-
-    public Double getAreaRatio() {
-        return areaRatio;
-    }
-
-    public void setAreaRatio(Double areaRatio) {
-        this.areaRatio = areaRatio;
     }
 }

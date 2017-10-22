@@ -1,5 +1,7 @@
 package com.chilicool.hdtools.service.core.deptinfo;
 
+import com.chilicool.hdtools.domain.AreaInfo;
+import com.chilicool.hdtools.domain.AreaSummary;
 import com.chilicool.hdtools.domain.DeptSummary;
 import com.chilicool.hdtools.domain.DeptType;
 

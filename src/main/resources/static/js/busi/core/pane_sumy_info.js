@@ -94,12 +94,12 @@ function renderSumyInfoPage(data) {
 function freshSumyTitle(data) {
     if (data) {
         currDeptSumyId = data.id;
-        $('#summaryInfo input[name="sumyPlanAreaTotal"]').val(data.planAreaTotal);
-        $('#summaryInfo input[name="sumyDesignAreaTotal"]').val(data.designAreaTotal);
+        $('#summaryInfo input[name="sumyPlanAreaTotal"]').val(fix2(data.planAreaTotal));
+        $('#summaryInfo input[name="sumyDesignAreaTotal"]').val(fix2(data.designAreaTotal));
         // $('input[name="sumyPlanAreaPersent"]').val(data.planAreaPersent+"%");
         // $('input[name="sumyDesignAreaPersent"]').val(data.designAreaPersent+"%");
-        $('#summaryInfo input[name="sumyPlanAreaSummary"]').val(data.planAreaSummary);
-        $('#summaryInfo input[name="sumyDesignAreaSummary"]').val(data.designAreaSummary);
+        $('#summaryInfo input[name="sumyPlanAreaSummary"]').val(fix2(data.planAreaSummary));
+        $('#summaryInfo input[name="sumyDesignAreaSummary"]').val(fix2(data.designAreaSummary));
         $('#summaryInfo input[name="sumyPlanAreaRatio"]').val(data.planAreaRatio || "");
         $('#summaryInfo input[name="sumyDesignAreaRatio"]').val(data.designAreaRatio || "");
         $('#summaryInfo input[name="sumyNote"]').val(data.note || "");
@@ -148,7 +148,7 @@ function clearDeptModalData() {
     $('#addSubSumyInfoForm input[name="planArea"]').val('');
 }
 
-// 增加部门分类规划面积可编辑操作
+// 增加部门规划面积可编辑操作
 function buildEditInfoForDeptPlanArea(currVal, deptId) {
     var postEditValForDeptUrl = basePath + "/core/editPlanAreaValForDeptOnTime.json";
     return '<a href="#" name="planAreaForDeptEdit-' + deptId + '" data-type="text" data-pk="'

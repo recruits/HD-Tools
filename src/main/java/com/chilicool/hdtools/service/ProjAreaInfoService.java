@@ -20,12 +20,22 @@ public interface ProjAreaInfoService {
     public List<AreaInfoModel> loadAllAreaInfo(Long deptId);
 
     /**
+     * 加载区域汇总信息
+     *
+     * @param deptId
+     * @param deptTypeId
+     * @return
+     */
+    public AreaSumyModel loadAreaSummary(Long deptId, Long deptTypeId);
+
+    /**
      * 加载区域关联信息
      *
      * @param deptId
      * @param deptTypeId
      * @return
      */
+    @Deprecated
     public AreaSumyModel loadAreaTitle(Long deptId, Long deptTypeId);
 
     /**
@@ -75,4 +85,20 @@ public interface ProjAreaInfoService {
      * @param roomArea
      */
     public void editRoomAreaValOnTime(Long roomId, Double roomArea);
+
+    /**
+     * 实时更新[区域汇总]规划面积系数
+     *
+     * @param areaSumyId
+     * @param areaRatio
+     */
+    public void editDeptPlanAreaRatioValOnTime(Long areaSumyId, Double areaRatio);
+
+    /**
+     * 实时更新[区域汇总]设计面积系数
+     *
+     * @param areaSumyId
+     * @param areaRatio
+     */
+    public void editDeptDesignAreaRatioValOnTime(Long areaSumyId, Double areaRatio);
 }

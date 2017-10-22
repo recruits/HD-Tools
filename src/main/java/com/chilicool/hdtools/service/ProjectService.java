@@ -45,6 +45,7 @@ public interface ProjectService {
      * @param action add:执行初始化工作
      * @return
      */
+    @Deprecated
     public Map<String, Object> initProject(String action, Long projId);
 
     /**

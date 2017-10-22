@@ -1,52 +1,64 @@
 <div class="tab-pane" id="deptDetailInfo">
     <div class="m-5">
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >部门分类编码：</span>
+                    <span class="input-group-addon" >上级部门编码：</span>
                     <input type="text" name="deptTypeCode" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
                 </div>
             </div>
             <div class="col-xs-3">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >部门分类名称：</span>
+                    <span class="input-group-addon" >上级部门名称：</span>
                     <input type="text" name="deptTypeName" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
                 </div>
             </div>
         </div>
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >部门信息编码：</span>
-                    <input type="text" name="deptCode" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[P]面积总计：</span>
+                    <input type="text" name="deptPlanAreaTotal" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
             <div class="col-xs-3">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >部门信息名称：</span>
-                    <input type="text" name="deptName" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[D]面积总计：</span>
+                    <input type="text" name="deptDesignAreaTotal" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
         </div>
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >使用面积系数：</span>
-                    <input type="text" name="areaRatio" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[P]面积小计：</span>
+                    <input type="text" name="deptPlanAreaSummary" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
             <div class="col-xs-3">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >规划面积总计：</span>
-                    <input type="text" name="planArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[D]面积小计：</span>
+                    <input type="text" name="deptDesignAreaSummary" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-3 col-xs-offset-9">
+        <div class="row m-b-5">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" >设计面积总计：</span>
-                    <input type="text" name="designArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[P]面积系数：</span>
+                    <input type="number" name="deptPlanAreaRatio" min="0" step="0.1" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-xs" type="button" id="deptPlanAreaRatioModBtn">更新</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="input-group input-group-xs">
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;[D]面积系数：</span>
+                    <input type="number" name="deptDesignAreaRatio" min="0" step="0.1" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-xs" type="button" id="deptDesignAreaRatioModBtn">更新</button>
+                    </span>
                 </div>
             </div>
         </div>

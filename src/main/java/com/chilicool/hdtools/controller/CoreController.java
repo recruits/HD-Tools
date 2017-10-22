@@ -235,10 +235,17 @@ public class CoreController {
         return projAreaInfoService.loadAllAreaInfo(deptId);
     }
 
-    @RequestMapping(value = "/loadAreaTitle.json", method = RequestMethod.GET)
+    /**
+     * 加载区域汇总信息
+     *
+     * @param deptId
+     * @param deptTypeId
+     * @return
+     */
+    @RequestMapping(value = "/loadAreaSummary.json", method = RequestMethod.GET)
     @ResponseBody
-    public AreaSumyModel loadAreaTitle(Long deptId, Long deptTypeId) {
-        return projAreaInfoService.loadAreaTitle(deptId, deptTypeId);
+    public AreaSumyModel loadAreaSummary(Long deptId, Long deptTypeId) {
+        return projAreaInfoService.loadAreaSummary(deptId, deptTypeId);
     }
 
     @RequestMapping(value = "/addAreaInfo.json", method = RequestMethod.POST)
@@ -286,6 +293,34 @@ public class CoreController {
     public ResultBase editRoomAreaOnTime(Long pk, Double value) {
         ResultBase resultBase = new ResultBase();
         projAreaInfoService.editRoomAreaValOnTime(pk, value);
+        return resultBase;
+    }
+
+    /**
+     * 实时更新[区域汇总]规划面积系数
+     * @param areaSumyId
+     * @param areaRatio
+     * @return
+     */
+    @RequestMapping(value = "/editDeptPlanAreaRatioValOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editDeptPlanAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.editDeptPlanAreaRatioValOnTime(areaSumyId, areaRatio);
+        return resultBase;
+    }
+
+    /**
+     * 实时更新[区域汇总]设计面积系数
+     * @param areaSumyId
+     * @param areaRatio
+     * @return
+     */
+    @RequestMapping(value = "/editDeptDesignAreaRatioValOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editDeptDesignAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
+        ResultBase resultBase = new ResultBase();
+        projAreaInfoService.editDeptDesignAreaRatioValOnTime(areaSumyId, areaRatio);
         return resultBase;
     }
 

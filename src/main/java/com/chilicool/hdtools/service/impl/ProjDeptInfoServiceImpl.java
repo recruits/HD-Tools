@@ -1,16 +1,14 @@
 package com.chilicool.hdtools.service.impl;
 
 import com.chilicool.hdtools.common.BusiConst;
-import com.chilicool.hdtools.dao.AreaInfoMapper;
-import com.chilicool.hdtools.dao.DepartmentMapper;
-import com.chilicool.hdtools.dao.DeptSummaryMapper;
-import com.chilicool.hdtools.dao.DeptTypeMapper;
+import com.chilicool.hdtools.dao.*;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.DeptWithAction;
 import com.chilicool.hdtools.model.PlanAreaHolder;
 import com.chilicool.hdtools.model.PlanAreaModel;
 import com.chilicool.hdtools.model.SumyInfoModel;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
+import com.chilicool.hdtools.service.busi.AreaSummaryService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
@@ -27,6 +25,8 @@ import java.util.*;
  */
 @Service
 public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
+    @Autowired
+    private AreaSummaryService areaSummaryService;
     @Autowired
     private DeptTypeMapper deptTypeMapper;
     @Autowired
@@ -288,11 +288,30 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
             updateDeptInfoByPK(department);
         }
 
+        // 部门规划面积更新同步更新到区域汇总信息的规划面积
+        updateAreaSummaryPlanAreaTotalOnTime(department);
+
         // 获取部门分类编号
         Long deptTypeId = getDeptTypeIdByDeptId(department.getId());
 
         // 更新部门分类规划面积
         return updatePlanAreaValWithRule(deptTypeId);
+    }
+
+    // 更新区域汇总信息
+    private void updateAreaSummaryPlanAreaTotalOnTime(Department department) {
+        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(department.getId());
+        if (null != areaSummary && null != areaSummary.getDeptId() && areaSummary.getDeptId() != 0) {
+            Double planAreaTotal = department.getPlanArea();
+            areaSummary.setPlanAreaTotal(planAreaTotal);
+
+            Double planAreaRatio = areaSummary.getPlanAreaRatio();
+            if (!BusiConst.DobuleVal.zeroVal.equals(planAreaRatio)) {
+                areaSummary.setPlanAreaSummary(planAreaTotal / planAreaRatio);
+            }
+
+            areaSummaryService.updateAreaSummaryByPK(areaSummary);
+        }
     }
 
     /**

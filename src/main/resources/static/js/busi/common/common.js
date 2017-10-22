@@ -168,3 +168,10 @@ function isEqual(obj1, obj2) {
     }
     return false;
 };
+
+function fix2(val) {
+    if (val) {
+        return Math.round(val * 100) / 100;
+    }
+    return 0;
+}
