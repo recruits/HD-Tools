@@ -98,7 +98,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         BeanUtils.copyProperties(areaWithAction, areaInfo);
         if(action.equals(BusiConst.Action.ADD)){
             saveOrUpdateAreaInfo(areaInfo, true);
-        } else if(action.equals(BusiConst.Action.MOD)){
+        } else if(action.equals(BusiConst.Action.EDIT)){
             saveOrUpdateAreaInfo(areaInfo, false);
         }
     }
@@ -141,7 +141,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         BeanUtils.copyProperties(roomWithAction, roomInfo);
         if(action.equals(BusiConst.Action.ADD)){
             saveOrUpdateRoomInfo(roomInfo, true);
-        } else if(action.equals(BusiConst.Action.MOD)){
+        } else if(action.equals(BusiConst.Action.EDIT)){
             saveOrUpdateRoomInfo(roomInfo, false);
         }
     }

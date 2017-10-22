@@ -3,13 +3,13 @@
         <div class="row m-b-5">
             <div class="col-xs-2 col-xs-offset-7">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[规划]建筑面积总计：</span>
+                    <span class="input-group-addon" id="sizing-addon1">[P]面积总计：</span>
                     <input type="text" name="sumyPlanArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
                 </div>
             </div>
             <div class="col-xs-2 col-xs-offset-1">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[设计]建筑面积总计：</span>
+                    <span class="input-group-addon" id="sizing-addon1">[D]面积总计：</span>
                     <input type="text" name="sumyDesignArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
                 </div>
             </div>
@@ -17,13 +17,13 @@
         <div class="row m-b-5">
             <div class="col-xs-2 col-xs-offset-7">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[规划]建筑面积占比：</span>
+                    <span class="input-group-addon" id="sizing-addon1">[P]面积占比：</span>
                     <input type="text" name="sumyPlanAreaPersent" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
                 </div>
             </div>
             <div class="col-xs-2 col-xs-offset-1">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[设计]建筑面积占比：</span>
+                    <span class="input-group-addon" id="sizing-addon1">[D]面积占比：</span>
                     <input type="text" name="sumyDesignAreaPersent" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">规划面积<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="text" name="planArea" class="form-control" placeholder="请输入规划面积" required value=""/>
+                                <input type="number" name="planArea" class="form-control" placeholder="请输入规划面积" required value=""/>
                             </div>
                         </div>
                     </form>

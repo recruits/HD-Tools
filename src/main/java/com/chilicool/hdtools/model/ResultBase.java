@@ -41,6 +41,7 @@ public class ResultBase {
     private String retCode;
     private String retMsg;
     private String retExtInfo;
+    private Object retExtObj;
 
     public String getRetCode() {
         return retCode;
@@ -64,5 +65,13 @@ public class ResultBase {
 
     public void setRetExtInfo(String retExtInfo) {
         this.retExtInfo = retExtInfo;
+    }
+
+    public Object getRetExtObj() {
+        return retExtObj;
+    }
+
+    public void setRetExtObj(Object retExtObj) {
+        this.retExtObj = retExtObj;
     }
 }

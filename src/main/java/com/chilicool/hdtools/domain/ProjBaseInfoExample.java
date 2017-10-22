@@ -1125,6 +1125,76 @@ public class ProjBaseInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andVerInfoIsNull() {
+            addCriterion("VER_INFO is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoIsNotNull() {
+            addCriterion("VER_INFO is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoEqualTo(String value) {
+            addCriterion("VER_INFO =", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoNotEqualTo(String value) {
+            addCriterion("VER_INFO <>", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoGreaterThan(String value) {
+            addCriterion("VER_INFO >", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoGreaterThanOrEqualTo(String value) {
+            addCriterion("VER_INFO >=", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoLessThan(String value) {
+            addCriterion("VER_INFO <", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoLessThanOrEqualTo(String value) {
+            addCriterion("VER_INFO <=", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoLike(String value) {
+            addCriterion("VER_INFO like", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoNotLike(String value) {
+            addCriterion("VER_INFO not like", value, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoIn(List<String> values) {
+            addCriterion("VER_INFO in", values, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoNotIn(List<String> values) {
+            addCriterion("VER_INFO not in", values, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoBetween(String value1, String value2) {
+            addCriterion("VER_INFO between", value1, value2, "verInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVerInfoNotBetween(String value1, String value2) {
+            addCriterion("VER_INFO not between", value1, value2, "verInfo");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("CREATE_TIME is null");
             return (Criteria) this;

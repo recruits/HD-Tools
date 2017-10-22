@@ -12,6 +12,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by chilicool on 2017/10/1.
  */
@@ -21,6 +24,26 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
     private ProjGroupMapper projGroupMapper;
     @Autowired
     private ProjBaseInfoMapper projBaseInfoMapper;
+
+    @Override
+    public ProjBaseInfo initProjForAdd(String projPhase) {
+        ProjBaseInfo projBaseInfo = new ProjBaseInfo();
+        projBaseInfo.setVerInfo("V01");
+        projBaseInfo.setCreateTime(new Date());
+        projBaseInfo.setId(-1L);
+        projBaseInfo.setProjPhase(projPhase);
+        return projBaseInfo;
+    }
+
+    @Override
+    public List<ProjBaseInfo> loadAllProjInfo() {
+        return projBaseInfoMapper.loadAllProjInfo();
+    }
+
+    @Override
+    public ProjBaseInfo loadProjBaseInfoById(Long projId) {
+        return projBaseInfoMapper.selectByPrimaryKey(projId);
+    }
 
     @Override
     public ProjBaseInfoModel saveProjInfo(ProjBaseInfoModel projBaseInfoModel) {
@@ -41,10 +64,10 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
 
     @Override
     public void saveProjBaseInfo(ProjBaseInfo projBaseInfo) {
-        String projId = projBaseInfo.getNote();
-        if (StringUtils.isNotEmpty(projId)) {
-            projBaseInfo.setId(Long.valueOf(projId));
-        }
+        Long projId = projBaseInfo.getId();
+//        if (StringUtils.isNotEmpty(projId)) {
+//            projBaseInfo.setId(Long.valueOf(projId));
+//        }
 
         if (ifBaseInfoExist(projBaseInfo.getId())) {
             projBaseInfoMapper.updateByPrimaryKeySelective(projBaseInfo);
@@ -61,10 +84,18 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
     }
 
     @Override
-    public Long initProjBaseInfo(Long groupId, Long verId) {
+    public Long initProjBaseInfo(Long groupId, Long verId, String verInfo) {
         ProjBaseInfo projBaseInfo = new ProjBaseInfo();
         projBaseInfo.setVerId(verId);
+        projBaseInfo.setVerInfo(verInfo);
         projBaseInfo.setGroupId(groupId);
+        projBaseInfoMapper.insert(projBaseInfo);
+        return projBaseInfo.getId();
+    }
+
+    @Override
+    public Long initProjBaseInfoWithParams(ProjBaseInfo projBaseInfo) {
+        projBaseInfo.setId(null);
         projBaseInfoMapper.insert(projBaseInfo);
         return projBaseInfo.getId();
     }

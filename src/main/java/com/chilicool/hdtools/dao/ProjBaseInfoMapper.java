@@ -95,4 +95,10 @@ public interface ProjBaseInfoMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ProjBaseInfo record);
+
+    /**
+     * 加载所有项目信息
+     * @return
+     */
+    List<ProjBaseInfo> loadAllProjInfo();
 }

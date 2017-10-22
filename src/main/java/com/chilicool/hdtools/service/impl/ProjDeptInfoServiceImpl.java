@@ -5,10 +5,7 @@ import com.chilicool.hdtools.dao.AreaInfoMapper;
 import com.chilicool.hdtools.dao.DepartmentMapper;
 import com.chilicool.hdtools.dao.DeptSummaryMapper;
 import com.chilicool.hdtools.dao.DeptTypeMapper;
-import com.chilicool.hdtools.domain.Department;
-import com.chilicool.hdtools.domain.DeptSummary;
-import com.chilicool.hdtools.domain.DeptSummaryExample;
-import com.chilicool.hdtools.domain.DeptType;
+import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.DeptWithAction;
 import com.chilicool.hdtools.model.PlanAreaHolder;
 import com.chilicool.hdtools.model.PlanAreaModel;
@@ -42,6 +39,14 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
     private DeptSumyService deptSumyService;
     @Autowired
     private DeptDelService deptDelService;
+
+    @Override
+    public boolean ifDeptInfoExist(Long projId) {
+        DeptTypeExample example = new DeptTypeExample();
+        example.createCriteria().andProjIdEqualTo(projId);
+        List<DeptType> deptTypes = deptTypeMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(deptTypes) && deptTypes.size() > 0;
+    }
 
     @Override
     public void initProjDeptType(Long projId) {
@@ -129,7 +134,7 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
         BeanUtils.copyProperties(departmentWithAction, department);
         if(action.equals(BusiConst.Action.ADD)){
             saveOrUpdatePlanAreaValForDeptOnTime(department, true);
-        } else if(action.equals(BusiConst.Action.MOD)){
+        } else if(action.equals(BusiConst.Action.EDIT)){
             saveOrUpdatePlanAreaValForDeptOnTime(department, false);
         }
     }

@@ -28,18 +28,21 @@
     <hr>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered" id="table2">
+        <table class="table table-striped table-bordered" id="proj_info_datatable">
             <thead>
-            <tr>
-                <th>项目编号</th>
-                <th>项目名称</th>
-                <th>项目别名</th>
-                <th>项目区域</th>
-                <th>版本信息</th>
-                <th>操作</th>
-            </tr>
+                <tr>
+                    <th>项目编号</th>
+                    <th>项目名称</th>
+                    <th>项目区域</th>
+                    <th>项目类型</th>
+                    <th>项目阶段</th>
+                    <th>创建时间</th>
+                    <th>版本信息</th>
+                    <th>操作</th>
+                </tr>
             </thead>
-            <tbody>
+            <#--
+            <tbody id="proj_info_tree_grid">
             <tr class="odd gradeX">
                 <td>410000201709081001</td>
                 <td>聚丰集团重庆五院A1A2项目 -康复医院</td>
@@ -57,8 +60,9 @@
                 <td><a class="fa fa-edit" href="${basePath}/core/editItem.html?action=edit&itemName=测试项目" target="mainFrame" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a><a class="fa fa-trash-o" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a></td>
             </tr>
             </tbody>
+            -->
         </table>
-    </div><!-- table-responsive -->
+    </div>
 </div>
 </body>
 </html>

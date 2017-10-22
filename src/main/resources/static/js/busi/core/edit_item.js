@@ -3,10 +3,11 @@ $(function(){
 });
 
 $(function() {
-    $('.tree').treegrid({
-        expanderExpandedClass: 'fa fa-minus',
-        expanderCollapsedClass: 'fa fa-plus'
-    });
+    // Deprecated
+    // $('.tree').treegrid({
+    //     expanderExpandedClass: 'fa fa-minus',
+    //     expanderCollapsedClass: 'fa fa-plus'
+    // });
 
     // $('.tree').treegrid('collapseAll');
 
@@ -27,7 +28,7 @@ $(function() {
     //     }
     // });
 });
-
+// Deprecated
 function addPart(){
     var total = $('#baseTab tr').length;
     var subSize = $('#baseTab tr[class^="treegrid-parent"]').length;
@@ -41,25 +42,26 @@ function addPart(){
 
 // 项目阶段关联版本号
 $(function () {
-    $('select[name=proPhase]').bind('change', function () {
-        var selVal = $(this).children('option:selected').val();
-        var verInfo = 'V'+(parseInt(selVal)-1)+'.01';
-        $('[name=versionInfo]:text').val(verInfo);
-    });
-
-    $('select[name=proPhase]').change();
+    // Deprecated
+    // $('select[name=proPhase]').bind('change', function () {
+    //     var selVal = $(this).children('option:selected').val();
+    //     var verInfo = 'V'+(parseInt(selVal)-1)+'.01';
+    //     $('[name=versionInfo]:text').val(verInfo);
+    // });
+    // Deprecated
+    // $('select[name=proPhase]').change();
 });
 
 // 刷新导航栏
 $(function () {
     // 默认动作
-    refreshNavInfos(0, '');
+    //refreshNavInfos(0, '');
 
     // 保存动作
-    $('#saveItemInfoBtn').bind('click',function () {
-        itemName = $('[name=itemName]:input').val();
-        refreshNavInfos(0, itemName);
-    });
+    // $('#saveItemInfoBtn').bind('click',function () {
+    //     projName = $('[name=projName]:input').val();
+    //     refreshNavInfos(0, projName);
+    // });
 });
 // 刷新导航栏
 function refreshNavInfos(level, name) {
@@ -73,12 +75,12 @@ function refreshNavInfos(level, name) {
     if(navNum == 0){
         // 编辑项目,根据级别重建一级导航
         if(action == 'edit'){
-            navObj.append($('<li><i class="fa fa-star"></i>'+itemName+'</li>'));
+            navObj.append($('<li><i class="fa fa-star"></i>'+projName+'</li>'));
         } else {
             // 新增项目,取项目名称建导航;名称不存在,不建;
-            itemName = $('[name=itemName]:input').val();
-            if(itemName){
-                navObj.append($('<li><i class="fa fa-star"></i>'+itemName+'</li>'));
+            projName = $('[name=projName]:input').val();
+            if(projName){
+                navObj.append($('<li><i class="fa fa-star"></i>'+projName+'</li>'));
             }
         }
     }

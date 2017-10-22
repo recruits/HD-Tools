@@ -13,6 +13,14 @@ import java.util.List;
  */
 public interface ProjDeptInfoService {
     /**
+     * 是否存在部门分类信息
+     *
+     * @param projId
+     * @return
+     */
+    public boolean ifDeptInfoExist(Long projId);
+
+    /**
      * 初始化部门分类信息
      *
      * @param projId

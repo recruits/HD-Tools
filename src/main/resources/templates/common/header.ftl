@@ -1,4 +1,5 @@
     <#assign basePath="${ request.getContextPath() }">
+    <#assign getCodeDesc="com.chilicool.hdtools.support.TypeCodeMethod"?new()>
 
     <link href="${basePath}/css/common.css" rel="stylesheet">
 
@@ -78,8 +79,8 @@
     <link href="${basePath}/plugin/icheck-1.x/skins/flat/blue.css" rel="stylesheet">
     <script src="${basePath}/plugin/icheck-1.x/icheck.js"></script>
 
-    <script src="${basePath}/js/busi/common/common.js"></script>
-
     <script type="text/javascript">
         var basePath = "${basePath}";
     </script>
+    <script src="${basePath}/js/busi/common/common.js"></script>
+

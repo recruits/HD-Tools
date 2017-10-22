@@ -5,6 +5,7 @@ import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.*;
 import com.chilicool.hdtools.service.core.version.VersionService;
+import net.minidev.json.JSONObject;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +39,31 @@ public class CoreController {
     @Autowired
     private ProjectService projectService;
 
+    /**
+     * 项目列表，查询所有项目信息[同一项目，只返回最新版本]
+     *
+     * @param department
+     * @return
+     */
+    @RequestMapping(value = "/loadAllProjInfo.json", method = RequestMethod.GET)
+    @ResponseBody
+    public ProjInfoModel loadAllProjInfo(DeptWithAction department) {
+        ProjInfoModel projInfoModel = new ProjInfoModel();
+        projInfoModel.setData(projectService.loadAllProjInfo());
+        return projInfoModel;
+    }
+
+    /**
+     * 选择项目
+     *
+     * @return
+     */
     @RequestMapping(value = "/selectItem.html")
     public String selectItem() {
         return "core/select_item";
     }
 
+    // 待重构，去掉项目名称项
     @RequestMapping(value = "/selectPhase.html")
     public ModelAndView selectPhase(String action, String itemName) {
         ModelAndView modelAndView = new ModelAndView("core/select_phase");
@@ -50,23 +72,65 @@ public class CoreController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/editItem.json")
+    @RequestMapping(value = "/addOrEditItem.json")
     @ResponseBody
-    public ModelAndView specifyQuery(String action, String itemName, String projPhase) {
+    public ModelAndView addOrEditItem(String action, Long projId, String projPhase) {
         ModelAndView modelAndView = new ModelAndView("core/edit_item");
         modelAndView.addObject("action", action);
-        modelAndView.addObject("itemName", itemName);
-        modelAndView.addObject("projPhase", projPhase);
-        modelAndView.addObject("createTime", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 
-        Map<String, Object> returnMap = projectService.initProject(action);
+        Map<String, Object> returnMap = new HashMap<>();
+        if (action.equals(BusiConst.Action.ADD)) {
+            // 创建项目时，返回初始化信息；不生成真正的数据
+            projectService.initProjForAdd(projPhase, returnMap);
+        } else if (action.equals(BusiConst.Action.EDIT)) {
+            // 编辑项目时，加载项目的信息；
+            projectService.loadExisProjInfo(projId, returnMap);
+        }
+
+        loadInfoIntoView(returnMap, modelAndView);
+
+        // 缓存全局项目编号
+        modelAndView.addObject("projId", (Long) returnMap.get("id"));
+        return modelAndView;
+    }
+
+    // 重构项目创建和项目编辑逻辑
+    @RequestMapping(value = "/editItem.json")
+    @ResponseBody
+    @Deprecated
+    public ModelAndView editItem(String action, Long projId, String projName, String projPhase) {
+        ModelAndView modelAndView = new ModelAndView("core/edit_item");
+
+        modelAndView.addObject("action", action);
+        modelAndView.addObject("projId", projId);
+        modelAndView.addObject("projName", projName);
+        modelAndView.addObject("projPhase", projPhase);
+
+        if (action.equals(BusiConst.Action.ADD)) {
+            // 创建项目时，返回初始化信息；不生成真正的数据
+            modelAndView.addObject("createTime", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        } else if (action.equals(BusiConst.Action.ADD)) {
+            // 编辑项目时，加载项目的信息；
+        }
+
+        Map<String, Object> returnMap = projectService.initProject(action, projId);
         loadInfoIntoView(returnMap, modelAndView);
 
         return modelAndView;
     }
 
+    @RequestMapping(value = "/saveProjBaseInfo.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase saveProjBaseInfo(ProjWithAction projWithAction) {
+        ResultBase resultBase = new ResultBase();
+        ProjBaseInfo projBaseInfo = projectService.initAndUpdateProject(projWithAction);
+        resultBase.setRetExtObj(projBaseInfo);
+        return resultBase;
+    }
+
     @RequestMapping(value = "/saveBaseInfo.json", method = RequestMethod.POST)
     @ResponseBody
+    @Deprecated
     public ResultBase saveBaseInfo(ProjBaseInfo projBaseInfo) {
         ResultBase resultBase = new ResultBase();
         projBaseInfoService.saveProjBaseInfo(projBaseInfo);
@@ -81,6 +145,7 @@ public class CoreController {
             }
         }
     }
+
     /******************************* 开始部门汇总页面服务 ************************************/
     @RequestMapping(value = "/loadAllSumyInfo.json", method = RequestMethod.GET)
     @ResponseBody
@@ -213,19 +278,19 @@ public class CoreController {
 
     @RequestMapping(value = "/loadCurrRoomDeail.json", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> loadCurrRoomDeail(Long roomId){
+    public List<String> loadCurrRoomDeail(Long roomId) {
         return projRoomInfoService.loadCurrRoomDeail(roomId);
     }
 
     @RequestMapping(value = "/loadCurrRoomTitle.json", method = RequestMethod.GET)
     @ResponseBody
-    public RoomSumyModel loadCurrRoomTitle(Long areaId, Long roomId){
+    public RoomSumyModel loadCurrRoomTitle(Long areaId, Long roomId) {
         return projRoomInfoService.loadCurrRoomTitle(areaId, roomId);
     }
 
     @RequestMapping(value = "/submitRoomDataOnTime.json", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBase submitRoomDataOnTime(Long roomId, String value){
+    public ResultBase submitRoomDataOnTime(Long roomId, String value) {
         ResultBase resultBase = new ResultBase();
         projRoomInfoService.submitRoomDataOnTime(roomId, value);
         return resultBase;

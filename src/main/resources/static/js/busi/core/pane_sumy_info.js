@@ -165,7 +165,7 @@ function modDeptInfo(deptId, deptCode, deptName, planArea) {
     $('#addSubSumyInfoModal input[name="deptCode"]').val(deptCode);
     $('#addSubSumyInfoModal input[name="planArea"]').val(planArea);
     // 保存操作动作
-    deptAction = CONST_ACTION_MOD;
+    deptAction = CONST_ACTION_EDIT;
 }
 // 删除部门信息
 function delDeptInfo(deptId, deptName) {

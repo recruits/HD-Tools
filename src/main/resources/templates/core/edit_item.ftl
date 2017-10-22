@@ -38,9 +38,9 @@
         // 房间信息操作
         var roomAction = CONST_ACTION_ADD;
         // 操作类型
-        var action = "${action}";
+        var action = "${action!}";
         // 项目名称
-        var itemName = "${itemName}";
+        var projName = "${projName!}";
 
         $(function () {
             if (action === CONST_ACTION_ADD) {
@@ -48,10 +48,10 @@
                 <#--$('input[name="groupId"]').val("${groupId}");-->
                 <#--$('input[name="verId"]').val("${verId}");-->
                 <#--$('input[name="verInfo"]').val("${verInfo}");-->
-                $('select[name="projPhase"]').val("${projPhase}");
+                $('select[name="projPhase"]').val("${projPhase!}");
             }
 
-            projId = "${projId}";
+            projId = "${projId!}";
         });
     </script>
 </head>

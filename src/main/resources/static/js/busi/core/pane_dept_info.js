@@ -183,7 +183,7 @@ function modAreaInfo(areaId, areaName, areaCode, note) {
     $('#addAreaInfoForm input[name="officeName"]').val(areaCode);
     $('#addAreaInfoForm input[name="note"]').val(note);
     // 保存操作动作
-    areaAction = CONST_ACTION_MOD;
+    areaAction = CONST_ACTION_EDIT;
 }
 // 删除区域信息
 function delAreaInfo(areaId, areaName) {
@@ -213,7 +213,7 @@ function modRoomInfo(roomId, roomCode, roomName, roomCnt, roomArea) {
     $('#addRoomInfoForm input[name="cnt"]').val(roomCnt);
     $('#addRoomInfoForm input[name="areaTotal"]').val(roomArea);
     // 保存操作动作
-    roomAction = CONST_ACTION_MOD;
+    roomAction = CONST_ACTION_EDIT;
 }
 // 删除房间信息
 function delRoomInfo(roomId, roomName) {

@@ -17,7 +17,7 @@ public class BusiConst {
 
     public interface Action{
         String ADD = "add";
-        String MOD = "mod";
+        String EDIT = "edit";
     }
 
     // 项目阶段

@@ -54,7 +54,7 @@
         <table schema="" tableName="ROOM_DATA_DETAIL" domainObjectName="RoomDataDetail"></table>
         -->
 
-        <table schema="" tableName="DATA_MODULE_ENUM"  domainObjectName="DataModuleEnum"></table>
+        <table schema="" tableName="PROJ_BASE_INFO" domainObjectName="ProjBaseInfo"></table>
 
     </context>
 </generatorConfiguration>

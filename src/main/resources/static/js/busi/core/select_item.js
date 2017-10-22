@@ -1,38 +1,61 @@
-$(document).ready(function() {
-    $('#table2').dataTable({
-        "sPaginationType": "full_numbers"
-    });
-
-    // Select2
-    $('select').select2({
-        minimumResultsForSearch: -1
-    });
-
-    $('select').removeClass('form-control');
-
-    // Delete row in a table
-    $('.delete-row').click(function () {
-        var c = confirm("Continue delete?");
-        if (c)
-            jQuery(this).closest('tr').fadeOut(function () {
-                jQuery(this).remove();
-            });
-
-        return false;
-    });
-
-    // Show aciton upon row hover
-    $('.table-hidaction tbody tr').hover(function () {
-        $(this).find('.table-action-hide a').animate({opacity: 1});
-    }, function () {
-        $(this).find('.table-action-hide a').animate({opacity: 0});
-    });
+var projInfoTable;
+$(function () {
+    reloadProjInfo();
 });
-
 function addProject() {
     var linkUrl = $('#editProjectItem')[0].href;
-    window.parent.frames['mainFrame'].location.href=linkUrl;
-    //parent.iframeFresh(linkUrl);
-    //onclick="addProject()"
+    window.parent.frames['mainFrame'].location.href = linkUrl;
+}
+// 加载数据
+function reloadProjInfo() {
+    // 加载表格数据
+    var linkUrlForProjInfo = "loadAllProjInfo.json";
+    projInfoTable = $("#proj_info_datatable").dataTable({
+        "bDeferRender": true,
+        "sPaginationType": "full_numbers",
+        "ajax": linkUrlForProjInfo,
+        "columns": [
+            {"data": "id"},
+            {"data": "projName"},
+            {"data": "regionCode"},
+            {"data": "projType"},
+            {"data": "projPhase"},
+            {"data": "createTime"},
+            {"data": "verInfo"},
+            {"data": "note"}
+        ],
+        "order": [[0, "desc"]],
+        "aoColumnDefs": [
+            {
+                "aTargets": [2],
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    var sDataName = getCodeDesc('AREA_CODE', sData);
+                    $(nTd).html(sDataName);
+                }
+            },
+            {
+                "aTargets": [4],
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if (sData) {
+                        var sDataName = getCodeDesc('PROJ_PHASE', sData);
+                        $(nTd).html(sDataName);
+                    }
+                }
+            },
+            {
+                "aTargets": [7],
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html(appendOperInfoForEdit(oData.id, oData.projPhase));
+                }
+            }
+        ]
+    });
 }
 
+function appendOperInfoForEdit(projId, projPhase) {
+    return '<a class="fa fa-edit" href="'
+        + basePath
+        + '/core/addOrEditItem.json?action=edit&projId=' + projId
+        + '&projPhase=' + projPhase
+        + '" target="mainFrame" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a>'
+}

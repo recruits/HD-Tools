@@ -8,14 +8,16 @@ $(function(){
 });
 
 function initRoomInfo() {
-    // 加载页面参数
-    renderRoomDataSpecs();
-    // 加载样式
-    initRadioAndCheckbox();
-
     // 激活面板，重新加载数据
     $('a[data-toggle="tab"][id="roomDataInfoTab"]').on('shown.bs.tab', function (e) {
-        reloadRoomInfo();
+        if (currRoomId && currAreaId) {
+            // 加载页面参数
+            renderRoomDataSpecs();
+            // 加载样式
+            initRadioAndCheckbox();
+            // 加载数据
+            reloadRoomInfo();
+        }
     });
 }
 function updateRoomDataOnTime(val) {

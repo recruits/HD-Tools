@@ -13,12 +13,11 @@
     <#include "../common/header.ftl">
 
     <script type="text/javascript">
-        var action = "${action}";
         var itemName = "${itemName}";
 
         $(function () {
-            var linkUrl = "${basePath}/core/editItem.json";
-            var inParam = "?action=${action}&itemName=&projPhase=";
+            var linkUrl = "${basePath}/core/addOrEditItem.json";
+            var inParam = "?action=add&projId=-1&projPhase=";
 
             $('#goNextBtn').bind('click', function () {
                 linkUrl += inParam + $('select[name="projPhase"]').val();
@@ -35,28 +34,32 @@
 <div class="panel-body mb30">
     <div class="panel panel-default">
         <div class="panel-body">
-            <form id="phaseForm" action="editItem.html" >
+            <form id="phaseForm" action="editItem.html">
                 <div class="form-group">
                     <label class="col-xs-2 control-label">项目阶段<span class="asterisk">*</span></label>
                     <div class="col-xs-10">
-                        <select class="selectpicker form-control" name="projPhase" data-style="btn-default">
-                            <option value="0" >概念阶段</option>
-                            <option value="1" >方案阶段</option>
-                            <option value="2" >设计阶段</option>
-                            <option value="3" >施工阶段</option>
-                        </select>
+                    <@cc.select class="selectpicker form-control" name="projPhase" value="${projPhase!}" typeCode="PROJ_PHASE" />
+                        <!--
+                    <select class="selectpicker form-control" name="projPhase" data-style="btn-default">
+                        <option value="0" >概念阶段</option>
+                        <option value="1" >方案阶段</option>
+                        <option value="2" >设计阶段</option>
+                        <option value="3" >施工阶段</option>
+                    </select>
+                    -->
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-4 col-xs-offset-2">
-                        <a class="btn btn-primary btn-xs" href="${basePath}/core/selectItem.html" target="mainFrame">返回</a>
+                        <a class="btn btn-primary btn-xs" href="${basePath}/core/selectItem.html"
+                           target="mainFrame">返回</a>
                         <a class="btn btn-primary btn-xs" href="javascript:void(0)" id="goNextBtn" target="mainFrame">下一步</a>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
