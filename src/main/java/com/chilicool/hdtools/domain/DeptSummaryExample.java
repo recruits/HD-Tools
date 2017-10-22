@@ -315,123 +315,123 @@ public class DeptSummaryExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaIsNull() {
-            addCriterion("PLAN_AREA is null");
+        public Criteria andPlanAreaTotalIsNull() {
+            addCriterion("PLAN_AREA_TOTAL is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaIsNotNull() {
-            addCriterion("PLAN_AREA is not null");
+        public Criteria andPlanAreaTotalIsNotNull() {
+            addCriterion("PLAN_AREA_TOTAL is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaEqualTo(Double value) {
-            addCriterion("PLAN_AREA =", value, "planArea");
+        public Criteria andPlanAreaTotalEqualTo(Double value) {
+            addCriterion("PLAN_AREA_TOTAL =", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaNotEqualTo(Double value) {
-            addCriterion("PLAN_AREA <>", value, "planArea");
+        public Criteria andPlanAreaTotalNotEqualTo(Double value) {
+            addCriterion("PLAN_AREA_TOTAL <>", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaGreaterThan(Double value) {
-            addCriterion("PLAN_AREA >", value, "planArea");
+        public Criteria andPlanAreaTotalGreaterThan(Double value) {
+            addCriterion("PLAN_AREA_TOTAL >", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaGreaterThanOrEqualTo(Double value) {
-            addCriterion("PLAN_AREA >=", value, "planArea");
+        public Criteria andPlanAreaTotalGreaterThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_TOTAL >=", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaLessThan(Double value) {
-            addCriterion("PLAN_AREA <", value, "planArea");
+        public Criteria andPlanAreaTotalLessThan(Double value) {
+            addCriterion("PLAN_AREA_TOTAL <", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaLessThanOrEqualTo(Double value) {
-            addCriterion("PLAN_AREA <=", value, "planArea");
+        public Criteria andPlanAreaTotalLessThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_TOTAL <=", value, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaIn(List<Double> values) {
-            addCriterion("PLAN_AREA in", values, "planArea");
+        public Criteria andPlanAreaTotalIn(List<Double> values) {
+            addCriterion("PLAN_AREA_TOTAL in", values, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaNotIn(List<Double> values) {
-            addCriterion("PLAN_AREA not in", values, "planArea");
+        public Criteria andPlanAreaTotalNotIn(List<Double> values) {
+            addCriterion("PLAN_AREA_TOTAL not in", values, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaBetween(Double value1, Double value2) {
-            addCriterion("PLAN_AREA between", value1, value2, "planArea");
+        public Criteria andPlanAreaTotalBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_TOTAL between", value1, value2, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andPlanAreaNotBetween(Double value1, Double value2) {
-            addCriterion("PLAN_AREA not between", value1, value2, "planArea");
+        public Criteria andPlanAreaTotalNotBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_TOTAL not between", value1, value2, "planAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaIsNull() {
-            addCriterion("DESIGN_AREA is null");
+        public Criteria andDesignAreaTotalIsNull() {
+            addCriterion("DESIGN_AREA_TOTAL is null");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaIsNotNull() {
-            addCriterion("DESIGN_AREA is not null");
+        public Criteria andDesignAreaTotalIsNotNull() {
+            addCriterion("DESIGN_AREA_TOTAL is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaEqualTo(Double value) {
-            addCriterion("DESIGN_AREA =", value, "designArea");
+        public Criteria andDesignAreaTotalEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL =", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaNotEqualTo(Double value) {
-            addCriterion("DESIGN_AREA <>", value, "designArea");
+        public Criteria andDesignAreaTotalNotEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL <>", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaGreaterThan(Double value) {
-            addCriterion("DESIGN_AREA >", value, "designArea");
+        public Criteria andDesignAreaTotalGreaterThan(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL >", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaGreaterThanOrEqualTo(Double value) {
-            addCriterion("DESIGN_AREA >=", value, "designArea");
+        public Criteria andDesignAreaTotalGreaterThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL >=", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaLessThan(Double value) {
-            addCriterion("DESIGN_AREA <", value, "designArea");
+        public Criteria andDesignAreaTotalLessThan(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL <", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaLessThanOrEqualTo(Double value) {
-            addCriterion("DESIGN_AREA <=", value, "designArea");
+        public Criteria andDesignAreaTotalLessThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_TOTAL <=", value, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaIn(List<Double> values) {
-            addCriterion("DESIGN_AREA in", values, "designArea");
+        public Criteria andDesignAreaTotalIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_TOTAL in", values, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaNotIn(List<Double> values) {
-            addCriterion("DESIGN_AREA not in", values, "designArea");
+        public Criteria andDesignAreaTotalNotIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_TOTAL not in", values, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaBetween(Double value1, Double value2) {
-            addCriterion("DESIGN_AREA between", value1, value2, "designArea");
+        public Criteria andDesignAreaTotalBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_TOTAL between", value1, value2, "designAreaTotal");
             return (Criteria) this;
         }
 
-        public Criteria andDesignAreaNotBetween(Double value1, Double value2) {
-            addCriterion("DESIGN_AREA not between", value1, value2, "designArea");
+        public Criteria andDesignAreaTotalNotBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_TOTAL not between", value1, value2, "designAreaTotal");
             return (Criteria) this;
         }
 
@@ -555,63 +555,243 @@ public class DeptSummaryExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioIsNull() {
-            addCriterion("AREA_RATIO is null");
+        public Criteria andPlanAreaRatioIsNull() {
+            addCriterion("PLAN_AREA_RATIO is null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioIsNotNull() {
-            addCriterion("AREA_RATIO is not null");
+        public Criteria andPlanAreaRatioIsNotNull() {
+            addCriterion("PLAN_AREA_RATIO is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioEqualTo(Double value) {
-            addCriterion("AREA_RATIO =", value, "areaRatio");
+        public Criteria andPlanAreaRatioEqualTo(Double value) {
+            addCriterion("PLAN_AREA_RATIO =", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioNotEqualTo(Double value) {
-            addCriterion("AREA_RATIO <>", value, "areaRatio");
+        public Criteria andPlanAreaRatioNotEqualTo(Double value) {
+            addCriterion("PLAN_AREA_RATIO <>", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioGreaterThan(Double value) {
-            addCriterion("AREA_RATIO >", value, "areaRatio");
+        public Criteria andPlanAreaRatioGreaterThan(Double value) {
+            addCriterion("PLAN_AREA_RATIO >", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioGreaterThanOrEqualTo(Double value) {
-            addCriterion("AREA_RATIO >=", value, "areaRatio");
+        public Criteria andPlanAreaRatioGreaterThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_RATIO >=", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioLessThan(Double value) {
-            addCriterion("AREA_RATIO <", value, "areaRatio");
+        public Criteria andPlanAreaRatioLessThan(Double value) {
+            addCriterion("PLAN_AREA_RATIO <", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioLessThanOrEqualTo(Double value) {
-            addCriterion("AREA_RATIO <=", value, "areaRatio");
+        public Criteria andPlanAreaRatioLessThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_RATIO <=", value, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioIn(List<Double> values) {
-            addCriterion("AREA_RATIO in", values, "areaRatio");
+        public Criteria andPlanAreaRatioIn(List<Double> values) {
+            addCriterion("PLAN_AREA_RATIO in", values, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioNotIn(List<Double> values) {
-            addCriterion("AREA_RATIO not in", values, "areaRatio");
+        public Criteria andPlanAreaRatioNotIn(List<Double> values) {
+            addCriterion("PLAN_AREA_RATIO not in", values, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioBetween(Double value1, Double value2) {
-            addCriterion("AREA_RATIO between", value1, value2, "areaRatio");
+        public Criteria andPlanAreaRatioBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_RATIO between", value1, value2, "planAreaRatio");
             return (Criteria) this;
         }
 
-        public Criteria andAreaRatioNotBetween(Double value1, Double value2) {
-            addCriterion("AREA_RATIO not between", value1, value2, "areaRatio");
+        public Criteria andPlanAreaRatioNotBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_RATIO not between", value1, value2, "planAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioIsNull() {
+            addCriterion("DESIGN_AREA_RATIO is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioIsNotNull() {
+            addCriterion("DESIGN_AREA_RATIO is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_RATIO =", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioNotEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_RATIO <>", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioGreaterThan(Double value) {
+            addCriterion("DESIGN_AREA_RATIO >", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioGreaterThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_RATIO >=", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioLessThan(Double value) {
+            addCriterion("DESIGN_AREA_RATIO <", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioLessThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_RATIO <=", value, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_RATIO in", values, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioNotIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_RATIO not in", values, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_RATIO between", value1, value2, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaRatioNotBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_RATIO not between", value1, value2, "designAreaRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryIsNull() {
+            addCriterion("PLAN_AREA_SUMMARY is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryIsNotNull() {
+            addCriterion("PLAN_AREA_SUMMARY is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryEqualTo(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY =", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryNotEqualTo(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY <>", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryGreaterThan(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY >", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryGreaterThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY >=", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryLessThan(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY <", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryLessThanOrEqualTo(Double value) {
+            addCriterion("PLAN_AREA_SUMMARY <=", value, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryIn(List<Double> values) {
+            addCriterion("PLAN_AREA_SUMMARY in", values, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryNotIn(List<Double> values) {
+            addCriterion("PLAN_AREA_SUMMARY not in", values, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_SUMMARY between", value1, value2, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanAreaSummaryNotBetween(Double value1, Double value2) {
+            addCriterion("PLAN_AREA_SUMMARY not between", value1, value2, "planAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryIsNull() {
+            addCriterion("DESIGN_AREA_SUMMARY is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryIsNotNull() {
+            addCriterion("DESIGN_AREA_SUMMARY is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY =", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryNotEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY <>", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryGreaterThan(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY >", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryGreaterThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY >=", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryLessThan(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY <", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryLessThanOrEqualTo(Double value) {
+            addCriterion("DESIGN_AREA_SUMMARY <=", value, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_SUMMARY in", values, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryNotIn(List<Double> values) {
+            addCriterion("DESIGN_AREA_SUMMARY not in", values, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_SUMMARY between", value1, value2, "designAreaSummary");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesignAreaSummaryNotBetween(Double value1, Double value2) {
+            addCriterion("DESIGN_AREA_SUMMARY not between", value1, value2, "designAreaSummary");
             return (Criteria) this;
         }
 

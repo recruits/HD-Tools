@@ -192,11 +192,31 @@ public class CoreController {
         return resultBase;
     }
 
-    @RequestMapping(value = "/editSumyAreaRatioValOnTime.json", method = RequestMethod.POST)
+    /**
+     * 实时更新[部门汇总]规划面积系数
+     * @param sumyId
+     * @param areaRatio
+     * @return
+     */
+    @RequestMapping(value = "/editSumyPlanAreaRatioValOnTime.json", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBase editSumyAreaRatioValOnTime(Long sumyId, Double areaRatio) {
+    public ResultBase editSumyPlanAreaRatioValOnTime(Long sumyId, Double areaRatio) {
         ResultBase resultBase = new ResultBase();
         projDeptInfoService.editSumyAreaRatioValOnTime(sumyId, areaRatio);
+        return resultBase;
+    }
+
+    /**
+     * 实时更新[部门汇总]设计面积系数
+     * @param sumyId
+     * @param areaRatio
+     * @return
+     */
+    @RequestMapping(value = "/editSumyDesignAreaRatioValOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editSumyDesignAreaRatioValOnTime(Long sumyId, Double areaRatio) {
+        ResultBase resultBase = new ResultBase();
+        projDeptInfoService.editSumyDesignAreaRatioValOnTime(sumyId, areaRatio);
         return resultBase;
     }
 

@@ -100,12 +100,20 @@ public interface ProjDeptInfoService {
     public void delDeptInfoByDeptId(Long deptId);
 
     /**
-     * 实时更新面积系数
+     * 实时更新[部门汇总]规划面积系数
      *
      * @param sumyId
      * @param areaRatio
      */
     public void editSumyAreaRatioValOnTime(Long sumyId, Double areaRatio);
+
+    /**
+     * 实时更新[部门汇总]设计面积系数
+     *
+     * @param sumyId
+     * @param areaRatio
+     */
+    public void editSumyDesignAreaRatioValOnTime(Long sumyId, Double areaRatio);
 
     /**
      * 实时更新备注信息

@@ -1,48 +1,57 @@
 <div class="tab-pane" id="summaryInfo">
     <div class="m-5">
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
                     <span class="input-group-addon" id="sizing-addon1">[P]面积总计：</span>
-                    <input type="text" name="sumyPlanArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                    <input type="text" name="sumyPlanAreaTotal" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
-            <div class="col-xs-2 col-xs-offset-1">
+            <div class="col-xs-3">
                 <div class="input-group input-group-xs">
                     <span class="input-group-addon" id="sizing-addon1">[D]面积总计：</span>
-                    <input type="text" name="sumyDesignArea" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <input type="text" name="sumyDesignAreaTotal" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
         </div>
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[P]面积占比：</span>
-                    <input type="text" name="sumyPlanAreaPersent" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">[P]面积小计：</span>
+                    <input type="text" name="sumyPlanAreaSummary" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
-            <div class="col-xs-2 col-xs-offset-1">
+            <div class="col-xs-3">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">[D]面积占比：</span>
-                    <input type="text" name="sumyDesignAreaPersent" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" readonly>
+                    <span class="input-group-addon" id="sizing-addon1">[D]面积小计：</span>
+                    <input type="text" name="sumyDesignAreaSummary" class="form-control" placeholder="" aria-describedby="sizing-addon1" readonly>
                 </div>
             </div>
         </div>
         <div class="row m-b-5">
-            <div class="col-xs-2 col-xs-offset-7">
+            <div class="col-xs-3 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">面积系数：</span>
-                    <input type="number" name="sumyAreaRatio" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                    <span class="input-group-addon" id="sizing-addon1">[P]面积系数：</span>
+                    <input type="number" name="sumyPlanAreaRatio" min="0" step="0.1" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary btn-xs" type="button" id="sumyAreaRatioModBtn">更新</button>
+                        <button class="btn btn-primary btn-xs" type="button" id="sumyPlanAreaRatioModBtn">更新</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="input-group input-group-xs">
+                    <span class="input-group-addon" id="sizing-addon1">[D]面积系数：</span>
+                    <input type="number" name="sumyDesignAreaRatio" min="0" step="0.1" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-xs" type="button" id="sumyDesignAreaRatioModBtn">更新</button>
                     </span>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-5 col-xs-offset-7">
+            <div class="col-xs-6 col-xs-offset-6">
                 <div class="input-group input-group-xs">
-                    <span class="input-group-addon" id="sizing-addon1">备注信息：</span>
+                    <span class="input-group-addon" id="sizing-addon1">&nbsp;&nbsp;&nbsp;&nbsp;备注信息：</span>
                     <input type="text" name="sumyNote" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
                     <span class="input-group-btn">
                         <button class="btn btn-primary btn-xs" type="button" id="sumyNoteModBtn">更新</button>

@@ -24,8 +24,11 @@ function initSumyInfo() {
         clearDeptModalData();
     });
 
-    // 汇总信息实时更新
-    $('#sumyAreaRatioModBtn').click(editSumyAreaRatioValOnTime);
+    // 面积系数实时更新
+    $('#sumyPlanAreaRatioModBtn').click(editSumyPlanAreaRatioValOnTime);
+    $('#sumyDesignAreaRatioModBtn').click(editSumyDesignAreaRatioValOnTime);
+
+    // 备注信息实时更新
     $('#sumyNoteModBtn').click(editSumyNoteValOnTime);
 }
 
@@ -91,12 +94,15 @@ function renderSumyInfoPage(data) {
 function freshSumyTitle(data) {
     if (data) {
         currDeptSumyId = data.id;
-        $('input[name="sumyPlanArea"]').val(data.planArea);
-        $('input[name="sumyDesignArea"]').val(data.designArea);
-        $('input[name="sumyPlanAreaPersent"]').val(data.planAreaPersent+"%");
-        $('input[name="sumyDesignAreaPersent"]').val(data.designAreaPersent+"%");
-        $('input[name="sumyAreaRatio"]').val(data.areaRatio || "");
-        $('input[name="sumyNote"]').val(data.note || "");
+        $('#summaryInfo input[name="sumyPlanAreaTotal"]').val(data.planAreaTotal);
+        $('#summaryInfo input[name="sumyDesignAreaTotal"]').val(data.designAreaTotal);
+        // $('input[name="sumyPlanAreaPersent"]').val(data.planAreaPersent+"%");
+        // $('input[name="sumyDesignAreaPersent"]').val(data.designAreaPersent+"%");
+        $('#summaryInfo input[name="sumyPlanAreaSummary"]').val(data.planAreaSummary);
+        $('#summaryInfo input[name="sumyDesignAreaSummary"]').val(data.designAreaSummary);
+        $('#summaryInfo input[name="sumyPlanAreaRatio"]').val(data.planAreaRatio || "");
+        $('#summaryInfo input[name="sumyDesignAreaRatio"]').val(data.designAreaRatio || "");
+        $('#summaryInfo input[name="sumyNote"]').val(data.note || "");
     }
 }
 
@@ -214,13 +220,33 @@ function goToDeptDetailPane(deptTypeId, deptId) {
     $('.nav-tabs li:eq(2) a').tab('show');
 }
 
-// 实时更新面积系数
-function editSumyAreaRatioValOnTime() {
+// 实时更新[部门汇总]规则面积系数
+function editSumyPlanAreaRatioValOnTime() {
     if (currDeptSumyId && currDeptSumyId != 0) {
-        var linkUrlForSumyAreaRatioUpdate = basePath + "/core/editSumyAreaRatioValOnTime.json";
-        var submitData = "sumyId=" + currDeptSumyId + "&areaRatio=" + $('input[name="sumyAreaRatio"]').val();
+        var linkUrlForSumyAreaRatioUpdate = basePath + "/core/editSumyPlanAreaRatioValOnTime.json";
+        var submitData = "sumyId=" + currDeptSumyId + "&areaRatio=" + $('input[name="sumyPlanAreaRatio"]').val();
         $.post(linkUrlForSumyAreaRatioUpdate, submitData, function (outData) {
-            Ewin.alert(outData.retMsg);
+            Ewin.alert(outData.retMsg).on(function () {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    // 刷新汇总信息
+                    refreshSumyPlanAreaTotalVal();
+                }
+            });
+        }, "json");
+    }
+}
+// 实时更新[部门汇总]设计面积系数
+function editSumyDesignAreaRatioValOnTime() {
+    if (currDeptSumyId && currDeptSumyId != 0) {
+        var linkUrlForSumyAreaRatioUpdate = basePath + "/core/editSumyDesignAreaRatioValOnTime.json";
+        var submitData = "sumyId=" + currDeptSumyId + "&areaRatio=" + $('input[name="sumyDesignAreaRatio"]').val();
+        $.post(linkUrlForSumyAreaRatioUpdate, submitData, function (outData) {
+            Ewin.alert(outData.retMsg).on(function () {
+                if (outData.retCode == RET_CODE_SUCC) {
+                    // 刷新汇总信息
+                    refreshSumyDesignAreaTotalVal();
+                }
+            });
         }, "json");
     }
 }
@@ -233,6 +259,24 @@ function editSumyNoteValOnTime() {
             Ewin.alert(outData.retMsg);
         }, "json");
     }
+}
+
+// 重新计算部门规则汇总面积总计
+function refreshSumyPlanAreaTotalVal() {
+    var planAreaRatio = $('#summaryInfo input[name="sumyPlanAreaRatio"]').val();
+    var planAreaSummary = $('#summaryInfo input[name="sumyPlanAreaSummary"]').val();
+    var planAreaTotal = parseFloat(planAreaRatio) * parseFloat(planAreaSummary);
+
+    $('#summaryInfo input[name="sumyPlanAreaTotal"]').val(planAreaTotal);
+}
+
+// 重新计算部门设计汇总面积总计
+function refreshSumyDesignAreaTotalVal() {
+    var designAreaRatio = $('#summaryInfo input[name="sumyDesignAreaRatio"]').val();
+    var designAreaSummary = $('#summaryInfo input[name="sumyDesignAreaSummary"]').val();
+    var designAreaTotal = parseFloat(designAreaRatio) * parseFloat(designAreaSummary);
+
+    $('#summaryInfo input[name="sumyDesignAreaTotal"]').val(designAreaTotal);
 }
 /**********************************************************************************************
  * 页面字段编辑逻辑

@@ -35,17 +35,21 @@ public class DeptSumyServiceImpl implements DeptSumyService {
         return CollectionUtils.isNotEmpty(deptSummaries) ? deptSummaries.get(0) : (new DeptSummary());
     }
 
-    private DeptSummary generateSumyInfo(Long projId){
+    private DeptSummary generateSumyInfo(Long projId) {
         DeptSummary deptSummary = new DeptSummary();
+        deptSummary.setProjId(projId);
         // 设置初始百分比
         deptSummary.setPlanAreaPersent(initPersent);
         deptSummary.setDesignAreaPersent(initPersent);
-        // 设置初始面积
-        deptSummary.setPlanArea(initArea);
-        deptSummary.setDesignArea(initArea);
-        deptSummary.setProjId(projId);
-        // 设置初始面积系统
-        deptSummary.setAreaRatio(BusiConst.DobuleVal.oneVal);
+        // 设置初始面积总计
+        deptSummary.setPlanAreaTotal(BusiConst.DobuleVal.zeroVal);
+        deptSummary.setDesignAreaTotal(BusiConst.DobuleVal.zeroVal);
+        // 设置初始面积系数
+        deptSummary.setPlanAreaRatio(BusiConst.DobuleVal.oneVal);
+        deptSummary.setDesignAreaRatio(BusiConst.DobuleVal.oneVal);
+        // 设置初始面积小计
+        deptSummary.setPlanAreaSummary(BusiConst.DobuleVal.zeroVal);
+        deptSummary.setDesignAreaSummary(BusiConst.DobuleVal.zeroVal);
         return deptSummary;
     }
 

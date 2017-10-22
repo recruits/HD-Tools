@@ -156,10 +156,12 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
         // 获取同一部门分类的所有部门信息-规划值
         List<PlanAreaModel> planAreaModels = departmentMapper.loadAllDeptInfoModel(deptTypeId);
         PlanAreaHolder planAreaHolder = new PlanAreaHolder(planAreaModels);
+
         // 获取部门分类信息
         DeptType deptType = loadDeptTypeWithPK(deptTypeId);
         Double planAreaSumy = deptType.getPlanArea();
         Double planAreaTotal = planAreaHolder.getPlanAreaTotal();
+
         // 部门信息规划面积发生变更，并且同一部门分类下的部门规划面积之和大于部门分类信息的规划面积，则进行更新；
         if (planAreaTotal > planAreaSumy) {
             updatePlanAreaValOnTime(deptTypeId, planAreaTotal);
@@ -227,10 +229,38 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
     @Override
     public void editSumyAreaRatioValOnTime(Long sumyId, Double areaRatio) {
         if (null != areaRatio) {
-            DeptSummary deptSummary = new DeptSummary();
-            deptSummary.setId(sumyId);
-            deptSummary.setAreaRatio(areaRatio);
-            updateDeptSummaryByPk(deptSummary);
+            DeptSummary deptSummary = deptSummaryMapper.selectByPrimaryKey(sumyId);
+            if (null != deptSummary) {
+                deptSummary.setPlanAreaRatio(areaRatio);
+
+                Double areaSummary = deptSummary.getPlanAreaSummary();
+                if (null == areaSummary) {
+                    areaSummary = BusiConst.DobuleVal.zeroVal;
+                    deptSummary.setPlanAreaSummary(areaSummary);
+                }
+
+                deptSummary.setPlanAreaTotal(areaSummary * areaRatio);
+                updateDeptSummaryByPk(deptSummary);
+            }
+        }
+    }
+
+    @Override
+    public void editSumyDesignAreaRatioValOnTime(Long sumyId, Double areaRatio) {
+        if (null != areaRatio) {
+            DeptSummary deptSummary = deptSummaryMapper.selectByPrimaryKey(sumyId);
+            if (null != deptSummary) {
+                deptSummary.setDesignAreaRatio(areaRatio);
+
+                Double areaSummary = deptSummary.getDesignAreaSummary();
+                if (null == areaSummary) {
+                    areaSummary = BusiConst.DobuleVal.zeroVal;
+                    deptSummary.setDesignAreaSummary(areaSummary);
+                }
+
+                deptSummary.setDesignAreaTotal(areaSummary * areaRatio);
+                updateDeptSummaryByPk(deptSummary);
+            }
         }
     }
 
@@ -280,7 +310,7 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
             deptTypeId = getDeptTypeIdByDeptId(department.getId());
         }
 
-        // 更新部门分类规划面积
+        // 更新部门分类设计面积
         updateDesignAreaValOnTime(deptTypeId);
     }
 
@@ -417,12 +447,22 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
      * @param persentVal
      */
     private void updateDeptSumyPlanAreaValByProjId(Long projId, Double persentVal) {
-        DeptSummary deptSummary = new DeptSummary();
-        deptSummary.setProjId(projId);
-        deptSummary.setPlanArea(persentVal);
+        DeptSummary deptSummary = loadDeptSummaryInfoByProjId(projId);
+        Double planAreaRatio = deptSummary.getPlanAreaRatio();
+        if (null == planAreaRatio) {
+            planAreaRatio = BusiConst.DobuleVal.oneVal;
+            deptSummary.setPlanAreaRatio(planAreaRatio);
+        }
+        deptSummary.setPlanAreaSummary(persentVal);
+        deptSummary.setPlanAreaTotal(planAreaRatio * persentVal);
+        deptSummaryMapper.updateByPrimaryKeySelective(deptSummary);
+    }
 
+    // 使用项目编号查询部门汇总信息
+    private DeptSummary loadDeptSummaryInfoByProjId(Long projId) {
         DeptSummaryExample example = buildDeptSummaryExampleWithProjId(projId);
-        deptSummaryMapper.updateByExampleSelective(deptSummary, example);
+        List<DeptSummary> deptSummaries = deptSummaryMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(deptSummaries) ? deptSummaries.get(0) : (new DeptSummary());
     }
 
     /**
@@ -432,12 +472,22 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
      * @param persentVal
      */
     private void updateDeptSumyDesignAreaValByProjId(Long projId, Double persentVal) {
-        DeptSummary deptSummary = new DeptSummary();
-        deptSummary.setProjId(projId);
-        deptSummary.setDesignArea(persentVal);
+//        DeptSummary deptSummary = new DeptSummary();
+//        deptSummary.setProjId(projId);
+//        deptSummary.setDesignAreaTotal(persentVal);
+//
+//        DeptSummaryExample example = buildDeptSummaryExampleWithProjId(projId);
+//        deptSummaryMapper.updateByExampleSelective(deptSummary, example);
 
-        DeptSummaryExample example = buildDeptSummaryExampleWithProjId(projId);
-        deptSummaryMapper.updateByExampleSelective(deptSummary, example);
+        DeptSummary deptSummary = loadDeptSummaryInfoByProjId(projId);
+        Double designAreaRatio = deptSummary.getDesignAreaRatio();
+        if (null == designAreaRatio) {
+            designAreaRatio = BusiConst.DobuleVal.oneVal;
+            deptSummary.setPlanAreaRatio(designAreaRatio);
+        }
+        deptSummary.setDesignAreaSummary(persentVal);
+        deptSummary.setDesignAreaTotal(designAreaRatio * persentVal);
+        deptSummaryMapper.updateByPrimaryKeySelective(deptSummary);
     }
 
     private DeptSummaryExample buildDeptSummaryExampleWithProjId(Long projId){

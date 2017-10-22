@@ -122,10 +122,10 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
             areaInfoMapper.updateByPrimaryKeySelective(areaInfo);
         }
 
-        // 取出区域所属部门规划值内容
+        // 取出区域所属部门设计值内容
         Double areaSummary = getAllAreaSummaryByDeptId(areaInfo.getDeptId());
 
-        // 更新区域所属部门规划值信息
+        // 更新区域所属部门设计值信息
         projDeptInfoService.updateDesignAreaValForDeptOnTime(areaInfo.getDeptId(), areaInfo.getDeptTypeId(), areaSummary);
     }
 
@@ -235,7 +235,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
 
     private void loadDeptSumyInfo(AreaSumyModel areaSumyModel) {
         DeptSummary deptSummary = deptSumyService.loadDeptSummaryByPK(areaSumyModel.getProjId());
-        areaSumyModel.setAreaRatio(deptSummary.getAreaRatio());
+        areaSumyModel.setAreaRatio(deptSummary.getPlanAreaRatio());
     }
 
     private void loadAreaSummary(AreaSumyModel areaSumyModel, Long deptId) {
