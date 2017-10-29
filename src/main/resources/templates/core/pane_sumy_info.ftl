@@ -86,7 +86,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="addSubSumyInfoModalLabel">新增部门信息</h4>
+                <h4 class="modal-title" id="addSubSumyInfoModalLabel"></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -94,7 +94,14 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">部门编码<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="text" name="deptCode" class="form-control" placeholder="请输入部门编码" required value=""/>
+                                <#--<input type="text" name="deptCode" class="form-control" placeholder="请输入部门编码" required value=""/>-->
+                                <div class="input-group">
+                                    <input type="hidden" name="deptCode">
+                                    <span class="input-group-addon" name="deptTypeCode"></span>
+                                    <input type="number" name="orderIdx" min="1" max="99" class="form-control"
+                                           aria-describedby="sizing-addon1" value=""
+                                           onchange="checkAndFormatCode(this)">
+                                </div>
                             </div>
                         </div>
 

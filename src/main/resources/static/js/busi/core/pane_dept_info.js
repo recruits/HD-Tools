@@ -9,29 +9,28 @@ function initAreaInfo() {
     });
 
     // 绑定区域新增事件
-    $('#addNewAreaInfo').click(function () {
-        areaAction = CONST_ACTION_ADD;
-        $('#addAreaInfoModal').modal();
+    $('#addNewAreaInfoBtn').bind('click', function(){
+        resetAreaInfo();
     });
     // 区域信息操作按钮事件绑定
-    $('#resetAreaInfoFormBtn').click(function () {
+    $('#resetAreaInfoFormBtn').bind('click', function () {
         clearModalData();
     });
-    $('#submitAreaInfoFormBtn').click(function () {
+    $('#submitAreaInfoFormBtn').bind('click', function () {
         addAreaInfo();
     });
 
     // 房间信息操作按钮事件绑定
-    $('#resetRoomInfoFormBtn').click(function () {
+    $('#resetRoomInfoFormBtn').bind('click', function () {
         clearRoomModalData();
     });
-    $('#submitRoomInfoFormBtn').click(function () {
+    $('#submitRoomInfoFormBtn').bind('click', function () {
         addRoomInfo();
     });
 
     // 面积系数实时更新
-    $('#deptPlanAreaRatioModBtn').click(editDeptPlanAreaRatioValOnTime);
-    $('#deptDesignAreaRatioModBtn').click(editDeptDesignAreaRatioValOnTime);
+    $('#deptPlanAreaRatioModBtn').bind('click', editDeptPlanAreaRatioValOnTime);
+    $('#deptDesignAreaRatioModBtn').bind('click', editDeptDesignAreaRatioValOnTime);
 
     // 模态对话框关闭事件
     $('#addAreaInfoModal').on('hidden.bs.modal', function (e) {
@@ -47,6 +46,29 @@ function initAreaInfo() {
         // 清空模态数据
         clearRoomModalData();
     });
+}
+
+function resetAreaInfo() {
+    areaAction = CONST_ACTION_ADD;
+    $('#addAreaInfoModal').modal();
+
+    // 更新标题
+    $('#areaInfoModalLabel').text(MODAL_TITLE_AREA[areaAction]);
+
+    // 获取父级编码
+    var nextAreaCodeInfo = getNextAreaCodeByDeptId();
+    if (nextAreaCodeInfo && nextAreaCodeInfo != "") {
+        var nextAreaCodeInfos = translateCode(nextAreaCodeInfo);
+
+        // 重新设置父级编码
+        $('#addAreaInfoForm span[name="deptCode"]').html(nextAreaCodeInfos[0]);
+
+        // 自动生成下一个部门编号
+        $('#addAreaInfoForm input[name="orderIdx"]').val(nextAreaCodeInfos[1]);
+
+        // 初始化部门编码
+        $('#addAreaInfoForm input[name="officeCode"]').val(nextAreaCodeInfo);
+    }
 }
 
 // 刷新页面数据，重新加载整个页面
@@ -127,8 +149,10 @@ function freshAreaSumary(data) {
 function buildAreaInfoTopLeveHtml(item) {
     return "<tr class='treegrid-" + item.id + "-area'><td>"
         + item.areaCode + "</td><td>" + item.areaName + "</td><td>"
-        + (item.cnt || "") + "</td><td>" + (item.areaTotal || "") + "</td><td>"
-        + (item.areaSummary || "") + "</td><td>" + (item.note || "") + "</td><td>"
+        + (item.planCnt || "") + "</td><td>" + (item.planAreaSummary || "") + "</td><td>"
+        + (item.planAreaTotal || "") + "</td><td>"
+        + (item.designCnt || "") + "</td><td>" + (item.designAreaSummary || "") + "</td><td>"
+        + (item.designAreaTotal || "") + "</td><td>" + (item.note || "") + "</td><td>"
         + buildOperInfoForAreaTopLevel(item.id, item.areaName, item.areaCode, item.note)
         + "</td></tr>";
 }
@@ -137,30 +161,26 @@ function buildAreaInfoSubLeveHtml(item) {
     return "<tr class='treegrid-parent-" + item.pid + "-area treegrid-999999-" + item.id
         + "-area' ondblclick='goToRoomPane(" + item.pid + "," + item.id + ")'><td>"
         + item.areaCode + "</td><td>" + item.areaName + "</td><td>"
-        + buildEditInfoForRoomCnt(item.cnt, item.id) + "</td><td>"
-        + buildEditInfoForRoomArea(item.areaTotal, item.id) + "</td><td>"
-        + (item.areaSummary || "") + (item.node || "") + "</td><td></td><td>"
-        + buildOperInfoForAreaSubLevel(item.id, item.areaCode, item.areaName, item.cnt, item.areaTotal)
+        + (item.planCnt || "") + "</td><td>"
+        + (item.planAreaSummary || "") + "</td><td>"
+        + (item.planAreaTotal || "") + "</td><td>"
+        + buildEditInfoForRoomCnt(item.designCnt, item.id) + "</td><td>"
+        + buildEditInfoForRoomArea(item.designAreaSummary, item.id) + "</td><td>"
+        + (item.designAreaTotal || "") + "</td><td>" + (item.note || "") + "</td><td>"
+        + buildOperInfoForAreaSubLevel(item.id, item.areaCode, item.areaName, item.designCnt, item.designAreaSummary)
         + "</td></tr>";
 }
 // 增加房间个数可编辑操作
 function buildEditInfoForRoomCnt(currVal, roomId) {
     var postEditValUrl = basePath + "/core/editRoomCntOnTime.json";
     return '<a href="#" name="roomCntForEdit-' + roomId + '" data-type="text" data-pk="'
-        + roomId + '" data-url="' + postEditValUrl + '" data-title="输入房间个数:">' + currVal + '</a>';
+        + roomId + '" data-url="' + postEditValUrl + '" data-title="输入设计房间个数:">' + currVal + '</a>';
 }
 // 增加房间使用面积可编辑操作
 function buildEditInfoForRoomArea(currVal, roomId) {
     var postEditValUrl = basePath + "/core/editRoomAreaOnTime.json";
     return '<a href="#" name="roomAreaForEdit-' + roomId + '" data-type="text" data-pk="'
-        + roomId + '" data-url="' + postEditValUrl + '" data-title="输入房间面积:">' + currVal + '</a>';
-}
-
-// 增加部门分类规划面积可编辑操作
-function buildEditInfoForPlanArea(currVal, deptTypeId) {
-    var postEditValUrl = basePath + "/core/editPlanAreaValOnTime.json";
-    return '<a href="#" name="planAreaForEdit-' + deptTypeId + '" data-type="text" data-pk="'
-        + deptTypeId + '" data-url="' + postEditValUrl + '" data-title="输入规划面积:">' + currVal + '</a>';
+        + roomId + '" data-url="' + postEditValUrl + '" data-title="输入设计房间面积:">' + currVal + '</a>';
 }
 // 增加区域操作信息
 function buildOperInfoForAreaTopLevel(areaId, areaName, areaCode, note) {
@@ -186,12 +206,22 @@ function buildOperInfoForAreaSubLevel(roomId, roomCode, roomName, roomCnt, roomA
 // 编辑区域信息
 function modAreaInfo(areaId, areaName, areaCode, note) {
     currAreaId = areaId;
+
+    // 格式化区域编码
+    var areaCodes = translateCode(areaCode);
+
     // 初始化信息
-    $('#addAreaInfoForm input[name="officeCode"]').val(areaName);
-    $('#addAreaInfoForm input[name="officeName"]').val(areaCode);
+    $('#addAreaInfoForm span[name="deptCode"]').html(areaCodes[0]);
+    $('#addAreaInfoForm input[name="officeCode"]').val(areaCode);
+    $('#addAreaInfoForm input[name="orderIdx"]').val(areaCodes[1]);
+    $('#addAreaInfoForm input[name="officeName"]').val(areaName);
     $('#addAreaInfoForm input[name="note"]').val(note);
+
     // 保存操作动作
     areaAction = CONST_ACTION_EDIT;
+
+    // 更新标题
+    $('#areaInfoModalLabel').text(MODAL_TITLE_AREA[areaAction]);
 }
 // 删除区域信息
 function delAreaInfo(areaId, areaName) {
@@ -215,13 +245,23 @@ function delAreaInfo(areaId, areaName) {
 // 编辑房间信息
 function modRoomInfo(roomId, roomCode, roomName, roomCnt, roomArea) {
     currRoomId = roomId;
+
+    // 格式化房间编码
+    var roomCodes = translateCode(roomCode);
+
     // 初始化信息
+    $('#addRoomInfoForm span[name="areaCode"]').html(roomCodes[0]);
     $('#addRoomInfoForm input[name="roomCode"]').val(roomCode);
+    $('#addRoomInfoForm input[name="orderIdx"]').val(roomCodes[1]);
     $('#addRoomInfoForm input[name="roomName"]').val(roomName);
-    $('#addRoomInfoForm input[name="cnt"]').val(roomCnt);
-    $('#addRoomInfoForm input[name="areaTotal"]').val(roomArea);
+    $('#addRoomInfoForm input[name="designCnt"]').val(roomCnt);
+    $('#addRoomInfoForm input[name="designAreaSummary"]').val(roomArea);
+
     // 保存操作动作
     roomAction = CONST_ACTION_EDIT;
+
+    // 更新标题
+    $('#roomInfoModalLabel').text(MODAL_TITLE_ROOM[roomAction]);
 }
 // 删除房间信息
 function delRoomInfo(roomId, roomName) {
@@ -245,24 +285,50 @@ function delRoomInfo(roomId, roomName) {
 function resetAreaId(areaId) {
     currAreaId = areaId;
     roomAction = CONST_ACTION_ADD;
+
+    // 更新标题
+    $('#roomInfoModalLabel').text(MODAL_TITLE_ROOM[roomAction]);
+
+    // 获取父级编码
+    var nextRoomCodeInfo = getNextRoomCodeByAreaId();
+    if (nextRoomCodeInfo && nextRoomCodeInfo != "") {
+        var nextRoomCodeInfos = translateCode(nextRoomCodeInfo);
+
+        // 重新设置父级编码
+        $('#addRoomInfoForm span[name="areaCode"]').html(nextRoomCodeInfos[0]);
+
+        // 自动生成下一个区域编号
+        $('#addRoomInfoForm input[name="orderIdx"]').val(nextRoomCodeInfos[1]);
+
+        // 初始化部门编码
+        $('#addRoomInfoForm input[name="roomCode"]').val(nextRoomCodeInfo);
+    }
 }
 // 清空区域信息数据[模态对话框]
 function clearAreaModalData() {
+    $('#addAreaInfoForm span[name="deptCode"]').html('');
     $('#addAreaInfoForm input[name="officeCode"]').val('');
+    $('#addAreaInfoForm input[name="orderIdx"]').val('');
     $('#addAreaInfoForm input[name="officeName"]').val('');
     $('#addAreaInfoForm input[name="note"]').val('');
 }
 // 清空房间信息数据[模态对话框]
 function clearRoomModalData() {
+    $('#addRoomInfoForm span[name="areaCode"]').html('');
     $('#addRoomInfoForm input[name="roomCode"]').val('');
+    $('#addRoomInfoForm input[name="orderIdx"]').val('');
     $('#addRoomInfoForm input[name="roomName"]').val('');
-    $('#addRoomInfoForm input[name="cnt"]').val('');
-    $('#addRoomInfoForm input[name="areaTotal"]').val('');
+    $('#addRoomInfoForm input[name="designCnt"]').val('');
+    $('#addRoomInfoForm input[name="designAreaSummary"]').val('');
 }
 // 新增区域信息
 function addAreaInfo() {
     var areaInfoForm = $('#addAreaInfoForm');
     var linkUrlForAreaInfo = areaInfoForm.attr('action');
+
+    // 重新格式化区域编码
+    var officeCode = $('#addAreaInfoForm span[name="deptCode"]').text() + $('#addAreaInfoForm input[name="orderIdx"]').val();
+    $('#addAreaInfoForm input[name="officeCode"]').val(officeCode);
 
     var submitData = areaInfoForm.serialize();
     var appendData = "&projId=" + projId + "&deptTypeId=" + currDeptTypeId
@@ -281,6 +347,10 @@ function addAreaInfo() {
 function addRoomInfo() {
     var roomInfoForm = $('#addRoomInfoForm');
     var linkUrlForRoomInfo = roomInfoForm.attr('action');
+
+    // 重新格式化区域编码
+    var roomCode = $('#addRoomInfoForm span[name="areaCode"]').text() + $('#addRoomInfoForm input[name="orderIdx"]').val();
+    $('#addRoomInfoForm input[name="roomCode"]').val(roomCode);
 
     var submitData = roomInfoForm.serialize();
     var appendData = "&projId=" + projId + "&deptTypeId=" + currDeptTypeId
@@ -361,4 +431,61 @@ function refreshDeptDesignAreaTotalVal() {
  *   - 页面修改部门分类规则面积占比显示
  *   - 页面修改规划面积总计显示值
  *********************************************************************************************/
+function getNextAreaCodeByDeptId() {
+    var getNextAreaCodeByDeptIdUrl = basePath + "/core/getNextAreaCodeByDeptId.json?deptId=" + currDeptId;
+    var outData = synGet(getNextAreaCodeByDeptIdUrl);
+    var deptCode;
+    if (outData && outData.retCode == RET_CODE_SUCC) {
+        deptCode = outData.retExtInfo;
+    }
+    return deptCode;
+}
+function checkAndFormatCodeForArea(item) {
+    var currCode = $(item).parent().find('input[type="hidden"]').val();
+    var areaCodes = translateCode(currCode);
 
+    var currVal = $(item).val();
+    if (currVal != areaCodes[1]) {
+        var checkAreaCodeUrl = 'areaCodeExist.json';
+        var submitData = 'deptId=' + currDeptId + "&orderIdx=" + currVal;
+
+        $.post(checkAreaCodeUrl, submitData, function (outData) {
+            if (outData.retCode == RET_CODE_SUCC) {
+                Ewin.alert(outData.retMsg).on(function () {
+                    $('#addAreaInfoForm input[name="orderIdx"]').val(areaCodes[1]);
+                });
+            } else {
+                autoFormatNumber(item);
+            }
+        }, "json");
+    }
+}
+function getNextRoomCodeByAreaId() {
+    var getNextRoomCodeByAreaIdUrl = basePath + "/core/getNextRoomCodeByAreaId.json?areaId=" + currAreaId;
+    var outData = synGet(getNextRoomCodeByAreaIdUrl);
+    var areaCode;
+    if (outData && outData.retCode == RET_CODE_SUCC) {
+        areaCode = outData.retExtInfo;
+    }
+    return areaCode;
+}
+function checkAndFormatCodeForRoom(item) {
+    var currCode = $(item).parent().find('input[type="hidden"]').val();
+    var roomCodes = translateCode(currCode);
+
+    var currVal = $(item).val();
+    if (currVal != roomCodes[1]) {
+        var checkRoomCodeUrl = 'areaCodeExist.json';
+        var submitData = 'areaId=' + currAreaId + "&orderIdx=" + currVal;
+
+        $.post(checkRoomCodeUrl, submitData, function (outData) {
+            if (outData.retCode == RET_CODE_SUCC) {
+                Ewin.alert(outData.retMsg).on(function () {
+                    $('#addRoomInfoForm input[name="orderIdx"]').val(roomCodes[1]);
+                });
+            } else {
+                autoFormatNumber(item);
+            }
+        }, "json");
+    }
+}

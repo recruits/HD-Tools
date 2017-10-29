@@ -467,4 +467,9 @@
     where dept_type_id = #{deptTypeId,jdbcType=BIGINT}
     order by ID, order_idx
   </select>
+  <select id="getNextDeptCode" resultType="short" parameterType="Long">
+    select max(order_idx)
+    from department
+    where dept_type_id = #{deptTypeId,jdbcType=BIGINT}
+  </select>
 </mapper>

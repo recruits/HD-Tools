@@ -113,4 +113,12 @@ public interface RoomInfoMapper {
      * @return
      */
     RoomSumyModel loadCurrRoomTitle(Map<String, Long> inParams);
+
+    /**
+     * 获取当前区域的最大房间编号
+     *
+     * @param areaId
+     * @return
+     */
+    Short getMaxRoomCodeByAreaId(Long areaId);
 }

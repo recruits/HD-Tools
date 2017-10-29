@@ -2,7 +2,26 @@
 var RET_CODE_SUCC = '0000';
 var CONST_ACTION_ADD = 'add';
 var CONST_ACTION_EDIT = 'edit';
+var CONST_ACTION_DEL = 'del';
 var CONST_TC_NAME = 'typeCode';
+
+var CONST_INPUT_TYPE_RADIO = 'radio';
+var CONST_INPUT_TYPE_CHECKBOX = 'checkbox';
+
+var CONST_CODE_SEPRATOR = '-';
+
+var MODAL_TITLE_DEPT = {
+    'add': "新增部门信息",
+    'edit': "编辑部门信息"
+};
+var MODAL_TITLE_AREA = {
+    'add': "新增区域信息",
+    'edit': "编辑区域信息"
+};
+var MODAL_TITLE_ROOM = {
+    'add': "新增房间信息",
+    'edit': "编辑房间信息"
+};
 // ---------- 常量对象，使用小写、下划线分隔
 // 配置常量对象，命名以 cfg 开始
 var cfg_dt_lang = {
@@ -174,4 +193,56 @@ function fix2(val) {
         return Math.round(val * 100) / 100;
     }
     return 0;
+}
+
+function autoFormatNumber(item) {
+    var currVal = $(item).val();
+    if (currVal && currVal < 10) {
+        $(item).val('0' + parseInt(currVal));
+    }
+}
+
+function translateCode(currCode) {
+    var returnData = [];
+    if (currCode && currCode.length > 1) {
+        var sepratorIdx = currCode.lastIndexOf(CONST_CODE_SEPRATOR);
+        var codePrefix = currCode.substr(0, sepratorIdx + 1);
+        var codeIndex = currCode.substr(sepratorIdx + 1);
+        if (codeIndex && codeIndex < 10) {
+            codeIndex = '0' + parseInt(codeIndex);
+        }
+        returnData.push(codePrefix);
+        returnData.push(codeIndex);
+    }
+    return returnData;
+}
+
+// 同步的POST方法
+function synPost(postUrl, submitData) {
+    var outData;
+    $.ajax({
+        url: postUrl,
+        type: 'POST',
+        data: submitData,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            outData = data;
+        }
+    });
+    return outData;
+}
+// 同步的GET方法
+function synGet(getUrl) {
+    var outData;
+    $.ajax({
+        url: getUrl,
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            outData = data;
+        }
+    });
+    return outData;
 }

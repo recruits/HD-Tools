@@ -1,6 +1,7 @@
 package com.chilicool.hdtools.controller;
 
 import com.chilicool.hdtools.common.BusiConst;
+import com.chilicool.hdtools.common.ErrorMsg;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.*;
@@ -228,6 +229,28 @@ public class CoreController {
         return resultBase;
     }
 
+    @RequestMapping(value = "/deptCodeExist.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase deptCodeExist(Long deptTypeId, Short orderIdx) {
+        ResultBase resultBase = new ResultBase();
+        boolean codeExist = projDeptInfoService.deptCodeExist(deptTypeId, orderIdx);
+        if (codeExist) {
+            resultBase.setRetMsg(ErrorMsg.ERROR_DEPT_CODE_HAS_EXIST);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/getNextDeptCode.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase getNextDeptCode(Long deptTypeId) {
+        ResultBase resultBase = new ResultBase();
+        Short nextDeptCode = projDeptInfoService.getNextDeptCode(deptTypeId);
+        resultBase.setRetExtInfo(nextDeptCode.toString());
+        return resultBase;
+    }
     /******************************* 开始部门详情页面服务 ************************************/
     @RequestMapping(value = "/loadAllAreaInfo.json", method = RequestMethod.GET)
     @ResponseBody
@@ -324,6 +347,77 @@ public class CoreController {
         return resultBase;
     }
 
+    /**
+     * 获取当前部门的下一个区域编码
+     *
+     * @param deptId
+     * @return
+     */
+    @RequestMapping(value = "/getNextAreaCodeByDeptId.json", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBase getNextAreaCodeByDeptId(Long deptId){
+        ResultBase resultBase = new ResultBase();
+        String nextAreaIdWithDeptId = projAreaInfoService.getNextAreaCodeByDeptId(deptId);
+        resultBase.setRetExtInfo(nextAreaIdWithDeptId);
+        return resultBase;
+    }
+
+    /**
+     * 判断区域编号是否存在
+     *
+     * @param deptId
+     * @param orderIdx
+     * @return
+     */
+    @RequestMapping(value = "/areaCodeExist.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase areaCodeExist(Long deptId, Short orderIdx){
+        ResultBase resultBase = new ResultBase();
+        boolean codeExist = projAreaInfoService.areaCodeExist(deptId, orderIdx);
+        if (codeExist) {
+            resultBase.setRetMsg(ErrorMsg.ERROR_AREA_CODE_HAS_EXIST);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
+        return resultBase;
+    }
+
+    /**
+     * 获取当前区域的下一个房间编码
+     *
+     * @param areaId
+     * @return
+     */
+    @RequestMapping(value = "/getNextRoomCodeByAreaId.json", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBase getNextRoomCodeByAreaId(Long areaId){
+        ResultBase resultBase = new ResultBase();
+        String nextAreaIdWithDeptId = projAreaInfoService.getNextRoomCodeByAreaId(areaId);
+        resultBase.setRetExtInfo(nextAreaIdWithDeptId);
+        return resultBase;
+    }
+
+    /**
+     * 判断房间编号是否存在
+     *
+     * @param areaId
+     * @param orderIdx
+     * @return
+     */
+    @RequestMapping(value = "/roomCodeExist.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase roomCodeExist(Long areaId, Short orderIdx){
+        ResultBase resultBase = new ResultBase();
+        boolean codeExist = projAreaInfoService.roomCodeExist(areaId, orderIdx);
+        if (codeExist) {
+            resultBase.setRetMsg(ErrorMsg.ERROR_AREA_CODE_HAS_EXIST);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
+        return resultBase;
+    }
     /******************************* 开始房间数据页面服务 ************************************/
     @RequestMapping(value = "/loadAllRoomSpecs.json", method = RequestMethod.GET)
     @ResponseBody
@@ -345,9 +439,9 @@ public class CoreController {
 
     @RequestMapping(value = "/submitRoomDataOnTime.json", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBase submitRoomDataOnTime(Long roomId, String value) {
+    public ResultBase submitRoomDataOnTime(Long roomId, String value, String action) {
         ResultBase resultBase = new ResultBase();
-        projRoomInfoService.submitRoomDataOnTime(roomId, value);
+        projRoomInfoService.submitRoomDataOnTime(roomId, value, action);
         return resultBase;
     }
 }

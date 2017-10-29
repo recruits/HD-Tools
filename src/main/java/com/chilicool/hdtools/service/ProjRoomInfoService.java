@@ -38,5 +38,5 @@ public interface ProjRoomInfoService {
      * @param roomId
      * @param val
      */
-    public void submitRoomDataOnTime(Long roomId, String val);
+    public void submitRoomDataOnTime(Long roomId, String val, String action);
 }

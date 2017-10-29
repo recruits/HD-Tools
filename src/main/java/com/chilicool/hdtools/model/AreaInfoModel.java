@@ -9,9 +9,12 @@ public class AreaInfoModel {
     private Integer level;
     private String areaName;
     private String areaCode;
-    private Integer cnt;
-    private Double areaTotal;
-    private Double areaSummary;
+    private Integer planCnt;
+    private Double planAreaTotal;
+    private Double planAreaSummary;
+    private Integer designCnt;
+    private Double designAreaTotal;
+    private Double designAreaSummary;
     private String note;
 
     public Long getId() {
@@ -54,28 +57,52 @@ public class AreaInfoModel {
         this.areaCode = areaCode;
     }
 
-    public Integer getCnt() {
-        return cnt;
+    public Integer getPlanCnt() {
+        return planCnt;
     }
 
-    public void setCnt(Integer cnt) {
-        this.cnt = cnt;
+    public void setPlanCnt(Integer planCnt) {
+        this.planCnt = planCnt;
     }
 
-    public Double getAreaTotal() {
-        return areaTotal;
+    public Double getPlanAreaTotal() {
+        return planAreaTotal;
     }
 
-    public void setAreaTotal(Double areaTotal) {
-        this.areaTotal = areaTotal;
+    public void setPlanAreaTotal(Double planAreaTotal) {
+        this.planAreaTotal = planAreaTotal;
     }
 
-    public Double getAreaSummary() {
-        return areaSummary;
+    public Double getPlanAreaSummary() {
+        return planAreaSummary;
     }
 
-    public void setAreaSummary(Double areaSummary) {
-        this.areaSummary = areaSummary;
+    public void setPlanAreaSummary(Double planAreaSummary) {
+        this.planAreaSummary = planAreaSummary;
+    }
+
+    public Integer getDesignCnt() {
+        return designCnt;
+    }
+
+    public void setDesignCnt(Integer designCnt) {
+        this.designCnt = designCnt;
+    }
+
+    public Double getDesignAreaTotal() {
+        return designAreaTotal;
+    }
+
+    public void setDesignAreaTotal(Double designAreaTotal) {
+        this.designAreaTotal = designAreaTotal;
+    }
+
+    public Double getDesignAreaSummary() {
+        return designAreaSummary;
+    }
+
+    public void setDesignAreaSummary(Double designAreaSummary) {
+        this.designAreaSummary = designAreaSummary;
     }
 
     public String getNote() {

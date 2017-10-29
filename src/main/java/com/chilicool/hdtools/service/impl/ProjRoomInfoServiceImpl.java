@@ -48,15 +48,19 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
     }
 
     @Override
-    public void submitRoomDataOnTime(Long roomId, String val) {
+    public void submitRoomDataOnTime(Long roomId, String val, String action) {
         if (StringUtils.isNotEmpty(val) && null != roomId && roomId != 0L) {
             RoomDataDetail roomDataDetail = buildRoomDataDetail(roomId, val);
 
             // 判断参数类型
             DataModuleEnum dataModuleEnum = dataModuleEnumMapper.selectByPrimaryKey(roomDataDetail.getEnumId());
             String selType = dataModuleEnum.getSelectType();
-            if (StringUtils.isNotEmpty(selType) || BusiConst.SelType.CHECKBOX.equals(selType)) {
-                saveCheckboxValue(roomDataDetail);
+            if (StringUtils.isNotEmpty(selType) && BusiConst.SelType.CHECKBOX.equals(selType)) {
+                if (StringUtils.isNotEmpty(action) && BusiConst.Action.DEL.equals(action)) {
+                    delCheckboxValue(roomDataDetail);
+                } else {
+                    saveCheckboxValue(roomDataDetail);
+                }
             } else {
                 saveRadioValue(roomDataDetail);
             }
@@ -66,12 +70,23 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
     private void saveRadioValue(RoomDataDetail roomDataDetail) {
         delAllParamsByEnumId(roomDataDetail.getRoomId(), roomDataDetail.getEnumId());
         //  radio-先清除全部参数，然后重新插入
+        saveRoomDetailInfo(roomDataDetail);
+    }
+
+    private void saveRoomDetailInfo(RoomDataDetail roomDataDetail) {
         roomDataDetailMapper.insert(roomDataDetail);
     }
 
     private void saveCheckboxValue(RoomDataDetail roomDataDetail) {
-        //  checkbox-先清除全部参数，然后重新插入
-        // 暂未实现
+        boolean paramExist = ifParamExist(roomDataDetail.getRoomId(), roomDataDetail.getModuleParam());
+        if (!paramExist) {
+            // 先判断是否已经存在，不存在再增加
+            saveRoomDetailInfo(roomDataDetail);
+        }
+    }
+
+    private void delCheckboxValue(RoomDataDetail roomDataDetail) {
+        delAllParamsByParamValue(roomDataDetail.getRoomId(), roomDataDetail.getModuleParam());
     }
 
     private void delAllParamsByEnumId(Long roomId, Long enumId) {
@@ -80,10 +95,21 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
         roomDataDetailMapper.deleteByExample(example);
     }
 
-    private void delAllParamsByModuleId(Long roomId, Long moduleId) {
-        RoomDataDetailExample example = new RoomDataDetailExample();
-        example.createCriteria().andRoomIdEqualTo(roomId).andModuleIdEqualTo(moduleId);
+    private void delAllParamsByParamValue(Long roomId, String paramVal) {
+        RoomDataDetailExample example = buildParamDetailExampleWithParamVal(roomId, paramVal);
         roomDataDetailMapper.deleteByExample(example);
+    }
+
+    private boolean ifParamExist(Long roomId, String paramVal) {
+        RoomDataDetailExample example = buildParamDetailExampleWithParamVal(roomId, paramVal);
+        List<RoomDataDetail> roomDataDetails = roomDataDetailMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(roomDataDetails) && roomDataDetails.size() > 0;
+    }
+
+    private RoomDataDetailExample buildParamDetailExampleWithParamVal(Long roomId, String paramVal){
+        RoomDataDetailExample example = new RoomDataDetailExample();
+        example.createCriteria().andRoomIdEqualTo(roomId).andModuleParamEqualTo(paramVal);
+        return example;
     }
 
     /**

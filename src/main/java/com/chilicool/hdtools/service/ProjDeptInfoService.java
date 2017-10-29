@@ -140,4 +140,21 @@ public interface ProjDeptInfoService {
      * @param designArea
      */
     public void updateDesignAreaValForDeptOnTime(Long deptId, Long deptTypeId, Double designArea);
+
+    /**
+     * 部门编号是否已经存在
+     *
+     * @param deptTypeId
+     * @param orderIdx
+     * @return
+     */
+    public boolean deptCodeExist(Long deptTypeId, Short orderIdx);
+
+    /**
+     * 获取下一个部门编码
+     *
+     * @param deptTypeId
+     * @return
+     */
+    public Short getNextDeptCode(Long deptTypeId);
 }

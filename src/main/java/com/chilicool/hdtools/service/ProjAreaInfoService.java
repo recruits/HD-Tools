@@ -101,4 +101,38 @@ public interface ProjAreaInfoService {
      * @param areaRatio
      */
     public void editDeptDesignAreaRatioValOnTime(Long areaSumyId, Double areaRatio);
+
+    /**
+     * 获取下一个区域编号，同时返回部门编号
+     *
+     * @param deptId
+     * @return
+     */
+    public String getNextAreaCodeByDeptId(Long deptId);
+
+    /**
+     * 判断当前区域编号是否存在
+     *
+     * @param deptId
+     * @param orderIdx
+     * @return
+     */
+    public boolean areaCodeExist(Long deptId, Short orderIdx);
+
+    /**
+     * 获取下一个区域编号，同时返回部门编号
+     *
+     * @param areaId
+     * @return
+     */
+    public String getNextRoomCodeByAreaId(Long areaId);
+
+    /**
+     * 判断当前区域编号是否存在
+     *
+     * @param areaId
+     * @param orderIdx
+     * @return
+     */
+    public boolean roomCodeExist(Long areaId, Short orderIdx);
 }

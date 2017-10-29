@@ -22,4 +22,8 @@ public class ErrorMsg {
     public static final String ERROR_MODEL_ENUM_HAS_EXIST = "该类型参数已存在，请修改类型参数名称";
 
     public static final String ERROR_ENUM_PARAM_HAS_EXIST = "该参数规格已存在，请修改参数规格名称";
+
+    public static final String ERROR_DEPT_CODE_HAS_EXIST = "该部门编码已经存在，请使用新的编码";
+
+    public static final String ERROR_AREA_CODE_HAS_EXIST = "该区域编码已经存在，请使用新的编码";
 }

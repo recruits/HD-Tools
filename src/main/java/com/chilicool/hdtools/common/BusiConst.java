@@ -4,6 +4,8 @@ package com.chilicool.hdtools.common;
  * Created by chilicool on 2017/9/29.
  */
 public class BusiConst {
+    public static final String CONST_CODE_SEPRATOR = "-";
+
     public interface SelType {
         String RADIO = "radio";
         String CHECKBOX = "checkbox";
@@ -18,6 +20,7 @@ public class BusiConst {
     public interface Action{
         String ADD = "add";
         String EDIT = "edit";
+        String DEL = "del";
     }
 
     // 项目阶段

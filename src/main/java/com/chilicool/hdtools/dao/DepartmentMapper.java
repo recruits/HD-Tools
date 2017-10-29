@@ -111,4 +111,11 @@ public interface DepartmentMapper {
      */
     List<PlanAreaModel> loadAllDeptDesignAreaInfoModel(Long deptTypeId);
 
+    /**
+     * 获取下一个部门编码编号
+     *
+     * @param deptTypeId
+     * @return
+     */
+    Short getNextDeptCode(Long deptTypeId);
 }

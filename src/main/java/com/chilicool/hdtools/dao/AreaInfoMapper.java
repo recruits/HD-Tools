@@ -112,7 +112,7 @@ public interface AreaInfoMapper {
      * @param inParams
      * @return
      */
-    List<PlanAreaModel> loadAllAreaSummaryModel(Map<String, Object> inParams);
+    List<PlanAreaModel> loadAllDesignAreaTotalModel(Map<String, Object> inParams);
 
     /**
      * 查询部门下的所有区域信息
@@ -121,4 +121,12 @@ public interface AreaInfoMapper {
      * @return
      */
     List<Long> loadAllAreaIdByDeptId(Long deptId);
+
+    /**
+     * 获取最大的区域编号
+     *
+     * @param deptId
+     * @return
+     */
+    Short getMaxAreaCodeByDeptId(Long deptId);
 }

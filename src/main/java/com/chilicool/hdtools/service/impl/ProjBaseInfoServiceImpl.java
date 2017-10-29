@@ -69,7 +69,7 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
 //            projBaseInfo.setId(Long.valueOf(projId));
 //        }
 
-        if (ifBaseInfoExist(projBaseInfo.getId())) {
+        if (ifBaseInfoExist(projId)) {
             projBaseInfoMapper.updateByPrimaryKeySelective(projBaseInfo);
         } else {
             projBaseInfoMapper.insert(projBaseInfo);
@@ -111,7 +111,7 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
             return false;
         } else {
             ProjBaseInfo projBaseInfo = projBaseInfoMapper.selectByPrimaryKey(id);
-            return null != projBaseInfo && id == projBaseInfo.getId();
+            return null != projBaseInfo && id.equals(projBaseInfo.getId());
         }
     }
 

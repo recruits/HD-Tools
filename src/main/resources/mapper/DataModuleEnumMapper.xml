@@ -379,7 +379,7 @@
   <select id="getAllModuleEnumInfo" parameterType="Long" resultMap="RoomParamMap">
     select id CODE,
             enum_name NAME,
-            'radio' TYPE,
+            select_type TYPE,
             2 LEVEL
     from data_module_enum
    where module_id = #{moduleId,jdbcType=BIGINT}

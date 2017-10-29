@@ -68,16 +68,19 @@
     <div class="m-5">
         <div class="row">
             <div class="col-xs-1">
-                <button class="btn btn-primary btn-xs" id="addNewAreaInfo">新增区域</button>
+                <button class="btn btn-primary btn-xs" id="addNewAreaInfoBtn">新增区域</button>
             </div>
         </div>
         <table id="deptDetailTab" class="table tree table-bordered table-striped table-condensed">
             <thead>
                 <th>序号</th>
                 <th>房间/区域名称</th>
-                <th>数量</th>
-                <th>净使用面积</th>
-                <th>使用面积小计</th>
+                <th>规划数量</th>
+                <th>规划使用面积</th>
+                <th>规划面积小计</th>
+                <th>设计数量</th>
+                <th>设计使用面积</th>
+                <th>设计面积小计</th>
                 <th>注释</th>
                 <th>操作</th>
             </thead>
@@ -93,7 +96,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="areaInfoModalLabel">新增区域信息</h4>
+                <h4 class="modal-title" id="areaInfoModalLabel"></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -101,7 +104,14 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">区域编码<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="text" name="officeCode" class="form-control" placeholder="请输入区域编码" required value=""/>
+                                <#--<input type="text" name="officeCode" class="form-control" placeholder="请输入区域编码" required value=""/>-->
+                                <div class="input-group">
+                                    <input type="hidden" name="officeCode">
+                                    <span class="input-group-addon" name="deptCode"></span>
+                                    <input type="number" name="orderIdx" min="1" max="99" class="form-control"
+                                           aria-describedby="sizing-addon1" value=""
+                                           onchange="checkAndFormatCodeForArea(this)">
+                                </div>
                             </div>
                         </div>
 
@@ -135,7 +145,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="roomInfoModalLabel">新增房间信息</h4>
+                <h4 class="modal-title" id="roomInfoModalLabel"></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -143,7 +153,14 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">房间编码<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="text" name="roomCode" class="form-control" placeholder="请输入房间编码" required value=""/>
+                                <#--<input type="text" name="roomCode" class="form-control" placeholder="请输入房间编码" required value=""/>-->
+                                <div class="input-group">
+                                    <input type="hidden" name="roomCode">
+                                    <span class="input-group-addon" name="areaCode"></span>
+                                    <input type="number" name="orderIdx" min="1" max="99" class="form-control"
+                                           aria-describedby="sizing-addon1" value=""
+                                           onchange="checkAndFormatCodeForRoom(this)">
+                                </div>
                             </div>
                         </div>
 
@@ -157,14 +174,14 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">房间个数<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="number" name="cnt" class="form-control" placeholder="请输入房间个数" required value=""/>
+                                <input type="number" name="designCnt" class="form-control" placeholder="请输入房间个数" required value=""/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-xs-3 control-label">房间面积<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="number" name="areaTotal" class="form-control" placeholder="请输入房间面积" required value=""/>
+                                <input type="number" name="designAreaSummary" class="form-control" placeholder="请输入房间面积" required value=""/>
                             </div>
                         </div>
                     </form>

@@ -342,6 +342,25 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
         updateDesignAreaValForDeptOnTime(department);
     }
 
+    @Override
+    public boolean deptCodeExist(Long deptTypeId, Short orderIdx) {
+        DepartmentExample example = new DepartmentExample();
+        example.createCriteria().andDeptTypeIdEqualTo(deptTypeId).andOrderIdxEqualTo(orderIdx);
+        List<Department> departments = departmentMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(departments) && departments.size() > 0;
+    }
+
+    @Override
+    public Short getNextDeptCode(Long deptTypeId) {
+        Short nextDeptCode = departmentMapper.getNextDeptCode(deptTypeId);
+        if(null == nextDeptCode || 0 == nextDeptCode){
+            nextDeptCode = 1;
+        } else {
+            nextDeptCode++;
+        }
+        return nextDeptCode;
+    }
+
     /**
      * 使用部门分类编号获取项目编号
      *

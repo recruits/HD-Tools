@@ -54,7 +54,7 @@
         <table schema="" tableName="ROOM_DATA_DETAIL" domainObjectName="RoomDataDetail"></table>
         -->
 
-        <table schema="" tableName="AREA_SUMMARY" domainObjectName="AreaSummary"></table>
+        <table schema="" tableName="ROOM_INFO" domainObjectName="RoomInfo"></table>
 
     </context>
 </generatorConfiguration>

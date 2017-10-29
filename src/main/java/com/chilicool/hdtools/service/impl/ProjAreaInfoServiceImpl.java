@@ -9,6 +9,7 @@ import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.ProjAreaInfoService;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
 import com.chilicool.hdtools.service.busi.AreaSummaryService;
+import com.chilicool.hdtools.service.core.areainfo.AreaInfoService;
 import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
@@ -43,6 +44,8 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     private ProjDeptInfoService projDeptInfoService;
     @Autowired
     private DeptDelService deptDelService;
+    @Autowired
+    private AreaInfoService areaInfoService;
 
     @Override
     public List<AreaInfoModel> loadAllAreaInfo(Long deptId) {
@@ -251,22 +254,22 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         deptDelService.delRoomByRoomId(roomId);
 
         // 更新所属区域面积合计值
-        updateAreaSummaryVal(roomInfo.getAreaId(), roomInfo.getDeptId(), roomInfo.getDeptTypeId());
+        updateAreaTotalVal(roomInfo.getAreaId(), roomInfo.getDeptId(), roomInfo.getDeptTypeId());
     }
 
     @Override
     public void editRoomCntValOnTime(Long roomId, Integer roomCnt) {
         RoomInfo roomInfo = roomInfoMapper.selectByPrimaryKey(roomId);
-        roomInfo.setCnt(roomCnt);
-        autoCaculateAreaSummary(roomInfo);
+        roomInfo.setDesignCnt(roomCnt);
+        autoCaculateAreaTotal(roomInfo);
         saveOrUpdateRoomInfo(roomInfo, false);
     }
 
     @Override
     public void editRoomAreaValOnTime(Long roomId, Double roomArea) {
         RoomInfo roomInfo = roomInfoMapper.selectByPrimaryKey(roomId);
-        roomInfo.setAreaTotal(roomArea);
-        autoCaculateAreaSummary(roomInfo);
+        roomInfo.setDesignAreaSummary(roomArea);
+        autoCaculateAreaTotal(roomInfo);
         saveOrUpdateRoomInfo(roomInfo, false);
     }
 
@@ -317,6 +320,62 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
     }
 
+    @Override
+    public String getNextAreaCodeByDeptId(Long deptId) {
+        String nextAreaCode = "";
+        if (null != deptId && 0 != deptId) {
+            Department department = departmentService.loadDepartmentByPK(deptId);
+            Short nextAreaId = areaInfoMapper.getMaxAreaCodeByDeptId(deptId);
+
+            nextAreaCode = department.getDeptCode();
+            nextAreaCode += BusiConst.CONST_CODE_SEPRATOR;
+
+            if (null == nextAreaId || 0 == nextAreaId) {
+                nextAreaCode += "01";
+            } else {
+                nextAreaId++;
+                nextAreaCode += (nextAreaId < 10) ? "0" + nextAreaId : nextAreaId;
+            }
+        }
+        return nextAreaCode;
+    }
+
+    @Override
+    public boolean areaCodeExist(Long deptId, Short orderIdx) {
+        AreaInfoExample example = new AreaInfoExample();
+        example.createCriteria().andDeptIdEqualTo(deptId).andOrderIdxEqualTo(orderIdx);
+        List<AreaInfo> areaInfos = areaInfoMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(areaInfos) && areaInfos.size() > 0;
+    }
+
+    @Override
+    public String getNextRoomCodeByAreaId(Long areaId) {
+        String nextRoomCode = "";
+        if (null != areaId && 0 != areaId) {
+            AreaInfo areaInfo = areaInfoService.loadAreaInfoByPK(areaId);
+            Short nextRoomId = roomInfoMapper.getMaxRoomCodeByAreaId(areaId);
+
+            nextRoomCode = areaInfo.getOfficeCode();
+            nextRoomCode += BusiConst.CONST_CODE_SEPRATOR;
+
+            if (null == nextRoomId || 0 == nextRoomId) {
+                nextRoomCode += "01";
+            } else {
+                nextRoomId++;
+                nextRoomCode += (nextRoomId < 10) ? "0" + nextRoomId : nextRoomId;
+            }
+        }
+        return nextRoomCode;
+    }
+
+    @Override
+    public boolean roomCodeExist(Long areaId, Short orderIdx) {
+        RoomInfoExample example = new RoomInfoExample();
+        example.createCriteria().andAreaIdEqualTo(areaId).andOrderIdxEqualTo(orderIdx);
+        List<RoomInfo> roomInfos = roomInfoMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(roomInfos) && roomInfos.size() > 0;
+    }
+
     private void updateAreaSummaryByPk(AreaSummary areaSummary) {
         areaSummaryMapper.updateByPrimaryKeySelective(areaSummary);
     }
@@ -327,41 +386,41 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
 
             roomInfoMapper.insert(roomInfo);
         } else {
-            autoCaculateAreaSummary(roomInfo);
+            autoCaculateAreaTotal(roomInfo);
 
             roomInfoMapper.updateByPrimaryKeySelective(roomInfo);
         }
 
         // 更新所属区域面积合计值
-        updateAreaSummaryVal(roomInfo.getAreaId(), roomInfo.getDeptId(), roomInfo.getDeptTypeId());
+        updateAreaTotalVal(roomInfo.getAreaId(), roomInfo.getDeptId(), roomInfo.getDeptTypeId());
     }
 
     // 追加房间信息
     private void appendRoomInfoForInsert(RoomInfo roomInfo) {
         // 追加创建时间
         roomInfo.setCreateTime(new Date());
-        autoCaculateAreaSummary(roomInfo);
+        autoCaculateAreaTotal(roomInfo);
     }
 
     // 设置面积小计
-    private void autoCaculateAreaSummary(RoomInfo roomInfo) {
-        Integer cnt = roomInfo.getCnt();
-        Double areaTotal = roomInfo.getAreaTotal();
-        if (null != areaTotal) {
-            roomInfo.setAreaSummary(cnt * areaTotal);
+    private void autoCaculateAreaTotal(RoomInfo roomInfo) {
+        Integer cnt = roomInfo.getDesignCnt();
+        Double areaSummary = roomInfo.getDesignAreaSummary();
+        if (null != areaSummary) {
+            roomInfo.setDesignAreaTotal(cnt * areaSummary);
         } else {
-            roomInfo.setAreaSummary(new Double(BusiConst.DobuleVal.zeroVal));
+            roomInfo.setDesignAreaTotal(new Double(BusiConst.DobuleVal.zeroVal));
         }
     }
 
-    private void updateAreaSummaryVal(Long areaId, Long deptId, Long deptTypeId) {
-        Double areaSummary = getAllAreaSummaryByAreaId(areaId);
+    private void updateAreaTotalVal(Long areaId, Long deptId, Long deptTypeId) {
+        Double areaTotal = getAllDesignAreaTotalByAreaId(areaId);
 
         AreaInfo areaInfo = new AreaInfo();
         areaInfo.setId(areaId);
         areaInfo.setDeptId(deptId);
         areaInfo.setDeptTypeId(deptTypeId);
-        areaInfo.setAreaSummary(areaSummary);
+        areaInfo.setDesignAreaTotal(areaTotal);
 
         saveOrUpdateAreaInfo(areaInfo, false);
     }
@@ -405,7 +464,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         return planAreaHolder.getPlanAreaTotal();
     }
 
-    private Double getAllAreaSummaryByAreaId(Long areaId) {
+    private Double getAllDesignAreaTotalByAreaId(Long areaId) {
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("areaId", areaId);
         inParams.put("level", 2);
@@ -414,7 +473,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     }
 
     private PlanAreaHolder buildPlanAreaHolder(Map<String, Object> inParams) {
-        List<PlanAreaModel> planAreaModels = areaInfoMapper.loadAllAreaSummaryModel(inParams);
+        List<PlanAreaModel> planAreaModels = areaInfoMapper.loadAllDesignAreaTotalModel(inParams);
         return new PlanAreaHolder(planAreaModels);
     }
 

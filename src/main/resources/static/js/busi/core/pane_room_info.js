@@ -20,9 +20,10 @@ function initRoomInfo() {
         }
     });
 }
-function updateRoomDataOnTime(val) {
+function updateRoomDataOnTime(val, action) {
     if (currRoomId && currRoomId !== '0') {
-        var postRoomParamUrl = basePath + "/core/submitRoomDataOnTime.json?roomId=" + currRoomId + "&value=" + val;
+        var postRoomParamUrl = basePath + "/core/submitRoomDataOnTime.json?roomId="
+            + currRoomId + "&value=" + val + "&action=" + action;
         $.post(postRoomParamUrl, function (outData) {
             if (outData.retCode == RET_CODE_SUCC) {
                 // 暂时无事可做
@@ -75,7 +76,16 @@ function initRadioAndCheckbox() {
     // 绑定选中事件
     $('#roomDataSpecDiv input').on('ifChecked', function (event) {
         var checkVal = event.target.id;
-        updateRoomDataOnTime(checkVal);
+        updateRoomDataOnTime(checkVal, CONST_ACTION_ADD);
+    });
+    // 绑定取消选中事件
+    $('#roomDataSpecDiv input').on('ifUnchecked', function (event) {
+        var inputType = event.target.type;
+
+        if (inputType == CONST_INPUT_TYPE_CHECKBOX) {
+            var checkVal = event.target.id;
+            updateRoomDataOnTime(checkVal, CONST_ACTION_DEL);
+        }
     });
 }
 function renderRoomDataSpecs() {
@@ -129,7 +139,7 @@ function buildPaneBodyCont(paneBody, mCode, subItems) {
             enumItem.append(buildEnumTitle(item.name));
             // 枚举参数
             var paramItem = $('<div class="row"></div>');
-            buildEnumParams(paramItem, mCode, item.code, item.subs);
+            buildEnumParams(paramItem, mCode, item.code, item.type, item.subs);
             enumItem.append(paramItem);
 
             if(index != itemNum-1){
@@ -148,17 +158,14 @@ function buildEnumTitle(title) {
     return $('<h5>'+title+'</h5>');
 }
 
-function buildEnumParams(enumItem, mCode, eCode, subItems) {
+function buildEnumParams(enumItem, mCode, eCode, eType, subItems) {
     if (subItems != undefined && subItems.length > 0) {
         var currInputName = mCode + "_" + eCode;
         $.each(subItems, function (index, item) {
             var currInputId = currInputName + "_" + item.code;
             var paramInfo = '<div class="col-xs-4" style="margin-bottom: 5px;">'
-                + '<input type="radio" id="' + currInputId
-                + '"name="' + currInputName
-                + '"><lable style="margin-left: 5px;">'
-                + item.name
-                + '</lable></div>';
+                + '<input type="' + eType + '" id="' + currInputId + '"name="' + currInputName
+                + '"><lable style="margin-left: 5px;">' + item.name + '</lable></div>';
             enumItem.append(paramInfo);
         });
     }
