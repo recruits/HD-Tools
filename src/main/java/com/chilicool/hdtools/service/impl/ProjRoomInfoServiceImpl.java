@@ -6,6 +6,7 @@ import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.RoomParamJson;
 import com.chilicool.hdtools.model.RoomSumyModel;
 import com.chilicool.hdtools.service.ProjRoomInfoService;
+import com.chilicool.hdtools.service.core.dictinfo.SpecRoomDataService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
     private RoomDataDetailMapper roomDataDetailMapper;
     @Autowired
     private RoomInfoMapper roomInfoMapper;
+    @Autowired
+    private SpecRoomDataService specRoomDataService;
 
     @Override
     public List<RoomParamJson> loadAllRoomSpecs() {
@@ -67,6 +70,27 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
         }
     }
 
+    @Override
+    public void updateRoomDataBySpecRoomId(Long roomId, Long specRoomId) {
+        // 先清空已保存数据
+        delAllParamsByRoomId(roomId);
+
+        // 加载样板房间参数
+        List<String> roomParams = specRoomDataService.loadAllParamsBySpecRoomId(specRoomId);
+
+        // 更新房间参数
+        saveAllSpecRoomParams(roomId, roomParams);
+    }
+
+    // 保存样板房间所有参数
+    private void saveAllSpecRoomParams(Long roomId, List<String> roomParams) {
+        if (CollectionUtils.isNotEmpty(roomParams)) {
+            for (String currVal : roomParams) {
+                submitRoomDataOnTime(roomId, currVal, BusiConst.Action.ADD);
+            }
+        }
+    }
+
     private void saveRadioValue(RoomDataDetail roomDataDetail) {
         delAllParamsByEnumId(roomDataDetail.getRoomId(), roomDataDetail.getEnumId());
         //  radio-先清除全部参数，然后重新插入
@@ -89,6 +113,12 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
         delAllParamsByParamValue(roomDataDetail.getRoomId(), roomDataDetail.getModuleParam());
     }
 
+    private void delAllParamsByRoomId(Long roomId) {
+        RoomDataDetailExample example = new RoomDataDetailExample();
+        example.createCriteria().andRoomIdEqualTo(roomId);
+        roomDataDetailMapper.deleteByExample(example);
+    }
+
     private void delAllParamsByEnumId(Long roomId, Long enumId) {
         RoomDataDetailExample example = new RoomDataDetailExample();
         example.createCriteria().andRoomIdEqualTo(roomId).andEnumIdEqualTo(enumId);
@@ -106,7 +136,7 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
         return CollectionUtils.isNotEmpty(roomDataDetails) && roomDataDetails.size() > 0;
     }
 
-    private RoomDataDetailExample buildParamDetailExampleWithParamVal(Long roomId, String paramVal){
+    private RoomDataDetailExample buildParamDetailExampleWithParamVal(Long roomId, String paramVal) {
         RoomDataDetailExample example = new RoomDataDetailExample();
         example.createCriteria().andRoomIdEqualTo(roomId).andModuleParamEqualTo(paramVal);
         return example;

@@ -12,7 +12,7 @@
         <div class="form-group">
             <label class="col-xs-1 control-label">项目描述<span class="asterisk">*</span></label>
             <div class="col-xs-9">
-                <input type="text" name="projSubtitle" class="form-control" placeholder="请输入项目别名" required value="${projDesc!}"/>
+                <input type="text" name="projSubtitle" class="form-control" placeholder="请输入项目描述" required value="${projSubtitle!}"/>
             </div>
         </div>
 

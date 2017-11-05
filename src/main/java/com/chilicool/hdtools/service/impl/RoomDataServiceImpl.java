@@ -1,23 +1,17 @@
 package com.chilicool.hdtools.service.impl;
 
-import com.chilicool.hdtools.dao.DataModuleEnumMapper;
-import com.chilicool.hdtools.dao.DataModuleEnumParamMapper;
-import com.chilicool.hdtools.dao.RoomDataModuleMapper;
+import com.chilicool.hdtools.common.BusiConst;
+import com.chilicool.hdtools.dao.*;
 import com.chilicool.hdtools.domain.*;
-import com.chilicool.hdtools.model.DataModuleSimp;
-import com.chilicool.hdtools.model.EnumParamSimp;
-import com.chilicool.hdtools.model.ModuleEnumSimp;
-import com.chilicool.hdtools.model.RoomDataSimp;
+import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.RoomDataService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.chilicool.hdtools.common.ErrorMsg.*;
 
@@ -32,6 +26,10 @@ public class RoomDataServiceImpl implements RoomDataService {
     private DataModuleEnumMapper dataModuleEnumMapper;
     @Autowired
     private DataModuleEnumParamMapper dataModuleEnumParamMapper;
+    @Autowired
+    private SpecRoomDataMapper specRoomDataMapper;
+    @Autowired
+    private SpecDataDetailMapper specDataDetailMapper;
 
     @Override
     public List<RoomDataSimp> getAllRoomDataSimp() {
@@ -47,7 +45,7 @@ public class RoomDataServiceImpl implements RoomDataService {
         List<EnumParamSimp> enumParamSimpList = new ArrayList<>();
         if (StringUtils.isNotEmpty(moduleId) && StringUtils.isNumeric(moduleId)
                 && StringUtils.isNotEmpty(enumId) && StringUtils.isNumeric(enumId)) {
-            Map<String, Object> inParam = new HashMap<String, Object>(){
+            Map<String, Object> inParam = new HashMap<String, Object>() {
                 {
                     put("moduleId", Long.valueOf(moduleId));
                     put("enumId", Long.valueOf(enumId));
@@ -123,6 +121,149 @@ public class RoomDataServiceImpl implements RoomDataService {
 
         DataModuleEnumParamExample example = buildDataModelEnumParamExampleByName(moduleId, enumId, paramName);
         return CollectionUtils.isNotEmpty(dataModuleEnumParamMapper.selectByExample(example));
+    }
+
+    @Override
+    public List<SpecRoomSimple> loadAllSpecRoomDetail() {
+        return specRoomDataMapper.loadAllSpecRoomDetail();
+    }
+
+    @Override
+    public void editSpecRoomData(SpecRoomWithAction specRoomWithAction) {
+        String action = specRoomWithAction.getAction();
+        SpecRoomData specRoomData = new SpecRoomData();
+
+        BeanUtils.copyProperties(specRoomWithAction, specRoomData);
+        if (action.equals(BusiConst.Action.ADD)) {
+            saveOrUpdateSpecRoomData(specRoomData, true);
+        } else if (action.equals(BusiConst.Action.EDIT)) {
+            saveOrUpdateSpecRoomData(specRoomData, false);
+        }
+    }
+
+    @Override
+    public boolean specRoomNameCheck(String specRoomName, String deptTypeCode) {
+        SpecRoomDataExample example = new SpecRoomDataExample();
+        example.createCriteria().andDeptTypeCodeEqualTo(deptTypeCode).andSpecRoomNameEqualTo(specRoomName);
+        List<SpecRoomData> specRoomDataList = specRoomDataMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(specRoomDataList) && specRoomDataList.size() > 0;
+    }
+
+    @Override
+    public List<String> loadCurrRoomDeail(Long specRoomid) {
+        return specDataDetailMapper.loadCurrRoomDeail(specRoomid);
+    }
+
+    @Override
+    public void submitRoomDataOnTime(Long roomId, String val, String action) {
+        if (StringUtils.isNotEmpty(val) && null != roomId && roomId != 0L) {
+            SpecDataDetail specDataDetail = buildRoomDataDetail(roomId, val);
+
+            // 判断参数类型
+            DataModuleEnum dataModuleEnum = dataModuleEnumMapper.selectByPrimaryKey(specDataDetail.getEnumId());
+            String selType = dataModuleEnum.getSelectType();
+            if (StringUtils.isNotEmpty(selType) && BusiConst.SelType.CHECKBOX.equals(selType)) {
+                if (StringUtils.isNotEmpty(action) && BusiConst.Action.DEL.equals(action)) {
+                    delCheckboxValue(specDataDetail);
+                } else {
+                    saveCheckboxValue(specDataDetail);
+                }
+            } else {
+                saveRadioValue(specDataDetail);
+            }
+        }
+    }
+
+    @Override
+    public void delSpecRoomData(Long specRoomId) {
+        // 先删除样板间参数信息
+        delAllSpecDataDetailBySpecRoomId(specRoomId);
+        // 再删除样板间数据
+        delSpecRoomDataByPK(specRoomId);
+    }
+
+    private void delSpecRoomDataByPK(Long specRoomId){
+        specRoomDataMapper.deleteByPrimaryKey(specRoomId);
+    }
+
+    private void delAllSpecDataDetailBySpecRoomId(Long specRoomId) {
+        SpecDataDetailExample example = new SpecDataDetailExample();
+        example.createCriteria().andSpecRoomIdEqualTo(specRoomId);
+        specDataDetailMapper.deleteByExample(example);
+    }
+
+    private void saveRadioValue(SpecDataDetail specDataDetail) {
+        delAllParamsByEnumId(specDataDetail.getSpecRoomId(), specDataDetail.getEnumId());
+        //  radio-先清除全部参数，然后重新插入
+        saveRoomDetailInfo(specDataDetail);
+    }
+
+    private void saveCheckboxValue(SpecDataDetail specDataDetail) {
+        boolean paramExist = ifParamExist(specDataDetail.getSpecRoomId(), specDataDetail.getModuleParam());
+        if (!paramExist) {
+            // 先判断是否已经存在，不存在再增加
+            saveRoomDetailInfo(specDataDetail);
+        }
+    }
+
+    private void saveRoomDetailInfo(SpecDataDetail specDataDetail) {
+        specDataDetailMapper.insert(specDataDetail);
+    }
+
+    private boolean ifParamExist(Long roomId, String paramVal) {
+        SpecDataDetailExample example = buildParamDetailExampleWithParamVal(roomId, paramVal);
+        List<SpecDataDetail> specDataDetails = specDataDetailMapper.selectByExample(example);
+        return CollectionUtils.isNotEmpty(specDataDetails) && specDataDetails.size() > 0;
+    }
+
+    private SpecDataDetail buildRoomDataDetail(Long specRoomId, String val) {
+        SpecDataDetail specDataDetail = new SpecDataDetail();
+        specDataDetail.setSpecRoomId(specRoomId);
+        specDataDetail.setModuleParam(val);
+
+        String[] ids = val.split("_");
+        if (null != ids && ids.length == 3) {
+            specDataDetail.setModuleId(Long.valueOf(ids[0]));
+            specDataDetail.setEnumId(Long.valueOf(ids[1]));
+            specDataDetail.setParamId(Long.valueOf(ids[2]));
+
+            specDataDetail.setModuleEnum(val.substring(0, val.lastIndexOf("_")));
+        }
+
+        return specDataDetail;
+    }
+
+    private void delCheckboxValue(SpecDataDetail specDataDetail) {
+        delAllParamsByParamValue(specDataDetail.getSpecRoomId(), specDataDetail.getModuleParam());
+    }
+
+    private void delAllParamsByEnumId(Long roomId, Long enumId) {
+        SpecDataDetailExample example = new SpecDataDetailExample();
+        example.createCriteria().andSpecRoomIdEqualTo(roomId).andEnumIdEqualTo(enumId);
+        specDataDetailMapper.deleteByExample(example);
+    }
+
+    private void delAllParamsByParamValue(Long roomId, String paramVal) {
+        SpecDataDetailExample example = buildParamDetailExampleWithParamVal(roomId, paramVal);
+        specDataDetailMapper.deleteByExample(example);
+    }
+
+    private SpecDataDetailExample buildParamDetailExampleWithParamVal(Long roomId, String paramVal) {
+        SpecDataDetailExample example = new SpecDataDetailExample();
+        example.createCriteria().andSpecRoomIdEqualTo(roomId).andModuleParamEqualTo(paramVal);
+        return example;
+    }
+
+    private void saveOrUpdateSpecRoomData(SpecRoomData specRoomData, boolean saveFlag) {
+        specRoomData.setUpdateTime(new Date());
+
+        if (saveFlag) {
+            specRoomData.setCreateTime(specRoomData.getUpdateTime());
+
+            specRoomDataMapper.insert(specRoomData);
+        } else {
+            specRoomDataMapper.updateByPrimaryKeySelective(specRoomData);
+        }
     }
 
     private RoomDataModuleExample buildRoomDataModelExampleByName(String moduleName) {

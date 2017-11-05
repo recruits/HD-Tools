@@ -26,4 +26,6 @@ public class ErrorMsg {
     public static final String ERROR_DEPT_CODE_HAS_EXIST = "该部门编码已经存在，请使用新的编码";
 
     public static final String ERROR_AREA_CODE_HAS_EXIST = "该区域编码已经存在，请使用新的编码";
+
+    public static final String ERROR_SPEC_ROOM_NAME_HAS_EXIST = "该样板房间名称已经存在，请更换一个名称";
 }

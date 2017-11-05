@@ -444,4 +444,12 @@ public class CoreController {
         projRoomInfoService.submitRoomDataOnTime(roomId, value, action);
         return resultBase;
     }
+
+    @RequestMapping(value = "/updateRoomDataBySpecRoomId.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase updateRoomDataBySpecRoomId(Long roomId, Long specRoomId) {
+        ResultBase resultBase = new ResultBase();
+        projRoomInfoService.updateRoomDataBySpecRoomId(roomId, specRoomId);
+        return resultBase;
+    }
 }

@@ -1,8 +1,7 @@
 package com.chilicool.hdtools.controller;
 
-import com.chilicool.hdtools.domain.DataModuleEnum;
-import com.chilicool.hdtools.domain.DataModuleEnumParam;
-import com.chilicool.hdtools.domain.RoomDataModule;
+import com.chilicool.hdtools.common.ErrorMsg;
+import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.RoomDataService;
 import com.chilicool.hdtools.support.ResultUtil;
@@ -163,5 +162,63 @@ public class DictController {
     @RequestMapping(value = "/addAreaInfo.html")
     public String addAreaInfo() {
         return "dict/add_area_info";
+    }
+    /********************************************************************************
+     * 样板房间管理
+     ********************************************************************************/
+    @RequestMapping(value = "/showSroomList.html")
+    public String showSpecRoom() {
+        return "dict/show_sroom_list";
+    }
+
+    @RequestMapping(value = "/loadAllSpecRoomDetail.json")
+    @ResponseBody
+    public SpecRoomJson loadAllSpecRoomDetail() {
+        SpecRoomJson specRoomModel = new SpecRoomJson();
+        List<SpecRoomSimple> specRoomDataList = roomDataService.loadAllSpecRoomDetail();
+        specRoomModel.setData(specRoomDataList);
+        return specRoomModel;
+    }
+
+    @RequestMapping(value = "/editSpecRoomData.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase editSpecRoomDetail(SpecRoomWithAction specRoomWithAction) {
+        ResultBase resultBase = ResultUtil.builtResultInfo(null);
+        roomDataService.editSpecRoomData(specRoomWithAction);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/delSpecRoomData.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase delSpecRoomData(Long specRoomId) {
+        ResultBase resultBase = ResultUtil.builtResultInfo(null);
+        roomDataService.delSpecRoomData(specRoomId);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/specRoomNameCheck.json", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBase specRoomNameCheck(String specRoomName, String deptTypeCode) {
+        ResultBase resultBase = ResultUtil.builtResultInfo(null);
+        boolean specRoomNameExist = roomDataService.specRoomNameCheck(specRoomName, deptTypeCode);
+        if (specRoomNameExist) {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg(ErrorMsg.ERROR_SPEC_ROOM_NAME_HAS_EXIST);
+        }
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/loadCurrRoomDeail.json", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> loadCurrRoomDeail(Long specRoomId) {
+        return roomDataService.loadCurrRoomDeail(specRoomId);
+    }
+
+    @RequestMapping(value = "/submitRoomDataOnTime.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase submitRoomDataOnTime(Long specRoomId, String value, String action) {
+        ResultBase resultBase = new ResultBase();
+        roomDataService.submitRoomDataOnTime(specRoomId, value, action);
+        return resultBase;
     }
 }

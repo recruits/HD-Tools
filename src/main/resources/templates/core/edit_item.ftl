@@ -64,13 +64,13 @@
     <h2><i class="fa fa-edit"></i> 项目管理 <span>项目维护</span><span>项目编辑</span></h2>
 </div>
 <div class="panel-body">
-    <div>
+<#--    <div>
         <ol class="breadcrumb navTitleClass" id="itemNavTitle">
-            <#--<li><i class="fa fa-star"></i> 聚丰集团重庆五院A1A2项目 -康复医院</li>
+            &lt;#&ndash;<li><i class="fa fa-star"></i> 聚丰集团重庆五院A1A2项目 -康复医院</li>
             <li>住院部</li>
-            <li>双人病房</li>-->
+            <li>双人病房</li>&ndash;&gt;
         </ol>
-    </div>
+    </div>-->
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#baseInfo" data-toggle="tab" id="baseDataInfo"><strong>基本信息</strong></a></li>

@@ -8,18 +8,32 @@ function initAreaInfo() {
         reloadAreaInfo();
     });
 
+    // 区域信息操作事件
+    initAreaEvents();
+    // 房间信息操作事件
+    initRoomEvents();
+    // 模态框操作事件
+    initModalEvents();
+}
+// 区域信息操作事件
+function initAreaEvents() {
     // 绑定区域新增事件
     $('#addNewAreaInfoBtn').bind('click', function(){
         resetAreaInfo();
     });
     // 区域信息操作按钮事件绑定
     $('#resetAreaInfoFormBtn').bind('click', function () {
-        clearModalData();
+        clearAreaModalData();
     });
     $('#submitAreaInfoFormBtn').bind('click', function () {
         addAreaInfo();
     });
-
+    // 面积系数实时更新
+    $('#deptPlanAreaRatioModBtn').bind('click', editDeptPlanAreaRatioValOnTime);
+    $('#deptDesignAreaRatioModBtn').bind('click', editDeptDesignAreaRatioValOnTime);
+}
+// 房间信息操作事件
+function initRoomEvents() {
     // 房间信息操作按钮事件绑定
     $('#resetRoomInfoFormBtn').bind('click', function () {
         clearRoomModalData();
@@ -27,11 +41,9 @@ function initAreaInfo() {
     $('#submitRoomInfoFormBtn').bind('click', function () {
         addRoomInfo();
     });
-
-    // 面积系数实时更新
-    $('#deptPlanAreaRatioModBtn').bind('click', editDeptPlanAreaRatioValOnTime);
-    $('#deptDesignAreaRatioModBtn').bind('click', editDeptDesignAreaRatioValOnTime);
-
+}
+// 区域、房间信息模态框
+function initModalEvents() {
     // 模态对话框关闭事件
     $('#addAreaInfoModal').on('hidden.bs.modal', function (e) {
         // 刷新数据
@@ -47,7 +59,6 @@ function initAreaInfo() {
         clearRoomModalData();
     });
 }
-
 function resetAreaInfo() {
     areaAction = CONST_ACTION_ADD;
     $('#addAreaInfoModal').modal();
@@ -137,8 +148,8 @@ function freshAreaSumary(data) {
         $('#deptDetailInfo input[name="deptDesignAreaTotal"]').val(fix2(data.designAreaTotal));
         $('#deptDetailInfo input[name="deptPlanAreaSummary"]').val(fix2(data.planAreaSummary));
         $('#deptDetailInfo input[name="deptDesignAreaSummary"]').val(fix2(data.designAreaSummary));
-        $('#deptDetailInfo input[name="deptPlanAreaRatio"]').val(data.planAreaRatio || "");
-        $('#deptDetailInfo input[name="deptDesignAreaRatio"]').val(data.designAreaRatio || "");
+        $('#deptDetailInfo input[name="deptPlanAreaRatio"]').val(data.planAreaRatio || "1");
+        $('#deptDetailInfo input[name="deptDesignAreaRatio"]').val(data.designAreaRatio || "1");
 
         // 缓存汇总信息编号
         currAreaSumyId = data.id;
@@ -306,7 +317,7 @@ function resetAreaId(areaId) {
 }
 // 清空区域信息数据[模态对话框]
 function clearAreaModalData() {
-    $('#addAreaInfoForm span[name="deptCode"]').html('');
+    //$('#addAreaInfoForm span[name="deptCode"]').html('');
     $('#addAreaInfoForm input[name="officeCode"]').val('');
     $('#addAreaInfoForm input[name="orderIdx"]').val('');
     $('#addAreaInfoForm input[name="officeName"]').val('');

@@ -39,4 +39,12 @@ public interface ProjRoomInfoService {
      * @param val
      */
     public void submitRoomDataOnTime(Long roomId, String val, String action);
+
+    /**
+     * 使用样板房间参数更新当前房间参数
+     *
+     * @param roomId
+     * @param specRoomId
+     */
+    public void updateRoomDataBySpecRoomId(Long roomId, Long specRoomId);
 }

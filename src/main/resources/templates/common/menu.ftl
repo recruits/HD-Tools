@@ -15,7 +15,7 @@
     <li class="nav-parent"><a href=""><i class="fa fa-suitcase"></i> <span>基础数据</span></a>
         <ul class="children">
             <li><a href="${basePath}/dict/showDeptList.html" target="mainFrame"><i class="fa fa-caret-right"></i>科室管理</a></li>
-            <li><a href="${basePath}/dict/showRoomList.html" target="mainFrame"><i class="fa fa-caret-right"></i>房间管理</a></li>
+            <li><a href="${basePath}/dict/showSroomList.html" target="mainFrame"><i class="fa fa-caret-right"></i>房间管理</a></li>
             <li><a href="${basePath}/dict/showEquipList.html" target="mainFrame"><i class="fa fa-caret-right"></i>设备管理</a></li>
             <!--<li><a href="${basePath}/dict/roomDataMgr.html" target="mainFrame"><i class="fa fa-caret-right"></i>数据模块管理</a></li>-->
         </ul>

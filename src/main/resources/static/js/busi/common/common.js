@@ -8,7 +8,7 @@ var CONST_TC_NAME = 'typeCode';
 var CONST_INPUT_TYPE_RADIO = 'radio';
 var CONST_INPUT_TYPE_CHECKBOX = 'checkbox';
 
-var CONST_CODE_SEPRATOR = '-';
+var CONST_CODE_SEPRATOR = '.';
 
 var MODAL_TITLE_DEPT = {
     'add': "新增部门信息",

@@ -400,6 +400,8 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         // 追加创建时间
         roomInfo.setCreateTime(new Date());
         autoCaculateAreaTotal(roomInfo);
+        // 清空房间编号
+        roomInfo.setId(null);
     }
 
     // 设置面积小计
@@ -453,7 +455,9 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         // Double areaSummary = getAllAreaSummaryByDeptId(deptId);
         // areaSumyModel.setDesignArea(areaSummary);
         AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(deptId);
-        BeanUtils.copyProperties(areaSummary, areaSumyModel);
+        if (areaSummary.getDeptId() != null) {
+            BeanUtils.copyProperties(areaSummary, areaSumyModel);
+        }
     }
 
     private Double getAllAreaSummaryByDeptId(Long deptId) {

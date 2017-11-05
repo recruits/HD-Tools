@@ -41,26 +41,6 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <#--
-            <tbody id="proj_info_tree_grid">
-            <tr class="odd gradeX">
-                <td>410000201709081001</td>
-                <td>聚丰集团重庆五院A1A2项目 -康复医院</td>
-                <td>北京同仁堂健康养老重庆综合体</td>
-                <td class="center">重庆</td>
-                <td class="center">V0.01</td>
-                <td><a class="fa fa-edit" href="${basePath}/core/editItem.html?action=edit&itemName=聚丰集团重庆五院A1A2项目 -康复医院" target="mainFrame" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a><a class="fa fa-trash-o" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a></td>
-            </tr>
-            <tr class="even gradeC">
-                <td>410000201709081002</td>
-                <td>测试项目</td>
-                <td>北京同仁堂健康养老重庆综合体</td>
-                <td class="center">重庆</td>
-                <td class="center">V0.01</td>
-                <td><a class="fa fa-edit" href="${basePath}/core/editItem.html?action=edit&itemName=测试项目" target="mainFrame" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a><a class="fa fa-trash-o" style="margin-right: 10px; font-size: 22px" title="编辑项目"></a></td>
-            </tr>
-            </tbody>
-            -->
         </table>
     </div>
 </div>

@@ -3,6 +3,7 @@ package com.chilicool.hdtools.service;
 import com.chilicool.hdtools.domain.DataModuleEnum;
 import com.chilicool.hdtools.domain.DataModuleEnumParam;
 import com.chilicool.hdtools.domain.RoomDataModule;
+import com.chilicool.hdtools.domain.SpecRoomData;
 import com.chilicool.hdtools.model.*;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface RoomDataService {
      */
     public List<ModuleEnumSimp> getModuleEnumWithModuleId(String moduleId);
 
-        /**
+    /**
      * 获取房间模块枚举数据
      *
      * @param moduleId
@@ -88,4 +89,51 @@ public interface RoomDataService {
      * @return
      */
     public boolean checkDataMouleEnumParamExistByName(Long moduleId, Long enumId, String paramName);
+
+    /**
+     * 加载所有样板间数据
+     *
+     * @return
+     */
+    public List<SpecRoomSimple> loadAllSpecRoomDetail();
+
+    /**
+     * 编辑样板间信息
+     *
+     * @param specRoomWithAction
+     */
+    public void editSpecRoomData(SpecRoomWithAction specRoomWithAction);
+
+    /**
+     * 样板房间名称检查
+     *
+     * @param specRoomName
+     * @param deptTypeCode
+     * @return
+     */
+    public boolean specRoomNameCheck(String specRoomName, String deptTypeCode);
+
+    /**
+     * 加载样板房间参数信息
+     *
+     * @param specRoomid
+     * @return
+     */
+    public List<String> loadCurrRoomDeail(Long specRoomid);
+
+    /**
+     * 更新样板间的参数设置
+     *
+     * @param specRoomId
+     * @param value
+     * @param action
+     */
+    public void submitRoomDataOnTime(Long specRoomId, String value, String action);
+
+    /**
+     * 删除样板间
+     *
+     * @param specRoomId
+     */
+    public void delSpecRoomData(Long specRoomId);
 }

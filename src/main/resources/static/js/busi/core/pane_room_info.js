@@ -1,24 +1,125 @@
+var specRoomDetailTable;
+var linkUrlForSpecRoomDetailInfo = basePath + "/dict/loadAllSpecRoomDetail.json";
 var allRoomSpecs = [];
 var paneSize = {
     "height": "340px"
 }
+var cachedSpecRoomId = 0;// 缓存选择的样板房间编号
 
 $(function(){
     initRoomInfo();
+
+    initSpecRoomInfo();
 });
 
 function initRoomInfo() {
     // 激活面板，重新加载数据
     $('a[data-toggle="tab"][id="roomDataInfoTab"]').on('shown.bs.tab', function (e) {
-        if (currRoomId && currAreaId) {
+        if (currRoomId && currRoomId != 0 && currAreaId && currAreaId != 0) {
             // 加载页面参数
             renderRoomDataSpecs();
             // 加载样式
             initRadioAndCheckbox();
             // 加载数据
             reloadRoomInfo();
+            // 设置样板参数按钮可用
+            resetSpecRoomInfo(false);
+        } else {
+            // 清空已选数据
+            clearAllCheckVal();
+            // 清空标题内容
+            freshRoomTitle();
+            // 禁用样板控件
+            resetSpecRoomInfo(true);
         }
     });
+}
+function resetSpecRoomInfo(state) {
+    // 设置样板参数按钮可用
+    $('#selSpecRoomDataBtn').prop('disabled', state);
+
+}
+function initSpecRoomInfo() {
+    // 初始化事件
+    initSpecRoomEvents();
+    // 表格初始化
+    initSpecRoomDataTables();
+    // 清空缓存数据
+    clearSpecRoomId();
+}
+function initSpecRoomEvents() {
+    $('#selSpecRoomDataBtn').click(function () {
+        var options = {
+            "message": "确定拷贝样板房间数据到当前房间?"
+        }
+        Ewin.confirm(options).on(function (ret) {
+            if (ret) {
+                // 清空数据选中状态
+                $('input[name="spec_room_data_detail_radio"]').prop("checked", false);
+                // 打开选择数据页面
+                $('#selSpecRoomDataModal').modal();
+            }
+        });
+    });
+    $('#saveSpecRoomDataDetailBtn').click(function () {
+        updateRoomDataBySpecRoomId();
+    });
+}
+function initSpecRoomDataTables() {
+    specRoomDetailTable = $('#specRoomDetailList').DataTable({
+        "ajax": linkUrlForSpecRoomDetailInfo,
+        "bFilter": true,
+        "bSort": false,
+        "pagging": false,
+        "columns": [
+            {"data": "id"},
+            {"data": "deptTypeCode"},
+            {"data": "deptTypeName"},
+            {"data": "specRoomName"},
+            {"data": "createTime"},
+            {"data": "updateTime"},
+            {"data": "note"}
+        ],
+        "aoColumnDefs": [
+            {
+                "targets": [1],
+                "visible": false
+            }
+        ],
+        "fnRowCallback": function (nRow, aData, iDataIndex) {
+            var specRoomId = aData.id;
+            var html = '<input type="radio" onclick="cacheSpecRoomId(' + specRoomId + ')" name="spec_room_data_detail_radio">';
+            $('td:eq(0)', nRow).html(html);
+            return nRow;
+        }
+    });
+}
+function clearSpecRoomId() {
+    cachedSpecRoomId = 0;
+}
+function cacheSpecRoomId(selSpecRoomId) {
+    cachedSpecRoomId = selSpecRoomId;
+}
+function updateRoomDataBySpecRoomId() {
+    if (cachedSpecRoomId != 0) {
+        var linkUrlForUpdateRoomData = "updateRoomDataBySpecRoomId.json?roomId="
+            + currRoomId + "&specRoomId=" + cachedSpecRoomId;
+
+        $.post(linkUrlForUpdateRoomData, function (outData) {
+            if (outData.retCode == RET_CODE_SUCC) {
+                Ewin.alert("拷贝样板房间数据成功!");
+                // 关闭参数选择页面
+                closeSpecRoomDataModel();
+                // 重新加载数据
+                reloadRoomInfo();
+            }
+        });
+    } else {
+        Ewin.alert("请先选择样板房间!");
+    }
+}
+function closeSpecRoomDataModel() {
+    $('#selSpecRoomDataModal').modal('hide');
 }
 function updateRoomDataOnTime(val, action) {
     if (currRoomId && currRoomId !== '0') {
@@ -65,6 +166,11 @@ function freshRoomTitle(data) {
         $('#roomDataInfo input[name="belongAreaName"]').val(data.belongAreaName);
         $('#roomDataInfo input[name="currentRoomCode"]').val(data.currentRoomCode);
         $('#roomDataInfo input[name="currentRoomName"]').val(data.currentRoomName);
+    } else {
+        $('#roomDataInfo input[name="belongAreaCode"]').val('');
+        $('#roomDataInfo input[name="belongAreaName"]').val('');
+        $('#roomDataInfo input[name="currentRoomCode"]').val('');
+        $('#roomDataInfo input[name="currentRoomName"]').val('');
     }
 }
 function initRadioAndCheckbox() {

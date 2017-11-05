@@ -4,7 +4,7 @@ package com.chilicool.hdtools.common;
  * Created by chilicool on 2017/9/29.
  */
 public class BusiConst {
-    public static final String CONST_CODE_SEPRATOR = "-";
+    public static final String CONST_CODE_SEPRATOR = ".";
 
     public interface SelType {
         String RADIO = "radio";
