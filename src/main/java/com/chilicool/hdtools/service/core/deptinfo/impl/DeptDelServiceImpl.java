@@ -6,7 +6,6 @@ import com.chilicool.hdtools.dao.RoomDataDetailMapper;
 import com.chilicool.hdtools.dao.RoomInfoMapper;
 import com.chilicool.hdtools.domain.RoomDataDetailExample;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
-import jdk.internal.dynalink.linker.LinkerServices;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

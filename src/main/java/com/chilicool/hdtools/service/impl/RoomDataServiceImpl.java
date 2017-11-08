@@ -41,7 +41,7 @@ public class RoomDataServiceImpl implements RoomDataService {
         return roomDataModuleMapper.getAllDataModuleSimp();
     }
 
-    public List<EnumParamSimp> getEnumParamWithModuleIdAndEnumId(String moduleId, String enumId) {
+    public List<EnumParamSimp> getEnumParamWithModuleIdAndEnumId(final String moduleId, final String enumId) {
         List<EnumParamSimp> enumParamSimpList = new ArrayList<>();
         if (StringUtils.isNotEmpty(moduleId) && StringUtils.isNumeric(moduleId)
                 && StringUtils.isNotEmpty(enumId) && StringUtils.isNumeric(enumId)) {
