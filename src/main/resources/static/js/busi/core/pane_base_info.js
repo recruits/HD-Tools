@@ -1,6 +1,16 @@
 $(function () {
+    paneBaseInfoForm = $('#basicForm');
+    // 绑定校验事件
+    paneBaseInfoForm.bootstrapValidator(paneBaseinfoValidOption);
+    paneBaseInfoValidator = paneBaseInfoForm.data('bootstrapValidator');
+
+    // 绑定保存动作
     $('#saveItemInfoBtn').bind('click', function () {
-        saveBaseInfo();
+        paneBaseInfoValidator.validate();
+        if(paneBaseInfoValidator.isValid()){
+            // 提交基础信息保存
+            saveBaseInfo();
+        }
     });
 
     // Deprecated
@@ -8,6 +18,8 @@ $(function () {
         initCreateTime();
     }
 });
+var paneBaseInfoForm ;
+var paneBaseInfoValidator;
 
 // Deprecated
 function initCreateTime() {
@@ -28,13 +40,15 @@ function saveBaseInfo() {
 
     $.post(linkUrlForBaseInfo, baseInfoForm.serialize(), function (outData) {
         Ewin.alert(outData.retMsg).on(function () {
-            if(outData.retCode === RET_CODE_SUCC){
-                if(action == CONST_ACTION_ADD){
+            if (outData.retCode === RET_CODE_SUCC) {
+                if (action == CONST_ACTION_ADD) {
                     // 修改项目基础信息
                     updteBaseInfo(outData.retExtObj);
                     // 保存项目信息成功，操作修改为变更
                     action = CONST_ACTION_EDIT;
                 }
+                // 重置校验样式
+                paneBaseInfoForm.data('bootstrapValidator').resetForm(false);
             }
         });
     }, "json");
@@ -46,7 +60,42 @@ function updteBaseInfo(projInfo) {
     $('#baseInfo input[name="groupId"]').val(projInfo.groupId);
     $('#baseInfo input[name="projPhase"]').val(projInfo.projPhase);
     $('#baseInfo input[name="verId"]').val(projInfo.verId);
+    $('#baseInfo input[name="action"]').val(CONST_ACTION_EDIT);
 
     // 更新全局变量
     projId = projInfo.id;
 }
+
+var paneBaseinfoValidOption = {
+    message: "请输入有效的内容!",
+    feedbackIcons: {
+        valid: "fa fa-check",
+        invalid: "fa fa-times",
+        validatting: "fa fa-refresh"
+    },
+    fields: {
+        projName: {
+            message: "项目名称信息有误!",
+            validators: {
+                notEmpty: {
+                    message: "项目名称不能为空!"
+                },
+                stringLength: {
+                    min: 4,
+                    max: 64,
+                    message: "项目名称不少于4个字符，不多于64个字符!"
+                }
+            }
+        },
+        projSubtitle:{
+            message: "项目描述信息有误!",
+            validators: {
+                stringLength: {
+                    min: 0,
+                    max: 128,
+                    message: "项目描述不多于128个字符!"
+                }
+            }
+        }
+    }
+};
