@@ -123,9 +123,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-xs-3 control-label">区域备注<span class="asterisk">*</span></label>
+                            <label class="col-xs-3 control-label">区域备注&nbsp;&nbsp;</label>
                             <div class="col-xs-8">
-                                <input type="text" name="note" class="form-control" placeholder="请输入区域备注" required value=""/>
+                                <input type="text" name="note" class="form-control" placeholder="请输入区域备注" value=""/>
                             </div>
                         </div>
                     </form>

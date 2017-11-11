@@ -10,7 +10,7 @@ $(function () {
 var paneSumyInfoForm ;
 var paneBaseInfoValidator;
 
-    function initSumyInfo() {
+function initSumyInfo() {
     // 激活面板，重新加载数据
     $('a[data-toggle="tab"][id="summaryInfoTab"]').on('shown.bs.tab', function (e) {
         reloadSumyInfo();
@@ -21,6 +21,9 @@ var paneBaseInfoValidator;
         clearDeptModalData();
     });
     $('#submitSubSumyInfoFormBtn').click(function () {
+        // 不检校部门编号
+        paneBaseInfoValidator.updateStatus('orderIdx', 'VALID');
+
         paneBaseInfoValidator.validate();
         if(paneBaseInfoValidator.isValid()){
             addDepartment();
@@ -247,7 +250,7 @@ function addDepartment() {
 
     $.post(linkUrlForDeptInfo, submitData, function (outData) {
         Ewin.alert(outData.retMsg);
-        if(outData.retCode == RET_CODE_SUCC){
+        if (outData.retCode == RET_CODE_SUCC) {
             // 清除校验状态
             paneBaseInfoValidator.resetForm(false);
             // 关闭模态对话框
