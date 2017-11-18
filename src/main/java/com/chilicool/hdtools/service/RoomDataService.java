@@ -1,9 +1,6 @@
 package com.chilicool.hdtools.service;
 
-import com.chilicool.hdtools.domain.DataModuleEnum;
-import com.chilicool.hdtools.domain.DataModuleEnumParam;
-import com.chilicool.hdtools.domain.RoomDataModule;
-import com.chilicool.hdtools.domain.SpecRoomData;
+import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 
 import java.util.List;
@@ -136,4 +133,19 @@ public interface RoomDataService {
      * @param specRoomId
      */
     public void delSpecRoomData(Long specRoomId);
+
+    /**
+     * 加载房间参数
+     *
+     * @param roomId
+     * @return
+     */
+    public List<RoomDataDetail> loadAllRoomDataDetailByRoomId(Long roomId);
+
+    /**
+     * 保存房间参数
+     *
+     * @param roomDataDetail
+     */
+    public void saveRoomDataDetail(RoomDataDetail roomDataDetail);
 }

@@ -3,6 +3,7 @@ package com.chilicool.hdtools.controller;
 import com.chilicool.hdtools.common.ErrorMsg;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
+import com.chilicool.hdtools.service.ParamDataService;
 import com.chilicool.hdtools.service.RoomDataService;
 import com.chilicool.hdtools.support.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ import java.util.List;
 public class DictController {
     @Autowired
     private RoomDataService roomDataService;
+    @Autowired
+    private ParamDataService paramDataService;
 
     @RequestMapping(value = "/showEquipList.html")
     public String showEquipList() {
-        return "dict/show_equip_list";
+        return "dict/show_sequip_list";
     }
 
     @RequestMapping(value = "/addDataModule.html")
@@ -220,5 +223,14 @@ public class DictController {
         ResultBase resultBase = new ResultBase();
         roomDataService.submitRoomDataOnTime(specRoomId, value, action);
         return resultBase;
+    }
+
+    /********************************************************************************
+     * 房间数据管理-重构
+     ********************************************************************************/
+    @RequestMapping(value = "/loadAllSpecRoomData.json", method = RequestMethod.GET)
+    @ResponseBody
+    public SpecRoomDataJson loadAllSpecRoomData() {
+        return paramDataService.loadAllSpecRoomData();
     }
 }

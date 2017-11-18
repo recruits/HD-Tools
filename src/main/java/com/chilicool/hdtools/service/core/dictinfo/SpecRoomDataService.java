@@ -1,5 +1,7 @@
 package com.chilicool.hdtools.service.core.dictinfo;
 
+import com.chilicool.hdtools.domain.ParamsView;
+
 import java.util.List;
 
 /**
@@ -13,4 +15,11 @@ public interface SpecRoomDataService {
      * @return
      */
     public List<String> loadAllParamsBySpecRoomId(Long specRoomId);
+
+    /**
+     * 加载所有房间模块数据
+     *
+     * @return
+     */
+    public List<ParamsView> loadAllSpecRoomData();
 }

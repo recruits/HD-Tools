@@ -2,6 +2,7 @@ package com.chilicool.hdtools.service;
 
 import com.chilicool.hdtools.domain.Department;
 import com.chilicool.hdtools.domain.DeptSummary;
+import com.chilicool.hdtools.domain.DeptType;
 import com.chilicool.hdtools.model.DeptWithAction;
 import com.chilicool.hdtools.model.ResultBase;
 import com.chilicool.hdtools.model.SumyInfoModel;
@@ -49,6 +50,22 @@ public interface ProjDeptInfoService {
      * @return
      */
     public DeptSummary loadDeptSummaryInfo(Long projId);
+
+    /**
+     * 加载部门分类信息
+     *
+     * @param projId
+     * @return
+     */
+    public List<DeptType> loadDeptTypeByProjId(long projId);
+
+    /**
+     * 保存部门汇总信息
+     *
+     * @param deptSummary
+     * @return
+     */
+    public Long saveDeptSummaryInfo(DeptSummary deptSummary);
 
     /**
      * 保存部门信息
@@ -157,4 +174,26 @@ public interface ProjDeptInfoService {
      * @return
      */
     public Short getNextDeptCode(Long deptTypeId);
+
+    /**
+     * 保存部门分类信息
+     *
+     * @param deptType
+     */
+    public void saveDeptTypeInfo(DeptType deptType);
+
+    /**
+     * 查询部门分类的所有部门信息
+     *
+     * @param deptTypeId
+     * @return
+     */
+    public List<Department> loadAllDepartmentByDeptTypeId(Long deptTypeId);
+
+    /**
+     * 保存部门信息
+     *
+     * @param department
+     */
+    public void saveDepartment(Department department);
 }

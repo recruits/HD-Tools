@@ -53,7 +53,7 @@
                         <label class="col-xs-3 control-label">适用部门类别<span class="asterisk">*</span></label>
                         <div class="col-xs-8">
                             <@cc.select class="selectpicker form-control" name="deptTypeCode" value="${deptTypeCode!}" typeCode="DEPT_TYPE" />
-                            <input type="hidden" name="deptTypeName" class="form-control" required value=""/>
+                            <input type="hidden" name="deptTypeName" class="form-control" value=""/>
                             <input type="hidden" name="action"/>
                         </div>
                     </div>
@@ -66,10 +66,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">备注信息<span class="asterisk">*</span></label>
+                        <label class="col-xs-3 control-label">备注信息&nbsp;&nbsp;</label>
                         <div class="col-xs-8">
-                            <input type="text" name="note" class="form-control" placeholder="请输入备注信息" required
-                                   value=""/>
+                            <input type="text" name="note" class="form-control" placeholder="请输入备注信息" value=""/>
                         </div>
                     </div>
                 </form>

@@ -5,6 +5,7 @@ import com.chilicool.hdtools.model.ProjBaseInfoModel;
 import com.chilicool.hdtools.model.ProjInfoModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chilicool on 2017/10/1.
@@ -73,4 +74,12 @@ public interface ProjBaseInfoService {
      * @return
      */
     public Long initProjBaseInfoWithParams(ProjBaseInfo projBaseInfo);
+
+    /**
+     * 获取当前项目的版本编号和当前项目的最新版本编码
+     *
+     * @param projId
+     * @return
+     */
+    public Map<String, Object> getProjUpgradeVersion(Long projId, Long groupId);
 }

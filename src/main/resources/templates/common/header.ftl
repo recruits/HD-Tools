@@ -71,8 +71,8 @@
 
 
     <!-- plugin bootstrap-validator -->
-    <link href="${basePath}/plugin/bootstrapvalidator/css/bootstrapvalidator.css" rel="stylesheet">
-    <script src="${basePath}/plugin/bootstrapvalidator/js/bootstrapvalidator.js"></script>
+    <link href="${basePath}/plugin/bootstrapvalidator/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="${basePath}/plugin/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script src="${basePath}/plugin/bootstrapvalidator/js/language/zh_CN.js"></script>
 
     <!-- plugin ickeck -->

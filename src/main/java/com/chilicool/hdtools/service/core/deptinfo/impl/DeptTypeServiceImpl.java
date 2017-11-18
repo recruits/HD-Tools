@@ -1,6 +1,7 @@
 package com.chilicool.hdtools.service.core.deptinfo.impl;
 
 import com.chilicool.hdtools.dao.DeptTypeMapper;
+import com.chilicool.hdtools.domain.DeptSummary;
 import com.chilicool.hdtools.domain.DeptType;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,11 @@ public class DeptTypeServiceImpl implements DeptTypeService {
     public Long getProjIdWithDeptTypeId(Long deptTypeId) {
         DeptType deptType = loadDeptTypeByPK(deptTypeId);
         return null != deptType ? deptType.getProjId() : 0L;
+    }
+
+    @Override
+    public void saveDeptTypeInfo(DeptType deptType) {
+        deptTypeMapper.insert(deptType);
     }
 
     /**

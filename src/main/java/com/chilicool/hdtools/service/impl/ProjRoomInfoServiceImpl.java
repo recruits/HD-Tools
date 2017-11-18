@@ -6,6 +6,7 @@ import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.RoomParamJson;
 import com.chilicool.hdtools.model.RoomSumyModel;
 import com.chilicool.hdtools.service.ProjRoomInfoService;
+import com.chilicool.hdtools.service.core.areainfo.RoomInfoService;
 import com.chilicool.hdtools.service.core.dictinfo.SpecRoomDataService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,8 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
     private RoomInfoMapper roomInfoMapper;
     @Autowired
     private SpecRoomDataService specRoomDataService;
+    @Autowired
+    private RoomInfoService roomInfoService;
 
     @Override
     public List<RoomParamJson> loadAllRoomSpecs() {
@@ -80,6 +83,16 @@ public class ProjRoomInfoServiceImpl implements ProjRoomInfoService {
 
         // 更新房间参数
         saveAllSpecRoomParams(roomId, roomParams);
+    }
+
+    @Override
+    public List<RoomInfo> loadAllRoomInfoByAreaId(Long areaId) {
+        return roomInfoService.loadAllRoomInfoByAreaId(areaId);
+    }
+
+    @Override
+    public void saveRoomInfo(RoomInfo roomInfo) {
+        roomInfoService.saveRoomInfo(roomInfo);
     }
 
     // 保存样板房间所有参数

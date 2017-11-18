@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chilicool on 2017/10/1.
@@ -65,9 +67,6 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
     @Override
     public void saveProjBaseInfo(ProjBaseInfo projBaseInfo) {
         Long projId = projBaseInfo.getId();
-//        if (StringUtils.isNotEmpty(projId)) {
-//            projBaseInfo.setId(Long.valueOf(projId));
-//        }
 
         if (ifBaseInfoExist(projId)) {
             projBaseInfoMapper.updateByPrimaryKeySelective(projBaseInfo);
@@ -98,6 +97,23 @@ public class ProjBaseInfoServiceImpl implements ProjBaseInfoService {
         projBaseInfo.setId(null);
         projBaseInfoMapper.insert(projBaseInfo);
         return projBaseInfo.getId();
+    }
+
+    @Override
+    public Map<String, Object> getProjUpgradeVersion(Long projId, Long groupId) {
+        Map<String, Object> returnMap = new HashMap<>();
+
+        // 获取项目当前版本编号
+        ProjBaseInfo projBaseInfo = projBaseInfoMapper.selectByPrimaryKey(projId);
+
+        // 获取项目最新版本编码
+        String maxMajorCode = projBaseInfoMapper.getMaxMajorByGroupId(groupId);
+        String nextMajorCode = String.valueOf(Integer.valueOf(maxMajorCode)+1);
+
+        returnMap.put("verId", projBaseInfo.getVerId());
+        returnMap.put("verCode", nextMajorCode);
+
+        return returnMap;
     }
 
     /**

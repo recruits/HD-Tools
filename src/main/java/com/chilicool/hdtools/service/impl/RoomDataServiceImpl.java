@@ -5,6 +5,7 @@ import com.chilicool.hdtools.dao.*;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.RoomDataService;
+import com.chilicool.hdtools.service.core.roomdata.RoomParamService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,8 @@ public class RoomDataServiceImpl implements RoomDataService {
     private SpecRoomDataMapper specRoomDataMapper;
     @Autowired
     private SpecDataDetailMapper specDataDetailMapper;
+    @Autowired
+    private RoomParamService roomParamService;
 
     @Override
     public List<RoomDataSimp> getAllRoomDataSimp() {
@@ -180,6 +183,16 @@ public class RoomDataServiceImpl implements RoomDataService {
         delAllSpecDataDetailBySpecRoomId(specRoomId);
         // 再删除样板间数据
         delSpecRoomDataByPK(specRoomId);
+    }
+
+    @Override
+    public List<RoomDataDetail> loadAllRoomDataDetailByRoomId(Long roomId) {
+        return roomParamService.loadAllRoomDataDetailByRoomId(roomId);
+    }
+
+    @Override
+    public void saveRoomDataDetail(RoomDataDetail roomDataDetail) {
+        roomParamService.saveRoomDataDetail(roomDataDetail);
     }
 
     private void delSpecRoomDataByPK(Long specRoomId){

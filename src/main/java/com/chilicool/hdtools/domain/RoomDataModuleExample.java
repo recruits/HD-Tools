@@ -465,6 +465,66 @@ public class RoomDataModuleExample {
             return (Criteria) this;
         }
 
+        public Criteria andOrderIdxIsNull() {
+            addCriterion("ORDER_IDX is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxIsNotNull() {
+            addCriterion("ORDER_IDX is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxEqualTo(Short value) {
+            addCriterion("ORDER_IDX =", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxNotEqualTo(Short value) {
+            addCriterion("ORDER_IDX <>", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxGreaterThan(Short value) {
+            addCriterion("ORDER_IDX >", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxGreaterThanOrEqualTo(Short value) {
+            addCriterion("ORDER_IDX >=", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxLessThan(Short value) {
+            addCriterion("ORDER_IDX <", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxLessThanOrEqualTo(Short value) {
+            addCriterion("ORDER_IDX <=", value, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxIn(List<Short> values) {
+            addCriterion("ORDER_IDX in", values, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxNotIn(List<Short> values) {
+            addCriterion("ORDER_IDX not in", values, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxBetween(Short value1, Short value2) {
+            addCriterion("ORDER_IDX between", value1, value2, "orderIdx");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdxNotBetween(Short value1, Short value2) {
+            addCriterion("ORDER_IDX not between", value1, value2, "orderIdx");
+            return (Criteria) this;
+        }
+
         public Criteria andNameSpellingIsNull() {
             addCriterion("NAME_SPELLING is null");
             return (Criteria) this;

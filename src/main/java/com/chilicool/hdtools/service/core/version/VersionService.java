@@ -21,6 +21,15 @@ public interface VersionService {
     public VersionInfo createVersion();
 
     /**
+     * 创建一个最新版本，保存源版本信息
+     *
+     * @param pid
+     * @param nextMajorCode
+     * @return
+     */
+    public VersionInfo createVersion(Long pid, String nextMajorCode);
+
+    /**
      * 为某个阶段创建一个版本信息
      *
      * @param phase
@@ -44,6 +53,7 @@ public interface VersionService {
      * @param currVersion
      * @return
      */
+    @Deprecated
     public VersionInfo milestoneRelease(VersionInfo currVersion);
 
     /**

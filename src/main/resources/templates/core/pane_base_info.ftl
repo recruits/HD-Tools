@@ -57,7 +57,7 @@
     <div class="row">
         <div class="col-xs-2 col-xs-offset-5">
             <button class="btn btn-primary btn-xs" id="saveItemInfoBtn">&nbsp;保&nbsp;&nbsp;存&nbsp;</button>
-            <button type="reset" class="btn btn-default btn-xs">&nbsp;发&nbsp;&nbsp;布&nbsp;</button>
+            <button class="btn btn-default btn-xs" id="releaseItemInfoBtn">&nbsp;发&nbsp;&nbsp;布&nbsp;</button>
         </div>
     </div>
 </div>
