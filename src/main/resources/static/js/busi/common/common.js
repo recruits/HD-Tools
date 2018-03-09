@@ -190,7 +190,7 @@ function isEqual(obj1, obj2) {
 
 function fix2(val) {
     if (val) {
-        return Math.round(val * 100) / 100;
+        return val.toFixed(2);
     }
     return 0;
 }
