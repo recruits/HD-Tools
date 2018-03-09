@@ -129,6 +129,23 @@ public class CoreController {
         return resultBase;
     }
 
+    @RequestMapping(value = "/release.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase releaseProject(Long projId, Long groupId) {
+        ResultBase resultBase = new ResultBase();
+        ProjBaseInfo projBaseInfo = projectService.releaseProject(projId, groupId);
+        resultBase.setRetExtObj(projBaseInfo);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/cloneProject.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase cloneProject(Long projId) {
+        ResultBase resultBase = new ResultBase();
+        projectService.cloneProject(projId);
+        return resultBase;
+    }
+
     @RequestMapping(value = "/saveBaseInfo.json", method = RequestMethod.POST)
     @ResponseBody
     @Deprecated

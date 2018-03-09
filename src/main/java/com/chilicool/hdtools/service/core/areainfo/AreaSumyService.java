@@ -1,13 +1,14 @@
-package com.chilicool.hdtools.service.busi;
+package com.chilicool.hdtools.service.core.areainfo;
 
 import com.chilicool.hdtools.domain.AreaSummary;
 
 /**
- * Created by chilicool on 2017/10/22.
+ * Created by zechenzhang on 2017/11/12.
  */
-public interface AreaSummaryService {
+public interface AreaSumyService {
+
     /**
-     * 使用部门编号加载区域汇总信息
+     * 查询部门的区域汇总信息
      *
      * @param deptId
      * @return
@@ -20,4 +21,11 @@ public interface AreaSummaryService {
      * @param areaSummary
      */
     public void updateAreaSummaryByPK(AreaSummary areaSummary);
+
+    /**
+     * 保存区域汇总信息
+     *
+     * @param areaSummary
+     */
+    public void saveAreaSummary(AreaSummary areaSummary);
 }

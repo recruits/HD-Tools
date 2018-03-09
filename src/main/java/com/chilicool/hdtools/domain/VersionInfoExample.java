@@ -325,6 +325,66 @@ public class VersionInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andPidIsNull() {
+            addCriterion("PID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("PID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Long value) {
+            addCriterion("PID =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Long value) {
+            addCriterion("PID <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Long value) {
+            addCriterion("PID >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Long value) {
+            addCriterion("PID >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Long value) {
+            addCriterion("PID <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Long value) {
+            addCriterion("PID <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Long> values) {
+            addCriterion("PID in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Long> values) {
+            addCriterion("PID not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Long value1, Long value2) {
+            addCriterion("PID between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Long value1, Long value2) {
+            addCriterion("PID not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
         public Criteria andVerCodeIsNull() {
             addCriterion("VER_CODE is null");
             return (Criteria) this;

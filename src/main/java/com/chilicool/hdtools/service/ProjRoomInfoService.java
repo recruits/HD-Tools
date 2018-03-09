@@ -1,5 +1,6 @@
 package com.chilicool.hdtools.service;
 
+import com.chilicool.hdtools.domain.RoomInfo;
 import com.chilicool.hdtools.model.RoomParamJson;
 import com.chilicool.hdtools.model.RoomSumyModel;
 
@@ -47,4 +48,19 @@ public interface ProjRoomInfoService {
      * @param specRoomId
      */
     public void updateRoomDataBySpecRoomId(Long roomId, Long specRoomId);
+
+    /**
+     * 查询区域所有房间信息
+     *
+     * @param areaId
+     * @return
+     */
+    public List<RoomInfo> loadAllRoomInfoByAreaId(Long areaId);
+
+    /**
+     * 保存房间信息
+     *
+     * @param roomInfo
+     */
+    public void saveRoomInfo(RoomInfo roomInfo);
 }

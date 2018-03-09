@@ -1,14 +1,17 @@
 package com.chilicool.hdtools.service.impl;
 
 import com.chilicool.hdtools.common.BusiConst;
-import com.chilicool.hdtools.dao.*;
+import com.chilicool.hdtools.dao.DepartmentMapper;
+import com.chilicool.hdtools.dao.DeptSummaryMapper;
+import com.chilicool.hdtools.dao.DeptTypeMapper;
 import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.DeptWithAction;
 import com.chilicool.hdtools.model.PlanAreaHolder;
 import com.chilicool.hdtools.model.PlanAreaModel;
 import com.chilicool.hdtools.model.SumyInfoModel;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
-import com.chilicool.hdtools.service.busi.AreaSummaryService;
+import com.chilicool.hdtools.service.core.areainfo.AreaSumyService;
+import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
@@ -26,7 +29,7 @@ import java.util.*;
 @Service
 public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
     @Autowired
-    private AreaSummaryService areaSummaryService;
+    private AreaSumyService areaSumyService;
     @Autowired
     private DeptTypeMapper deptTypeMapper;
     @Autowired
@@ -39,6 +42,8 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
     private DeptSumyService deptSumyService;
     @Autowired
     private DeptDelService deptDelService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Override
     public boolean ifDeptInfoExist(Long projId) {
@@ -99,6 +104,20 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
         DeptSummaryExample example = buildDeptSummaryExampleWithProjId(projId);
         List<DeptSummary> deptSummaries = deptSummaryMapper.selectByExample(example);
         return CollectionUtils.isNotEmpty(deptSummaries) ? deptSummaries.get(0) : new DeptSummary();
+    }
+
+    @Override
+    public List<DeptType> loadDeptTypeByProjId(long projId) {
+        DeptTypeExample example = new DeptTypeExample();
+        example.createCriteria().andProjIdEqualTo(projId);
+        return deptTypeMapper.selectByExample(example);
+    }
+
+    @Override
+    public Long saveDeptSummaryInfo(DeptSummary deptSummary) {
+        deptSummaryMapper.insert(deptSummary);
+
+        return deptSummary.getId();
     }
 
     private Map<Long, List<Integer>> buildRelations(List<SumyInfoModel> subLevelModels) {
@@ -300,7 +319,7 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
 
     // 更新区域汇总信息
     private void updateAreaSummaryPlanAreaTotalOnTime(Department department) {
-        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(department.getId());
+        AreaSummary areaSummary = areaSumyService.loadAreaSummaryByDeptId(department.getId());
         if (null != areaSummary && null != areaSummary.getDeptId() && areaSummary.getDeptId() != 0) {
             Double planAreaTotal = department.getPlanArea();
             areaSummary.setPlanAreaTotal(planAreaTotal);
@@ -310,7 +329,7 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
                 areaSummary.setPlanAreaSummary(planAreaTotal / planAreaRatio);
             }
 
-            areaSummaryService.updateAreaSummaryByPK(areaSummary);
+            areaSumyService.updateAreaSummaryByPK(areaSummary);
         }
     }
 
@@ -359,6 +378,21 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
             nextDeptCode++;
         }
         return nextDeptCode;
+    }
+
+    @Override
+    public void saveDeptTypeInfo(DeptType deptType) {
+        deptTypeService.saveDeptTypeInfo(deptType);
+    }
+
+    @Override
+    public List<Department> loadAllDepartmentByDeptTypeId(Long deptTypeId) {
+        return departmentService.loadAllDepartmentByDeptTypeId(deptTypeId);
+    }
+
+    @Override
+    public void saveDepartment(Department department) {
+        departmentService.saveDepartment(department);
     }
 
     /**

@@ -3,11 +3,18 @@ var linkUrlForSpecRoomDetailInfo = basePath + "/dict/loadAllSpecRoomDetail.json"
 var paneSize = {
     "height": "340px"
 }
+var specRoomDataForm;
+var specRoomDataFormValidator;
 
 $(document).ready(function () {
     init();
 
     reloadSpecRoomDetail();
+
+    specRoomDataForm = $('#saveSpecRoomDetailForm');
+    // 绑定校验事件
+    specRoomDataForm.bootstrapValidator(specRoomDetailValidOption);
+    specRoomDataFormValidator = specRoomDataForm.data('bootstrapValidator');
 });
 
 function init() {
@@ -21,7 +28,11 @@ function init() {
         clearModelInfo();
     });
     $('#submitSpecRoomDetailFormBtn').click(function () {
-        saveOrUpdateSpecRoomDetail();
+        specRoomDataFormValidator.validate();
+
+        if(specRoomDataFormValidator.isValid()){
+            saveOrUpdateSpecRoomDetail();
+        }
     });
 
     // 表格初始化
@@ -62,12 +73,6 @@ function initSpecRoomDataTables() {
                 }
             }
         ]
-        // "fnRowCallback": function (nRow, aData, iDataIndex) {
-        //     var specRoomId = aData.id;
-        //     var html = '<input type="radio" name="radio">';
-        //     $('td:eq(0)', nRow).html(html);
-        //     return nRow;
-        // }
     });
 }
 // 添加列表监听事件
@@ -155,6 +160,8 @@ function saveOrUpdateSpecRoomDetail() {
         $.post(linkUrlForSpecRoomDetail, specRoomDetailForm.serialize(), function (outData) {
             Ewin.alert(outData.retMsg).on(function () {
                 if (outData.retCode === RET_CODE_SUCC) {
+                    // 重置校验样式
+                    specRoomDataForm.data('bootstrapValidator').resetForm(false);
                     // 关闭模态对话框
                     $('#addSpecRoomDetailModal').modal('hide');
                     // 刷新列表数据
@@ -172,6 +179,9 @@ function clearModelInfo() {
     $('#saveSpecRoomDetailForm input[name="id"]').val('');
     $('#saveSpecRoomDetailForm input[name="note"]').val('');
     $('#saveSpecRoomDetailForm input[name="action"]').val('');
+
+    // 重置校验样式
+    specRoomDataForm.data('bootstrapValidator').resetForm(false);
 }
 
 function reloadSpecRoomDetail() {
@@ -196,3 +206,37 @@ function appendOperInfoForEdit(specRoomId, deptTypeCode, deptTypeName, specRoomN
         + specRoomId + ',\'' + specRoomName
         + '\')" href="javascript:void()" style="margin-right: 10px; font-size: 22px" title="删除样板房间"></a>';
 }
+
+var specRoomDetailValidOption = {
+    message: "请输入有效的内容!",
+    feedbackIcons: {
+        valid: "fa fa-check",
+        invalid: "fa fa-times",
+        validatting: "fa fa-refresh"
+    },
+    fields: {
+        specRoomName: {
+            message: "样板房间名称信息有误!",
+            validators: {
+                notEmpty: {
+                    message: "样板房间名称不能为空!"
+                },
+                stringLength: {
+                    min: 4,
+                    max: 64,
+                    message: "样板房间名称不少于4个字符，不多于64个字符!"
+                }
+            }
+        },
+        note:{
+            message: "样板房间备注信息有误!",
+            validators: {
+                stringLength: {
+                    min: 0,
+                    max: 128,
+                    message: "样板房间备注不多于128个字符!"
+                }
+            }
+        }
+    }
+};

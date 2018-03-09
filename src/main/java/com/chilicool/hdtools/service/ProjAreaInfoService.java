@@ -1,9 +1,13 @@
 package com.chilicool.hdtools.service;
 
+import com.chilicool.hdtools.domain.AreaInfo;
+import com.chilicool.hdtools.domain.AreaSummary;
+import com.chilicool.hdtools.domain.RoomInfo;
 import com.chilicool.hdtools.model.AreaInfoModel;
 import com.chilicool.hdtools.model.AreaSumyModel;
 import com.chilicool.hdtools.model.AreaWithAction;
 import com.chilicool.hdtools.model.RoomWithAction;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.List;
 
@@ -18,6 +22,14 @@ public interface ProjAreaInfoService {
      * @return
      */
     public List<AreaInfoModel> loadAllAreaInfo(Long deptId);
+
+    /**
+     * 加载所有区域信息
+     *
+     * @param deptId
+     * @return
+     */
+    public List<AreaInfo> loadAllAreaInfoByDeptId(Long deptId);
 
     /**
      * 加载区域汇总信息
@@ -135,4 +147,27 @@ public interface ProjAreaInfoService {
      * @return
      */
     public boolean roomCodeExist(Long areaId, Short orderIdx);
+
+    /**
+     * 查询某个部门下的区域汇总信息
+     *
+     * @param deptId
+     * @return
+     */
+    public AreaSummary loadAreaSummaryByDeptId(Long deptId);
+
+    /**
+     * 保存区域汇总信息
+     *
+     * @param areaSummary
+     */
+    public void saveAreaSummary(AreaSummary areaSummary);
+
+    /**
+     * 保存区域信息
+     *
+     * @param areaInfo
+     */
+    public void saveAreaInfo(AreaInfo areaInfo);
+
 }

@@ -487,4 +487,12 @@
       and pbi.id in (select max(pbia.id) from proj_base_info pbia group by pbia.group_id)
     order by pbi.id desc
   </select>
+
+  <select id="getMaxMajorByGroupId" resultType="String" parameterType="Long">
+    select max(major)
+      from version_info vi,
+           proj_base_info pb
+     where vi.ID = pb.VER_ID
+       and pb.GROUP_ID = #{groupId,jdbcType=BIGINT}
+  </select>
 </mapper>

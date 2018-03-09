@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">规划面积<span class="asterisk">*</span></label>
                             <div class="col-xs-8">
-                                <input type="number" name="planArea" class="form-control" placeholder="请输入规划面积" required value=""/>
+                                <input type="number" name="planArea" min="01" max="999999" class="form-control" placeholder="请输入规划面积" required value=""/>
                             </div>
                         </div>
                     </form>

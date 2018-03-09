@@ -1,6 +1,25 @@
 $(function () {
     initAreaInfo();
+
+    // 区域信息校验器
+    paneAreaInfoForm = $('#addAreaInfoForm');
+    // 绑定校验事件
+    paneAreaInfoForm.bootstrapValidator(paneAreaInfoValidOption);
+    // 创建校验器
+    paneAreaInfoValidator = paneAreaInfoForm.data('bootstrapValidator');
+
+    // 房间信息校验器
+    paneRoomInfoForm = $('#addRoomInfoForm');
+    // 绑定校验事件
+    paneRoomInfoForm.bootstrapValidator(paneRoomInfoValidOption);
+    // 创建校验器
+    paneRoomInfoValidator = paneRoomInfoForm.data('bootstrapValidator');
 });
+
+var paneAreaInfoForm ;
+var paneAreaInfoValidator;
+var paneRoomInfoForm ;
+var paneRoomInfoValidator;
 
 function initAreaInfo() {
     // 激活面板，重新加载数据
@@ -26,7 +45,13 @@ function initAreaEvents() {
         clearAreaModalData();
     });
     $('#submitAreaInfoFormBtn').bind('click', function () {
-        addAreaInfo();
+        // 不检校部门编号
+        paneAreaInfoValidator.updateStatus('orderIdx', 'VALID');
+
+        paneAreaInfoValidator.validate();
+        if(paneAreaInfoValidator.isValid()){
+            addAreaInfo();
+        }
     });
     // 面积系数实时更新
     $('#deptPlanAreaRatioModBtn').bind('click', editDeptPlanAreaRatioValOnTime);
@@ -39,7 +64,13 @@ function initRoomEvents() {
         clearRoomModalData();
     });
     $('#submitRoomInfoFormBtn').bind('click', function () {
-        addRoomInfo();
+        // 不检校部门编号
+        paneRoomInfoValidator.updateStatus('orderIdx', 'VALID');
+
+        paneRoomInfoValidator.validate();
+        if(paneRoomInfoValidator.isValid()){
+            addRoomInfo();
+        }
     });
 }
 // 区域、房间信息模态框
@@ -325,7 +356,7 @@ function clearAreaModalData() {
 }
 // 清空房间信息数据[模态对话框]
 function clearRoomModalData() {
-    $('#addRoomInfoForm span[name="areaCode"]').html('');
+    //$('#addRoomInfoForm span[name="areaCode"]').html('');
     $('#addRoomInfoForm input[name="roomCode"]').val('');
     $('#addRoomInfoForm input[name="orderIdx"]').val('');
     $('#addRoomInfoForm input[name="roomName"]').val('');
@@ -349,6 +380,8 @@ function addAreaInfo() {
     $.post(linkUrlForAreaInfo, submitData, function (outData) {
         Ewin.alert(outData.retMsg);
         if (outData.retCode == RET_CODE_SUCC) {
+            // 清除校验状态
+            paneAreaInfoValidator.resetForm(false);
             // 关闭模态对话框
             $('#addAreaInfoModal').modal('hide');
         }
@@ -372,6 +405,8 @@ function addRoomInfo() {
     $.post(linkUrlForRoomInfo, submitData, function (outData) {
         Ewin.alert(outData.retMsg);
         if (outData.retCode == RET_CODE_SUCC) {
+            // 清除校验状态
+            paneRoomInfoValidator.resetForm(false);
             // 关闭模态对话框
             $('#addRoomInfoModal').modal('hide');
         }
@@ -486,7 +521,7 @@ function checkAndFormatCodeForRoom(item) {
 
     var currVal = $(item).val();
     if (currVal != roomCodes[1]) {
-        var checkRoomCodeUrl = 'areaCodeExist.json';
+        var checkRoomCodeUrl = 'roomCodeExist.json';
         var submitData = 'areaId=' + currAreaId + "&orderIdx=" + currVal;
 
         $.post(checkRoomCodeUrl, submitData, function (outData) {
@@ -500,3 +535,53 @@ function checkAndFormatCodeForRoom(item) {
         }, "json");
     }
 }
+
+var paneAreaInfoValidOption = {
+    message: "请输入有效的内容!",
+    feedbackIcons: {
+        valid: "fa fa-check",
+        invalid: "fa fa-times",
+        validatting: "fa fa-refresh"
+    },
+    fields: {
+        officeName:{
+            message: "区域名称信息有误!",
+            validators: {
+                stringLength: {
+                    min: 4,
+                    max: 128,
+                    message: "区域名称不少于4个字符，不多于128个字符!"
+                }
+            }
+        },
+        note:{
+            message: "区域备注信息有误!",
+            validators: {
+                stringLength: {
+                    max: 128,
+                    message: "区域备注不多于128个字符!"
+                }
+            }
+        }
+    }
+};
+var paneRoomInfoValidOption = {
+    message: "请输入有效的内容!",
+    feedbackIcons: {
+        valid: "fa fa-check",
+        invalid: "fa fa-times",
+        validatting: "fa fa-refresh"
+    },
+    fields: {
+        roomName:{
+            message: "房间名称信息有误!",
+            validators: {
+                stringLength: {
+                    min: 4,
+                    max: 128,
+                    message: "房间名称不少于4个字符，不多于128个字符!"
+                }
+            }
+        }
+    }
+};

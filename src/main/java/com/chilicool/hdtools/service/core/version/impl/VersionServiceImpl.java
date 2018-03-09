@@ -3,6 +3,7 @@ package com.chilicool.hdtools.service.core.version.impl;
 import com.chilicool.hdtools.dao.VersionInfoMapper;
 import com.chilicool.hdtools.domain.VersionInfo;
 import com.chilicool.hdtools.service.core.version.VersionService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,14 @@ public class VersionServiceImpl implements VersionService {
     public VersionInfo createVersion() {
         VersionTools versionTools = new VersionTools();
         VersionInfo version = versionTools.generateVersion();
+        saveVersionIntoDB(version);
+        return version;
+    }
+
+    @Override
+    public VersionInfo createVersion(Long pid, String nextMajorCode) {
+        VersionTools versionTools = new VersionTools();
+        VersionInfo version = versionTools.generateVersion(pid, nextMajorCode);
         saveVersionIntoDB(version);
         return version;
     }
@@ -54,6 +63,7 @@ public class VersionServiceImpl implements VersionService {
      * @param currVersion
      * @return
      */
+    @Deprecated
     @Override
     public VersionInfo milestoneRelease(VersionInfo currVersion) {
         VersionTools versionTools = new VersionTools();
@@ -80,9 +90,17 @@ public class VersionServiceImpl implements VersionService {
             currVersion.setCreateTime(new Date());
             currVersion.setVerName(VersionBase.initVersionName);
             currVersion.setVerCode(VersionBase.initVersionCode);
-            currVersion.setMajor(VersionBase.initMajorVersion);
             // currVersion.setSlave(VersionBase.initSlaveVersion);
 
+        }
+
+        // 设置版本号信息
+        private void initVersionMajorInfo(VersionInfo currVersion, String nextMajorCode){
+            if(StringUtils.isNotEmpty(nextMajorCode)){
+                currVersion.setMajor(nextMajorCode);
+            } else {
+                currVersion.setMajor(VersionBase.initMajorVersion);
+            }
         }
 
         // 设置版本信息
@@ -115,7 +133,18 @@ public class VersionServiceImpl implements VersionService {
         public VersionInfo generateVersion() {
             VersionInfo currVersion = new VersionInfo();
             initVersionBseInfo(currVersion);
+            initVersionMajorInfo(currVersion, null);
             initVersionExtInfo(currVersion);
+            return currVersion;
+        }
+
+        public VersionInfo generateVersion(Long pid, String nextMajorCode) {
+            VersionInfo currVersion = new VersionInfo();
+            initVersionBseInfo(currVersion);
+            initVersionMajorInfo(currVersion, nextMajorCode);
+            initVersionExtInfo(currVersion);
+
+            currVersion.setPid(pid);
             return currVersion;
         }
 

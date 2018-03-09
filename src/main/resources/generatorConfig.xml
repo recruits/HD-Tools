@@ -5,7 +5,7 @@
 <generatorConfiguration>
 
     <!-- !!!! Driver Class Path !!!! -->
-    <classPathEntry location="D:\DevSoftware\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
+    <classPathEntry location="/Users/zechenzhang/Documents/devsoftware/repo/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -54,7 +54,7 @@
         <table schema="" tableName="ROOM_DATA_DETAIL" domainObjectName="RoomDataDetail"></table>
         -->
 
-        <table schema="" tableName="SPEC_ROOM_DATA" domainObjectName="SpecRoomData"></table>
+        <table schema="" tableName="PARAMS_VIEW"  domainObjectName="ParamsView"></table>
         <!--<table schema="" tableName="SPEC_DATA_DETAIL" domainObjectName="SpecDataDetail"></table>-->
 
     </context>

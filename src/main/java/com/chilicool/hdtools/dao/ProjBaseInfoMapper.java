@@ -101,4 +101,12 @@ public interface ProjBaseInfoMapper {
      * @return
      */
     List<ProjBaseInfo> loadAllProjInfo();
+
+    /**
+     * 查询当前项目的最大版本号
+     *
+     * @param groupId
+     * @return
+     */
+    String getMaxMajorByGroupId(Long groupId);
 }

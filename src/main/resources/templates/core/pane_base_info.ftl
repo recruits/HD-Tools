@@ -10,9 +10,9 @@
         </div>
 
         <div class="form-group">
-            <label class="col-xs-1 control-label">项目描述<span class="asterisk">*</span></label>
+            <label class="col-xs-1 control-label">项目描述<span style="color:white">*</span></label>
             <div class="col-xs-9">
-                <input type="text" name="projSubtitle" class="form-control" placeholder="请输入项目描述" required value="${projSubtitle!}"/>
+                <input type="text" name="projSubtitle" class="form-control" placeholder="请输入项目描述" ßvalue="${projSubtitle!}"/>
             </div>
         </div>
 
@@ -57,7 +57,7 @@
     <div class="row">
         <div class="col-xs-2 col-xs-offset-5">
             <button class="btn btn-primary btn-xs" id="saveItemInfoBtn">&nbsp;保&nbsp;&nbsp;存&nbsp;</button>
-            <button type="reset" class="btn btn-default btn-xs">&nbsp;发&nbsp;&nbsp;布&nbsp;</button>
+            <button class="btn btn-default btn-xs" id="releaseItemInfoBtn">&nbsp;发&nbsp;&nbsp;布&nbsp;</button>
         </div>
     </div>
 </div>

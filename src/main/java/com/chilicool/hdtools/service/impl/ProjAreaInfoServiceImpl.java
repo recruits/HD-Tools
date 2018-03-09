@@ -8,8 +8,9 @@ import com.chilicool.hdtools.domain.*;
 import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.ProjAreaInfoService;
 import com.chilicool.hdtools.service.ProjDeptInfoService;
-import com.chilicool.hdtools.service.busi.AreaSummaryService;
 import com.chilicool.hdtools.service.core.areainfo.AreaInfoService;
+import com.chilicool.hdtools.service.core.areainfo.AreaSumyService;
+import com.chilicool.hdtools.service.core.areainfo.RoomInfoService;
 import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
@@ -29,8 +30,6 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     @Autowired
     private AreaSummaryMapper areaSummaryMapper;
     @Autowired
-    private AreaSummaryService areaSummaryService;
-    @Autowired
     private AreaInfoMapper areaInfoMapper;
     @Autowired
     private RoomInfoMapper roomInfoMapper;
@@ -46,6 +45,8 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     private DeptDelService deptDelService;
     @Autowired
     private AreaInfoService areaInfoService;
+    @Autowired
+    private AreaSumyService areaSumyService;
 
     @Override
     public List<AreaInfoModel> loadAllAreaInfo(Long deptId) {
@@ -80,6 +81,11 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         }
 
         return areaInfoModels;
+    }
+
+    @Override
+    public List<AreaInfo> loadAllAreaInfoByDeptId(Long deptId) {
+        return areaInfoService.loadAllAreaInfoByDeptId(deptId);
     }
 
     @Override
@@ -158,7 +164,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
     }
 
     private AreaSummary initOrUpdateAreaSumaryInfo(AreaInfo areaInfo, Double areaSummaryVal) {
-        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(areaInfo.getDeptId());
+        AreaSummary areaSummary = areaSumyService.loadAreaSummaryByDeptId(areaInfo.getDeptId());
 
         boolean areaSummaryExist = (null != areaSummary && null != areaSummary.getDeptId() && 0 != areaSummary.getDeptId());
         if (!areaSummaryExist) {
@@ -224,7 +230,7 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
 
     // 使用部门编号判断区域汇总信息是否存在
     private boolean checkAreaSummaryExistByDeptId(Long deptId) {
-        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(deptId);
+        AreaSummary areaSummary = areaSumyService.loadAreaSummaryByDeptId(deptId);
         return null != areaSummary && null != areaSummary.getDeptId() && 0 != areaSummary.getDeptId();
     }
 
@@ -376,6 +382,21 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
         return CollectionUtils.isNotEmpty(roomInfos) && roomInfos.size() > 0;
     }
 
+    @Override
+    public AreaSummary loadAreaSummaryByDeptId(Long deptId) {
+        return areaSumyService.loadAreaSummaryByDeptId(deptId);
+    }
+
+    @Override
+    public void saveAreaSummary(AreaSummary areaSummary) {
+        areaSumyService.saveAreaSummary(areaSummary);
+    }
+
+    @Override
+    public void saveAreaInfo(AreaInfo areaInfo) {
+        areaInfoService.saveAreaInfo(areaInfo);
+    }
+
     private void updateAreaSummaryByPk(AreaSummary areaSummary) {
         areaSummaryMapper.updateByPrimaryKeySelective(areaSummary);
     }
@@ -452,10 +473,8 @@ public class ProjAreaInfoServiceImpl implements ProjAreaInfoService {
 
     // 加载区域汇总信息
     private void loadAreaSummary(AreaSumyModel areaSumyModel, Long deptId) {
-        // Double areaSummary = getAllAreaSummaryByDeptId(deptId);
-        // areaSumyModel.setDesignArea(areaSummary);
-        AreaSummary areaSummary = areaSummaryService.loadAreaSummaryByDeptId(deptId);
-        if (areaSummary.getDeptId() != null) {
+        AreaSummary areaSummary = areaSumyService.loadAreaSummaryByDeptId(deptId);
+        if (null != areaSummary && areaSummary.getDeptId() != null) {
             BeanUtils.copyProperties(areaSummary, areaSumyModel);
         }
     }

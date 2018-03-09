@@ -1,6 +1,14 @@
 $(function () {
     initSumyInfo();
+
+    paneSumyInfoForm = $('#addSubSumyInfoForm');
+    // 绑定校验事件
+    paneSumyInfoForm.bootstrapValidator(paneSumyInfoValidOption);
+    // 创建校验器
+    paneBaseInfoValidator = paneSumyInfoForm.data('bootstrapValidator');
 });
+var paneSumyInfoForm ;
+var paneBaseInfoValidator;
 
 function initSumyInfo() {
     // 激活面板，重新加载数据
@@ -13,7 +21,13 @@ function initSumyInfo() {
         clearDeptModalData();
     });
     $('#submitSubSumyInfoFormBtn').click(function () {
-        addDepartment();
+        // 不检校部门编号
+        paneBaseInfoValidator.updateStatus('orderIdx', 'VALID');
+
+        paneBaseInfoValidator.validate();
+        if(paneBaseInfoValidator.isValid()){
+            addDepartment();
+        }
     });
 
     // 模态对话框关闭事件
@@ -236,7 +250,9 @@ function addDepartment() {
 
     $.post(linkUrlForDeptInfo, submitData, function (outData) {
         Ewin.alert(outData.retMsg);
-        if(outData.retCode == RET_CODE_SUCC){
+        if (outData.retCode == RET_CODE_SUCC) {
+            // 清除校验状态
+            paneBaseInfoValidator.resetForm(false);
             // 关闭模态对话框
             $('#addSubSumyInfoModal').modal('hide');
         }
@@ -354,3 +370,24 @@ function getNextDeptCode() {
     nextDeptOrderIdx = nextDeptOrderIdx < 10 ? '0' + parseInt(nextDeptOrderIdx) : nextDeptOrderIdx;
     return nextDeptOrderIdx;
 }
+
+var paneSumyInfoValidOption = {
+    message: "请输入有效的内容!",
+    feedbackIcons: {
+        valid: "fa fa-check",
+        invalid: "fa fa-times",
+        validatting: "fa fa-refresh"
+    },
+    fields: {
+        deptName:{
+            message: "部门名称信息有误!",
+            validators: {
+                stringLength: {
+                    min: 4,
+                    max: 128,
+                    message: "部门名称不少于4个字符，不多于128个字符!"
+                }
+            }
+        }
+    }
+};

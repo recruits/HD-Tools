@@ -22,7 +22,7 @@
 <div class="panel-body">
     <div class="m-5">
         <a class="btn btn-primary btn-xs" href="${basePath}/core/selectPhase.html?action=add&itemName=" target="mainFrame">新增项目</a>
-        <a class="btn btn-primary btn-xs" href="" target="mainFrame">复制项目</a>
+        <#--<a class="btn btn-primary btn-xs" href="" target="mainFrame">复制项目</a>-->
     </div>
 
     <hr>
