@@ -222,9 +222,9 @@ var specRoomDetailValidOption = {
                     message: "样板房间名称不能为空!"
                 },
                 stringLength: {
-                    min: 4,
+                    min: 1,
                     max: 64,
-                    message: "样板房间名称不少于4个字符，不多于64个字符!"
+                    message: "样板房间名称不少于1个字符，不多于64个字符!"
                 }
             }
         },

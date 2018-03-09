@@ -548,9 +548,9 @@ var paneAreaInfoValidOption = {
             message: "区域名称信息有误!",
             validators: {
                 stringLength: {
-                    min: 4,
+                    min: 1,
                     max: 128,
-                    message: "区域名称不少于4个字符，不多于128个字符!"
+                    message: "区域名称不少于1个字符，不多于128个字符!"
                 }
             }
         },
@@ -577,9 +577,9 @@ var paneRoomInfoValidOption = {
             message: "房间名称信息有误!",
             validators: {
                 stringLength: {
-                    min: 4,
+                    min: 1,
                     max: 128,
-                    message: "房间名称不少于4个字符，不多于128个字符!"
+                    message: "房间名称不少于1个字符，不多于128个字符!"
                 }
             }
         }

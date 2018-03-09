@@ -15,6 +15,7 @@ import com.chilicool.hdtools.service.core.deptinfo.DepartmentService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptDelService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptSumyService;
 import com.chilicool.hdtools.service.core.deptinfo.DeptTypeService;
+import com.chilicool.hdtools.support.DigitalUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -526,7 +527,9 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
             deptSummary.setPlanAreaRatio(planAreaRatio);
         }
         deptSummary.setPlanAreaSummary(persentVal);
-        deptSummary.setPlanAreaTotal(planAreaRatio * persentVal);
+        // format to 2 bit
+        //deptSummary.setPlanAreaTotal(planAreaRatio * persentVal);
+        deptSummary.setPlanAreaTotal(DigitalUtil.f2bit(planAreaRatio * persentVal));
         deptSummaryMapper.updateByPrimaryKeySelective(deptSummary);
     }
 
@@ -558,7 +561,8 @@ public class ProjDeptInfoServiceImpl implements ProjDeptInfoService {
             deptSummary.setPlanAreaRatio(designAreaRatio);
         }
         deptSummary.setDesignAreaSummary(persentVal);
-        deptSummary.setDesignAreaTotal(designAreaRatio * persentVal);
+        // deptSummary.setDesignAreaTotal(designAreaRatio * persentVal);
+        deptSummary.setDesignAreaTotal(DigitalUtil.f2bit(designAreaRatio * persentVal));
         deptSummaryMapper.updateByPrimaryKeySelective(deptSummary);
     }
 

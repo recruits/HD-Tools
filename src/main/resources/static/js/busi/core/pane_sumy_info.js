@@ -383,9 +383,9 @@ var paneSumyInfoValidOption = {
             message: "部门名称信息有误!",
             validators: {
                 stringLength: {
-                    min: 4,
+                    min: 1,
                     max: 128,
-                    message: "部门名称不少于4个字符，不多于128个字符!"
+                    message: "部门名称不少于1个字符，不多于128个字符!"
                 }
             }
         }
