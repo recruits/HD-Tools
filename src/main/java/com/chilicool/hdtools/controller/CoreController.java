@@ -189,7 +189,12 @@ public class CoreController {
     @ResponseBody
     public ResultBase editPlanAreaValOnTime(Long pk, Double value) {
         ResultBase resultBase = new ResultBase();
-        projDeptInfoService.updatePlanAreaValOnTime(pk, value);
+        if (null != value) {
+            projDeptInfoService.updatePlanAreaValOnTime(pk, value);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
         return resultBase;
     }
 
@@ -197,7 +202,13 @@ public class CoreController {
     @ResponseBody
     public ResultBase editPlanAreaValForDeptOnTime(Long pk, Double value) {
         ResultBase resultBase = new ResultBase();
-        boolean freshFlag = projDeptInfoService.updatePlanAreaValForDeptOnTime(pk, value);
+        boolean freshFlag = false;
+        if (null != value) {
+            freshFlag = projDeptInfoService.updatePlanAreaValForDeptOnTime(pk, value);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
         if (freshFlag) resultBase.setRetExtInfo("fresh");
         return resultBase;
     }
@@ -220,6 +231,7 @@ public class CoreController {
     @ResponseBody
     public ResultBase editSumyPlanAreaRatioValOnTime(Long sumyId, Double areaRatio) {
         ResultBase resultBase = new ResultBase();
+        if (null == areaRatio) areaRatio = 0D;
         projDeptInfoService.editSumyAreaRatioValOnTime(sumyId, areaRatio);
         return resultBase;
     }
@@ -234,6 +246,7 @@ public class CoreController {
     @ResponseBody
     public ResultBase editSumyDesignAreaRatioValOnTime(Long sumyId, Double areaRatio) {
         ResultBase resultBase = new ResultBase();
+        if (null == areaRatio) areaRatio = 0D;
         projDeptInfoService.editSumyDesignAreaRatioValOnTime(sumyId, areaRatio);
         return resultBase;
     }
@@ -324,7 +337,12 @@ public class CoreController {
     @ResponseBody
     public ResultBase editRoomCntOnTime(Long pk, Integer value) {
         ResultBase resultBase = new ResultBase();
-        projAreaInfoService.editRoomCntValOnTime(pk, value);
+        if (null == value) {
+            projAreaInfoService.editRoomCntValOnTime(pk, value);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
         return resultBase;
     }
 
@@ -332,7 +350,12 @@ public class CoreController {
     @ResponseBody
     public ResultBase editRoomAreaOnTime(Long pk, Double value) {
         ResultBase resultBase = new ResultBase();
-        projAreaInfoService.editRoomAreaValOnTime(pk, value);
+        if (null == value) {
+            projAreaInfoService.editRoomAreaValOnTime(pk, value);
+        } else {
+            resultBase.setRetCode(ResultBase.RET_CODE_FAIL);
+            resultBase.setRetMsg("");
+        }
         return resultBase;
     }
 
@@ -346,6 +369,7 @@ public class CoreController {
     @ResponseBody
     public ResultBase editDeptPlanAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
         ResultBase resultBase = new ResultBase();
+        if (null == areaRatio) areaRatio = 0D;
         projAreaInfoService.editDeptPlanAreaRatioValOnTime(areaSumyId, areaRatio);
         return resultBase;
     }
@@ -360,6 +384,7 @@ public class CoreController {
     @ResponseBody
     public ResultBase editDeptDesignAreaRatioValOnTime(Long areaSumyId, Double areaRatio) {
         ResultBase resultBase = new ResultBase();
+        if (null == areaRatio) areaRatio = 0D;
         projAreaInfoService.editDeptDesignAreaRatioValOnTime(areaSumyId, areaRatio);
         return resultBase;
     }
