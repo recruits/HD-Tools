@@ -1,5 +1,6 @@
 package com.chilicool.hdtools.service;
 
+import com.chilicool.hdtools.model.ParamsViewWithAction;
 import com.chilicool.hdtools.model.SpecRoomDataJson;
 
 /**
@@ -12,4 +13,20 @@ public interface ParamDataService {
      * @return
      */
     public SpecRoomDataJson loadAllSpecRoomData();
+
+    /**
+     * 增加房间模块和模块参数
+     *
+     * @param paramsView
+     */
+    public void addSpecRoomParam(ParamsViewWithAction paramsView);
+
+    /**
+     * 检查当前模块下是否已经存枚举名称
+     *
+     * @param moduleId
+     * @param enumName
+     * @return
+     */
+    public boolean ifEnumNameExist(Long moduleId, String enumName);
 }

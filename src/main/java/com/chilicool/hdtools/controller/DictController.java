@@ -6,6 +6,7 @@ import com.chilicool.hdtools.model.*;
 import com.chilicool.hdtools.service.ParamDataService;
 import com.chilicool.hdtools.service.RoomDataService;
 import com.chilicool.hdtools.support.ResultUtil;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chilicool on 2017/9/10.
@@ -232,5 +236,24 @@ public class DictController {
     @ResponseBody
     public SpecRoomDataJson loadAllSpecRoomData() {
         return paramDataService.loadAllSpecRoomData();
+    }
+
+    @RequestMapping(value = "/addSpecRoomParam.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBase addSpecRoomParam(ParamsViewWithAction paramsViewWithAction){
+        ResultBase resultBase = new ResultBase();
+        paramDataService.addSpecRoomParam(paramsViewWithAction);
+        return resultBase;
+    }
+
+    @RequestMapping(value = "/ifEnumNameExist.json", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultSimple ifEnumNameExist(Long moduleId, String enumName, boolean ignoreCheck) {
+        ResultSimple resultSimple = new ResultSimple();
+        if(!ignoreCheck) {
+            boolean checkResult = paramDataService.ifEnumNameExist(moduleId, enumName);
+            resultSimple.setValid(!checkResult);
+        }
+        return resultSimple;
     }
 }

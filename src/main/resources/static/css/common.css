@@ -18,3 +18,11 @@
 .l-ml-15 { margin-left: 15px }
 .l_mb-15 { margin-bottom: 15px }
 .l_mb-5 { margin-bottom: 5px }
+
+/* 自定义表格选中高亮 */
+table.dataTable tbody tr {
+    background-color: #ffffff;
+}
+table.dataTable tbody tr.selected {
+    background-color: #B0BED9;
+}

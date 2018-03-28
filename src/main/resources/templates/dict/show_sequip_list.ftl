@@ -21,25 +21,26 @@
 </div>
 <div class="panel-body">
     <div class="m-5">
-        <a class="btn btn-primary btn-xs" href="${basePath}/dict/addDataModule.html" target="mainFrame">新增数据</a>
+        <a class="btn btn-primary btn-xs" href="javascript:void(0);" id="addNewRoomDataParams">新增设备参数</a>
+        <a class="btn btn-primary btn-xs" href="javascript:void(0);" id="modNewRoomDataParams">修改设备参数</a>
     </div>
 
     <hr>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered" id="specRoomDataTable">
+        <table class="table table-bordered" id="specRoomDataTable">
             <thead>
                 <tr>
                     <th>设备编号</th>
                     <th>设备顺序</th>
                     <th>设备名称</th>
                     <th>模块编号</th>
-                    <th>模块顺序</th>
+                    <th>顺序</th>
                     <th>模块名称</th>
-                    <th>参数选中方式</th>
+                    <th>选中方式</th>
                     <th>参数编号列表</th>
-                    <th>参数名称列表</th>
-                    <th>调整顺序</th>
+                    <th>参数名称</th>
+                    <th>操作</th>
                 </tr>
             </thead>
         </table>
@@ -51,48 +52,73 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">新增模块参数</h4>
+                    <h4 class="modal-title" id="specRoomDataModalLabel"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="dataModelForm" action="${basePath}/dict/addDataModel.json" method="post" target="targetIfr">
+                    <form id="specRoomDataParamForm" action="${basePath}/dict/addSpecRoomParam.json" method="post">
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">设备类型<span class="asterisk">*</span></label>
+                            <div class="col-xs-10">
+                                <@cc.select class="selectpicker form-control" name="moduleId" value="1001" typeCode="ROOM_MODULE" />
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="col-xs-2 control-label">模块名称<span class="asterisk">*</span></label>
                             <div class="col-xs-10">
-                                <input type="text" name="moduleName" class="form-control" placeholder="请输入模块名称" required/>
+                                <input type="hidden" name="enumId">
+                                <input type="hidden" name="oldEnumName">
+                                <input type="text" name="enumName" class="form-control" placeholder="请输入模块名称" required value=""/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-xs-2 control-label">模块分类<span class="asterisk">*</span></label>
+                            <label class="col-xs-2 control-label">模块顺序<span class="asterisk">*</span></label>
                             <div class="col-xs-10">
-                                <!--<input type="text" name="modelType" class="form-control" placeholder="请选择模块分类" required value=""/>-->
-                                <select class="selectpicker form-control" name="moduleType" data-style="btn-default">
-                                    <option value="1" >装饰装修</option>
-                                    <option value="2" >设备</option>
-                                    <option value="3" >耗材</option>
-                                    <option value="9" >其它</option>
-                                </select>
+                                <input type="number" min="1" name="enumIdx" class="form-control" required value=""/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-xs-2 control-label">模块简拼<span class="asterisk">*</span></label>
+                            <label class="col-xs-2 control-label">选中方式<span class="asterisk">*</span></label>
                             <div class="col-xs-10">
-                                <input type="text" name="nameCode" class="form-control" placeholder="请输入模块简拼" required value=""/>
+                                <@cc.select class="selectpicker form-control" name="selType" typeCode="SELECT_TYPE" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-xs-4 col-xs-offset-8">
-                                <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">关闭</button>
-                                <button type="submit" class="btn btn-primary btn-xs">提交</button>
+                            <label class="col-xs-2 control-label">模块参数&nbsp;</label>
+                            <div class="col-xs-10">
+                                <div class="input-group input-group-xs">
+                                    <input type="text" name="singleParamName" class="form-control" aria-describedby="sizing-addon1">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" id="addSpecRoomParamBtn">增加参数</button>
+                                        <#--<button class="btn btn-default" type="button" id="delSpecRoomParamBtn">全部删除</button>-->
+                                    </span>
+                                </div>
+                                <div class="x_panel">
+                                    <div class="x_content" style="display: block;">
+                                        <table id="specRoomParamTable" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>参数顺序</th>
+                                                    <th>参数名称</th>
+                                                    <th>删除参数</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default btn-xs" id="specRoomDataParamResetBtn">重置</button>
+                    <button type="submit" class="btn btn-primary btn-xs" id="specRoomDataParamSubmitBtn">提交</button>
+                </div>
             </div>
         </div>
-        <iframe name="targetIfr" style="display:none"></iframe>
     </div>
 </div>
 </body>

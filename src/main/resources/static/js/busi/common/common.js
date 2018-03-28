@@ -22,6 +22,10 @@ var MODAL_TITLE_ROOM = {
     'add': "新增房间信息",
     'edit': "编辑房间信息"
 };
+var MODAL_TITLE_PARAM = {
+    'add': "新增设备参数",
+    'edit': "编辑模块参数"
+};
 // ---------- 常量对象，使用小写、下划线分隔
 // 配置常量对象，命名以 cfg 开始
 var cfg_dt_lang = {
